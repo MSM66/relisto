@@ -183,13 +183,14 @@ function buildDemoWorkspace(seed, ref) {
   }));
   const circular = seed.circularActions.map((c) => Object.assign({ origin: 'demo', createdAt: ref, kind: 'revision', history: [] }, clone(c)));
   const profiles = seed.profiles.map((p) => Object.assign(defaultProfileExtras(), clone(p), { origin: 'demo' }));
-  return {
+  return withCodes({
     mode: 'demo', referenceDate: ref, activeProfileId: 'alex', profiles, items, contexts, templates, wearLogs, missing, offers,
     plans, orders, circular, saved: [], feedback: [], quotes: [], links: [], events: [],
     seq: { order: 1043, log: 1, item: 1, ctx: 1, saved: 1, req: 2, cir: 2, fb: 1, quote: 1 },
     selectedContext: { alex: 'C01', valeria: 'C04', noa: 'C05' }
-  };
+  });
 }
+function withCodes(ws) { ensureCodes(ws); return ws; }
 function defaultProfileExtras() {
   return {
     gender: 'prefiero no indicarlo', expression: 'sin preferencia', heightCm: null, heightUnit: 'cm', sizeSystem: 'EU', build: 'prefiero omitir',
@@ -352,6 +353,10 @@ function scoreOutfit(ws, items, ctx, profile, today) {
   if (favHits.length) { score += 6 * favHits.length; reasons.push({ w: 5, t: 'Usa colores que elegiste: ' + [...new Set(favHits.map((i) => i.color))].join(', ') + '.' }); }
   const avoid = (profile.avoidColors || []).map(norm);
   main.forEach((i) => { if (avoid.some((a) => a && norm(i.color).includes(a))) score -= 12; });
+  if (typeof inPalette === 'function' && PALETTES[profile.undertone]) {
+    const palHits = main.filter((i) => inPalette(profile, i.color));
+    if (palHits.length) { score += 3 * palHits.length; reasons.push({ w: 4, t: 'Tonos de tu paleta ' + PALETTES[profile.undertone].label + ': ' + [...new Set(palHits.map((i) => i.color))].join(', ') + '.' }); }
+  }
   const style = styleFor(main, profile);
   if ((profile.styles || []).includes(style)) { score += 8; reasons.push({ w: 4, t: 'Encaja con tu estilo ' + style + '.' }); }
   const avgF = main.reduce((a, i) => a + i.formality, 0) / Math.max(1, main.length);

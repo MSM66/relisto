@@ -167,5 +167,27 @@ function runSelfTests(today) {
     const f = r.fields;
     return { ok: f.occasion === 'reunión' && f.district === 'San Isidro' && f.walking === 'alta' && f.intent.includes('profesionalismo') && f.intent.includes('cercanía') && f.colorsPref[0] === 'azul', detail: r.found.join(' · ') };
   });
+  check('Cada prenda tiene un código único y estable (SUP-001…)', () => {
+    const T = freshState(today); const w = T.demo; const codes = w.items.map((i) => i.ownerId + ':' + i.code);
+    const a01 = w.items.find((i) => i.id === 'A01').code; const it = addItem(w, { name: 'Polo azul marino', category: 'superior', color: 'azul marino', ownerId: 'alex' }, today);
+    return { ok: new Set(codes).size === 39 && w.items.every((i) => /^[A-Z]{3}-\d{3}$/.test(i.code)) && a01 === 'SUP-001' && it.code === 'SUP-007' && !codes.includes('alex:' + it.code), detail: 'A01 = ' + a01 + ' · nueva = ' + it.code };
+  });
+  check('Prendas iguales se distinguen por código', () => {
+    const T = freshState(today); const w = T.demo; const b = addItem(w, { name: 'Polo azul marino 2', category: 'superior', subtype: 'polo', color: 'azul marino', ownerId: 'alex' }, today);
+    const same = w.items.filter((i) => i.ownerId === 'alex' && i.subtype === 'polo' && norm(i.color) === 'azul marino');
+    return { ok: same.length === 2 && same[0].code !== same[1].code, detail: same.map((i) => i.code).join(' y ') };
+  });
+  check('Código QR: tamaño correcto según la versión', () => { const q = QR.encode('https://msm66.github.io/relisto/#p-SUP-003'); return { ok: q.version === 3 && q.size === 29 && q.modules.length === 29, detail: 'versión ' + q.version + ', ' + q.size + '×' + q.size }; });
+  check('Perfil de estilo: completitud y paleta por subtono', () => {
+    const p = Object.assign(defaultProfileExtras(), { styles: ['casual'], colors: ['azul'], undertone: 'cálido', skinTone: 'Monk 5, seleccionado manualmente', faceShape: 'redondo', build: 'media', fit: 'regular', hair: 'negro' });
+    const c = styleCompleteness(p); const pal = personalPalette(p);
+    return { ok: c.percent === 100 && pal.colors.includes('camel') && pal.contrast === 'alto' && pal.face.necks.includes('cuello en V'), detail: c.percent + '% · contraste ' + pal.contrast };
+  });
+  check('Sugerencias con paleta: no repiten lo que ya tienes y suman combinaciones', () => {
+    const T = freshState(today); const w = T.demo; const p = Object.assign({}, w.profiles[0], { undertone: 'cálido', faceShape: 'redondo' });
+    const sug = styleSuggestions(w, 'alex', p, 4);
+    const dup = sug.some((s) => w.items.some((i) => i.ownerId === 'alex' && !isGone(i) && i.subtype === s.candidate.subtype && norm(i.color) === norm(s.candidate.color)));
+    return { ok: sug.length > 0 && !dup && sug.every((s) => s.added.length > 0), detail: sug.map((s) => s.candidate.name + ' +' + s.added.length).join(' · ') };
+  });
   return out;
 }

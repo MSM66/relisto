@@ -12,6 +12,7 @@ function render() {
   const modalScroll = mroot.querySelector('.modal') ? mroot.querySelector('.modal').scrollTop : 0;
   const carScroll = Array.from(document.querySelectorAll('[data-carousel]')).map((c) => c.scrollLeft);
   if (IS_PWA && UI.auth) { document.getElementById('app').innerHTML = renderAuth(); mroot.innerHTML = ''; renderTourLayer(); focusAuth(); return; }
+  if (ensureCodes(ws())) scheduleSave();
   document.getElementById('app').innerHTML = renderShell();
   mroot.innerHTML = UI.modal ? renderModal() : '';
   if (UI.modal && mroot.querySelector('.modal')) mroot.querySelector('.modal').scrollTop = modalScroll;
@@ -132,7 +133,7 @@ function todayBanner() {
   const w = ws();
   const l = w.wearLogs.filter((x) => x.ownerId === w.activeProfileId && x.date === TODAY && ['elegido', 'planificado', 'usado'].includes(x.status)).pop();
   if (!l) return '';
-  const thumbs = l.snapshot.items.slice(0, 3).map((s) => { const it = w.items.find((i) => i.id === s.id) || s; return '<span class="mini">' + thumb(Object.assign({ cut: 'regular' }, it), { noTag: true }) + '</span>'; }).join('');
+  const thumbs = l.snapshot.items.slice(0, 3).map((s) => { const it = w.items.find((i) => i.id === s.id) || s; return '<span class="mini">' + thumb(Object.assign({ cut: 'regular' }, it), { noTag: true, noFlip: true }) + '</span>'; }).join('');
   if (l.status === 'usado') {
     return '<div class="today-banner done" role="status"><span class="minis">' + thumbs + '</span><span class="stack tight" style="flex:1;min-width:0"><b>Hoy usaste «' + esc(l.snapshot.name) + '»</b><span class="small">Registrado: +1 uso en cada prenda.</span></span><button class="btn sm ghost" data-act="undoWear" data-log="' + l.id + '">Deshacer</button></div>';
   }
@@ -239,7 +240,7 @@ function outfitCard(c, idx, opts) {
   const anyPhoto = items.some((i) => photoFor(i));
   const pieces = '<ul class="clean pieces">' + items.map((i) => {
     const optional = roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'));
-    return '<li><span class="dot" style="background:' + colorHex(i.color) + '"></span><span style="min-width:0"><b>' + esc(i.name) + '</b> <span class="muted">· ' + esc(CATEGORIES[i.category] || i.category) + ' · ' + matLabel(i) + ' · corte ' + esc(i.cut) + '</span>' +
+    return '<li><span class="dot" style="background:' + (i.photoHex || colorHex(i.color)) + '"></span><span style="min-width:0"><b>' + esc(i.name) + '</b> <span class="code">' + esc(i.code || '') + '</span> <span class="muted">· ' + esc(CATEGORIES[i.category] || i.category) + ' · ' + matLabel(i) + ' · corte ' + esc(i.cut) + '</span>' +
       (optional ? ' <span class="chip" style="padding:1px 7px;font-size:11px">opcional</span>' : '') + (isUsable(i) ? '' : ' ' + availBadge(i.availability)) + '</span></li>';
   }).join('') + '</ul>';
   const units = '<ul class="clean units">' + comp.units.map((u) => {
@@ -276,7 +277,7 @@ function outfitCard(c, idx, opts) {
     '<div class="row between" style="flex-wrap:nowrap"><span class="role">' + esc(role) + '</span><span class="pct' + (partial ? ' partial' : '') + '"><b class="num">' + comp.percent + '% completo</b></span></div>' +
     '<h3>' + esc(c.name) + '</h3>' + collage + reasons +
     (partial ? '<div class="stack tight"><span class="small num muted">' + comp.covered + ' de ' + comp.total + ' unidades imprescindibles</span>' + units + '</div>' : '') +
-    primary + icons +
+    primary + (invalid ? '' : '<button type="button" class="btn ghost wide look-btn" data-act="lookOpen" data-key="' + esc(c.key) + '">' + IC.figure + 'Ver outfit completo</button>') + icons +
     '<details class="more"><summary>Detalles: prendas, completitud y cómo llevarlo</summary><div class="stack" style="margin-top:10px">' +
     '<div class="row" style="gap:4px"><span class="chip">' + esc(c.style || '') + '</span><span class="chip info" title="Sugerencia por reglas de demostración, sin IA">' + source + '</span></div>' +
     pieces + '<div class="stack tight"><div class="row between"><b class="small">Completitud</b><span class="small muted num">' + comp.covered + ' de ' + comp.total + ' unidades</span></div><div class="meter' + (partial ? ' partial' : '') + '" role="img" aria-label="' + comp.percent + ' por ciento"><i style="width:' + comp.percent + '%"></i></div>' + (partial ? '' : units) +
@@ -334,7 +335,7 @@ function renderItems() {
     if (c.avail === 'disponibles' && !isUsable(i)) return false;
     if (c.avail === 'no disponibles' && (isUsable(i) || isGone(i))) return false;
     if (c.avail === 'salieron' && !isGone(i)) return false;
-    if (q && !norm([i.name, i.color, i.material, i.weave, i.subtype, i.id, (i.tags || []).join(' ')].join(' ')).includes(q)) return false;
+    if (q && !norm([i.name, i.color, i.material, i.weave, i.subtype, i.id, i.code, (i.tags || []).join(' ')].join(' ')).includes(q)) return false;
     return true;
   }).map((i) => ({ i, st: itemStats(w, i) }));
   const lu = (x) => x.st.lastUsed || '0000';
@@ -349,11 +350,11 @@ function renderItems() {
     (UI.closet.showFilters ? '<div class="form-grid">' + fSelect('closet-av', 'Disponibilidad', 'ui', 'closet.avail', c.avail, [['activas', 'Activas'], ['disponibles', 'Disponibles'], ['no disponibles', 'No disponibles'], ['salieron', 'Vendidas o donadas'], ['todas', 'Todas']]) +
       fSelect('closet-sort', 'Ordenar', 'ui', 'closet.sort', c.sort, [['reciente', 'Último uso: reciente'], ['olvidadas', 'Último uso: más antiguo'], ['usos', 'Más usadas'], ['nombre', 'Nombre']]) + '</div>' : '') +
     '<div class="chip-scroll">' + ['todas'].concat(cats).filter((k) => k === 'todas' || all.some((i) => i.category === k)).map((k) => '<button class="chip btnchip" data-act="closetCat" data-cat="' + esc(k) + '" aria-pressed="' + (c.cat === k) + '">' + esc(k === 'todas' ? 'Todas' : CATEGORIES[k] || k) + ' <span class="num">' + (k === 'todas' ? all.length : all.filter((i) => i.category === k).length) + '</span></button>').join('') + '</div>' +
-    '<div class="row between"><span class="tiny muted"><b class="num">' + all.filter((i) => !isGone(i)).length + '</b> activas · <b class="num">' + avail + '</b> disponibles' + (isDemo() ? ' · fichas ficticias' : '') + '</span><button class="btn sm ghost" data-act="quickWear">Registrar uso rápido</button></div></div>';
-  const grid = list.length ? '<div class="grid items">' + list.map(({ i, st }) => '<button type="button" class="item-card' + (isGone(i) ? ' gone' : '') + '" data-act="openItem" data-item="' + i.id + '">' + thumb(i) +
-    '<span class="name">' + esc(i.name) + '</span><span class="row" style="gap:4px">' + availBadge(i.availability) + '</span>' +
-    '<span class="meta">' + (st.lastUsed ? 'Último uso ' + relDays(daysBetween(st.lastUsed, TODAY)) : 'Sin usos registrados') + ' · <span class="num">' + st.wearCount + '</span> usos</span></button>').join('') + '</div>'
-    : emptyState(all.length ? 'Nada coincide con los filtros' : 'Tu armario está vacío', all.length ? 'Prueba otra búsqueda o categoría.' : 'Registra una prenda con o sin foto. Con superior, inferior y calzado ya hay outfits.', '<button class="btn primary" data-act="addItem">Agregar prenda</button>');
+    '<div class="row between"><div class="seg2 mini" role="group" aria-label="Vista"><button type="button" data-act="closetMode" data-val="grid" aria-pressed="' + (c.mode !== 'tipo') + '">Todas</button><button type="button" data-act="closetMode" data-val="tipo" aria-pressed="' + (c.mode === 'tipo') + '">Por tipo</button></div>' +
+    '<span class="tiny muted"><b class="num">' + all.filter((i) => !isGone(i)).length + '</b> activas · <b class="num">' + avail + '</b> disponibles' + (isDemo() ? ' · ficticias' : '') + '</span></div>' +
+    washBar(all) + '<div class="row"><button class="btn sm ghost" data-act="quickWear">Registrar uso rápido</button>' + (IS_PWA ? '<button class="btn sm ghost" data-act="labelsOpen">' + IC.qr + 'Etiquetas QR</button>' : '') + '</div></div>';
+  const grid = list.length ? (c.mode === 'tipo' ? renderItemGroups(list) : '<div class="grid items">' + list.map(({ i, st }) => itemCard(i, st)).join('') + '</div>')
+    : emptyState(all.length ? 'Nada coincide con los filtros' : 'Tu armario está vacío', all.length ? 'Prueba otra búsqueda o categoría.' : 'Toma una foto, elige qué es y su color. Con una parte de arriba, una de abajo y calzado ya hay outfits.', '<button class="btn primary" data-act="addItem">' + IC.camera + 'Agregar prenda</button>');
   return filters + grid;
 }
 function miniCollage(itemIds) {
@@ -370,7 +371,7 @@ function renderSaved() {
     return '<article class="outfit"><span class="role">Guardado · ' + esc(ctx ? ctx.name : 'sin contexto') + '</span><h3>' + esc(s.name) + '</h3>' + miniCollage(s.itemIds) +
       '<span class="small muted">' + esc(s.itemIds.map((id) => (w.items.find((i) => i.id === id) || { name: id }).name).join(', ')) + '</span>' +
       (gone.length ? '<div class="note bad">Incluye prendas que ya no están disponibles para nuevas sugerencias.</div>' : '') +
-      '<div class="row">' + (gone.length ? '' : '<button class="btn sm primary" data-act="useSaved" data-id="' + s.id + '">Lo usaré hoy</button>') + '<button class="btn sm ghost" data-act="unsave" data-id="' + s.id + '">Quitar de guardados</button></div></article>';
+      '<div class="row">' + (gone.length ? '' : '<button class="btn sm primary" data-act="useSaved" data-id="' + s.id + '">Lo usaré hoy</button><button class="btn sm" data-act="lookSaved" data-id="' + s.id + '">' + IC.figure + 'Verlo puesto</button>') + '<button class="btn sm ghost" data-act="unsave" data-id="' + s.id + '">Quitar de guardados</button></div></article>';
   }).join('') + '</div>';
 }
 const LOG_STATUS = { elegido: ['info', 'Elegido (intención)'], planificado: ['info', 'Planificado'], usado: ['ok', 'Usado (confirmado)'], deshecho: ['neutral', 'Uso deshecho'], descartado: ['neutral', 'Elección cancelada'] };

@@ -29,9 +29,11 @@ function renderNeeds() {
   const reqCards = reqs.length ? reqs.map(renderRequirement).join('') : '<div class="card">' + emptyState('Sin faltantes guardados', 'Cuando a un outfit le falte una pieza, regístrala desde la tarjeta o aquí.', '<button class="btn" data-act="newReq">Registrar un faltante</button>') + '</div>';
   const plans = w.plans.filter((x) => x.ownerId === p.id);
   const quotes = w.quotes.filter((q) => q.ownerId === p.id);
-  const sugg = versatileSuggestions(w, p.id);
+  const styled = styleCompleteness(p).paletteReady;
+  const sugg = styled ? styleSuggestions(w, p.id, p, 4) : versatileSuggestions(w, p.id);
   const value = '<div class="stack">' + sectionTitle('Lo que suma a mi armario', '', 'Valor estimado por combinaciones') +
     '<p class="small muted" style="max-width:70ch">Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.</p>' +
+    (styled ? '' : '<div class="card explore row between"><span class="small" style="flex:1;min-width:200px"><b>Sugerencias a tu medida.</b> Con tu subtono, tono de piel y forma del rostro, RELISTO elige colores y cuellos de tu paleta.</span><button class="btn sm primary" data-act="styleOpen">' + IC.palette + 'Completar en 1 minuto</button></div>') +
     (sugg.length ? '<div class="grid two">' + sugg.map((s) => valueCard(s)).join('') + '</div>' : '<div class="note">Con tu armario actual no hay una prenda versátil que sume combinaciones sin duplicar algo que ya tienes.</div>') + '</div>';
   const plansHTML = '<div class="card stack"><span class="eyebrow">Planes de compra</span>' + (plans.length ? plans.map((pl) => '<div class="row between"><span><b>' + esc(pl.id) + '</b> · ' + esc(pl.reason || '') + '<br><span class="small muted">Presupuesto ' + fmtPEN(pl.budgetPEN) + ' · fecha planificada ' + fmtDate(pl.plannedDate) + '</span></span><span class="badge info">' + esc(pl.status) + '</span></div>').join('<hr class="sep">') : '<span class="small muted">Sin planes por ahora.</span>') + '</div>';
   const quotesHTML = '<div class="card stack"><span class="eyebrow">Cotizaciones y enlaces guardados</span>' + (quotes.length ? quotes.map((q) => '<div class="row between"><span><b>' + esc(q.label) + '</b><br><span class="small muted">' + esc(q.detail) + ' · guardada ' + fmtDate(q.date) + '</span></span><span class="badge ' + (q.kind === 'link' ? 'neutral' : 'warn') + '">' + esc(q.status) + '</span></div>').join('<hr class="sep">') + '<p class="tiny muted">Actualiza precios y stock antes de comprar: una cotización guardada puede cambiar.</p>' : '<span class="small muted">Aún no guardas cotizaciones.</span>') + '</div>';
@@ -41,7 +43,8 @@ function renderNeeds() {
 function valueCard(s) {
   const c = s.candidate; const open = UI.plan.openValue === c.id;
   return '<div class="card stack"><div class="row" style="flex-wrap:nowrap"><div style="width:76px;flex:none">' + thumb(c, { noTag: true }) + '</div><div class="stack tight"><b>' + esc(c.name) + '</b><span class="small">Esta prenda abre nuevas combinaciones: permitiría <b class="num">' + s.added.length + '</b> combinaciones nuevas con tus prendas (de ' + s.before + ' a ' + s.after + ').</span></div></div>' +
-    '<span class="tiny muted">Candidata hipotética: talla y material no confirmados. Sugerencia por reglas de demostración.</span>' +
+    (s.reasons ? '<ul class="clean why stack tight">' + s.reasons.slice(1, 4).map((r) => '<li>' + esc(r) + '</li>').join('') + '</ul>' : '') +
+    '<span class="tiny muted">Candidata hipotética: talla y material no confirmados. ' + (s.reasons ? 'Sugerencia por tu paleta y reglas de combinación.' : 'Sugerencia por reglas de demostración.') + '</span>' +
     '<div class="row"><button class="btn sm" data-act="toggleValue" data-id="' + c.id + '" aria-expanded="' + open + '">' + (open ? 'Ocultar combinaciones' : 'Ver las ' + s.added.length + ' combinaciones') + '</button><button class="btn sm ghost" data-act="similarCheck" data-name="' + esc(c.name) + '">Ya tengo algo parecido</button></div>' +
     (open ? '<ol class="small" style="margin:0;padding-left:20px;display:grid;gap:3px">' + s.added.map((a) => '<li>' + esc(a.items.map((i) => i.name).join(' + ')) + ' <span class="muted">(' + esc(a.contexts.join(', ')) + ')</span></li>').join('') + '</ol>' : '') + '</div>';
 }
@@ -241,12 +244,12 @@ function renderCircular() {
 const MONK = ['#f6ede4', '#f3e7db', '#f7ead0', '#eadaba', '#d7bd96', '#a07e56', '#825c43', '#604134', '#3a312a', '#292420'];
 function renderProfile() {
   const p = prof(); const t = UI.profTab;
-  const tabs = [['esenciales', 'Lo esencial'], ['medidas', 'Medidas y ajuste'], ['color', 'Color'], ['comodidad', 'Comodidad'], ['estilo', 'Estilo'], ['datos', 'Privacidad y datos']];
+  const tabs = [['esenciales', 'Lo esencial'], ['medidas', 'Medidas y ajuste'], ['color', 'Color y rostro'], ['figura', 'Tu figura'], ['comodidad', 'Comodidad'], ['estilo', 'Estilo'], ['datos', 'Privacidad y datos']];
   const tabsHTML = '<div class="tabs" role="tablist">' + tabs.map(([id, l]) => '<button role="tab" type="button" data-act="profTab" data-tab="' + id + '" aria-selected="' + (t === id) + '">' + l + '</button>').join('') + '</div>';
   const skip = (section) => '<button class="btn sm ghost" data-act="skip" data-section="' + section + '">Prefiero omitir</button>';
   let body = '';
   if (t === 'esenciales') {
-    body = '<div class="card stack"><p class="small muted">Solo lo mínimo para empezar: nombre o alias, un estilo y una ocasión. Todo lo demás es opcional y puedes completarlo después.</p><div class="form-grid">' +
+    body = renderStyleNudge(false) + '<div class="card stack"><p class="small muted">Solo lo mínimo para empezar: nombre o alias, un estilo y una ocasión. Todo lo demás es opcional y puedes completarlo después.</p><div class="form-grid">' +
       fInput('p-name', 'Nombre o alias', 'prof', 'name', p.name) +
       fSelect('p-gender', 'Género', 'prof', 'gender', p.gender, ['masculino', 'femenino', 'otro', 'autodescripción', 'prefiero no indicarlo']) +
       (p.gender === 'autodescripción' ? fInput('p-gself', 'Autodescripción', 'prof', 'genderSelf', p.genderSelf || '') : '') +
@@ -269,10 +272,16 @@ function renderProfile() {
       '<g font-size="11" fill="var(--ink-2)" font-family="Manrope, sans-serif"><text x="134" y="82">pecho</text><text x="130" y="108">cintura</text><text x="130" y="132">cadera</text><text x="106" y="190">entrepierna</text></g></svg>' +
       '<ul class="small" style="margin:0;padding-left:18px;display:grid;gap:4px"><li>Usa una cinta flexible, sobre ropa ligera, sin apretar.</li><li>Pecho/busto: la parte más amplia, cinta horizontal.</li><li>Cintura: la parte más estrecha del torso.</li><li>Cadera: la parte más amplia, con pies juntos.</li><li>Entrepierna: desde la ingle hasta el suelo, sin calzado.</li><li>Pie: del talón al dedo más largo, de pie.</li></ul></div></div>';
   } else if (t === 'color') {
-    body = '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
-      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad, y no requiere fotos de tu cuerpo o rostro.</span>' +
-      '<div class="form-grid">' + fSelect('p-under', 'Subtono', 'prof', 'undertone', p.undertone, ['cálido', 'frío', 'neutro', 'oliva', 'no sé']) + fInput('p-hair', 'Cabello (opcional)', 'prof', 'hair', p.hair) + fInput('p-eyes', 'Ojos (opcional)', 'prof', 'eyes', p.eyes) + '</div>' +
-      '<p class="small muted">Las armonías de color son sugerencias flexibles y editables, no reglas.</p><div class="row">' + skip('color') + '</div></div>';
+    body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(k) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
+      '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="no sé" aria-pressed="' + (p.undertone === 'no sé') + '"><b>No sé</b><span class="tiny">Prueba: ¿te favorecen más las joyas doradas (cálido) o plateadas (frío)? ¿Ambas? (neutro)</span></button></div></div>' +
+      '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
+      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad.</span></div>' +
+      '<div class="card stack"><span class="eyebrow">Forma del rostro (visagismo, opcional)</span>' + faceShapePicker(p) + '</div>' +
+      '<div class="card stack"><span class="eyebrow">Cabello y ojos (opcional)</span><div class="field"><span class="lbl">Color de cabello</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
+      '<div class="form-grid">' + fInput('p-eyes', 'Ojos', 'prof', 'eyes', p.eyes) + '</div></div>' +
+      renderPaletteCard(p) + '<p class="small muted">Las armonías de color y el visagismo son sugerencias flexibles basadas en lo que declaras, no reglas. Tu gusto manda.</p><div class="row">' + skip('color') + '</div>';
+  } else if (t === 'figura') {
+    body = renderFigureTab();
   } else if (t === 'comodidad') {
     body = '<div class="card stack"><div class="form-grid">' + fSelect('p-heat', 'Sensibilidad al calor', 'prof', 'comfort.calor', p.comfort.calor, ['baja', 'normal', 'alta']) + fSelect('p-cold', 'Sensibilidad al frío', 'prof', 'comfort.frio', p.comfort.frio, ['baja', 'normal', 'alta']) +
       fSelect('p-cov', 'Preferencia de cobertura', 'prof', 'comfort.coverage', p.comfort.coverage, ['sin preferencia', 'más cobertura', 'cobertura estándar', 'menos cobertura']) + fInput('p-mob', 'Movilidad (opcional)', 'prof', 'comfort.mobility', p.comfort.mobility) + '</div>' +

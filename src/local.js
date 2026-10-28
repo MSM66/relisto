@@ -66,10 +66,16 @@ function attachPhoto(modal, file) {
   const ph = readImageFile(file);
   modal.photo = ph;
   compressImage(file).then((blob) => {
-    if (blob === file) return;
-    ph.file = blob; ph.url = URL.createObjectURL(blob);
-    if (UI.modal === modal && modal.photo === ph) render();
-  });
+    if (blob !== file) { ph.file = blob; ph.url = URL.createObjectURL(blob); }
+    return dominantColor(ph.file);
+  }).then((hex) => {
+    if (!hex || modal.photo !== ph) return;
+    const d = modal.draft; const name = nearestColorName(hex);
+    modal.detectedHex = hex; modal.detected = name;
+    if (!d.color || d.color === 'sin color' || d.color === modal.prevDetected) { d.color = name; d.photoHex = hex; }
+    else if (norm(d.color) === norm(name)) d.photoHex = hex;
+    modal.prevDetected = name;
+  }).catch(() => {}).then(() => { if (UI.modal === modal && modal.photo === ph) render(); });
   return ph;
 }
 /** Guarda una foto: las del armario personal van cifradas con la clave de la cuenta; las de la demo, tal cual. */
@@ -133,6 +139,7 @@ async function initLocal() {
     } else if (parsed && parsed.space === 'demo') S.space = 'demo';
     if (!raw) await doSave();
     render();
+    handleItemHash();
     if (!UI.auth) maybeAutoTour();
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then((p) => { CAP.persisted = p; }).catch(() => {});
     if (navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then((e) => { CAP.usage = e; }).catch(() => {});

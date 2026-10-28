@@ -8,7 +8,7 @@ const CAP = { storage: 'pending', doc: null, sample: null, aiImages: false, dirt
 const UI = {
   view: 'hoy', modal: null, toast: null, toastTimer: null,
   gen: {}, draft: {}, ctxOpen: false, nl: '', nlFound: [],
-  closet: { tab: 'prendas', q: '', cat: 'todas', avail: 'activas', sort: 'reciente' },
+  closet: { tab: 'prendas', q: '', cat: 'todas', avail: 'activas', sort: 'reciente', mode: 'grid' }, flipped: new Set(),
   plan: { tab: 'faltantes', explore: {}, filters: {}, result: {}, link: '' },
   circ: { threshold: {}, custom: '', flow: {}, period: 30 },
   profTab: 'esenciales', busy: new Set(), tests: null, exportText: '', importText: '', importMsg: null, sceneHint: true
@@ -134,6 +134,9 @@ const IC = {
   lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>',
   share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
+  qr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h3v3h-3zM17.5 17.5h3v3M14 20.5h2"/></svg>',
+  figure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.6" r="2.4"/><path d="M8 9h8l-1 6h-6zM9.5 15l-1 6.5M14.5 15l1 6.5"/></svg>',
+  palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.3 0 1.8-.9 1.8-1.8 0-1.2-1-1.6-1-2.6 0-1 .8-1.6 1.8-1.6h2.1a3.8 3.8 0 0 0 3.8-3.8C20.5 6.7 16.7 3.5 12 3.5z"/><circle cx="7.6" cy="11.5" r="1.2"/><circle cx="10" cy="7.4" r="1.2"/><circle cx="14.6" cy="7.4" r="1.2"/></svg>',
   hanger: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 17a5 5 0 1 1 5 5c-2.7 0-5 2-5 4.5v1.5"/><path d="M32 28 9 44c-2.4 1.7-1.2 5 1.7 5h42.6c2.9 0 4.1-3.3 1.7-5z"/></svg>'
 };
 const LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M33.5 13.5A15 15 0 1 0 35 20" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round"/><path d="M35 9.5v5.2h-5.2" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="20.3" y="27.2" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="21" fill="currentColor">R</text></svg>';
@@ -143,11 +146,17 @@ function availBadge(a) {
   const cls = a === 'disponible' ? 'ok' : ['por lavar', 'en lavandería'].includes(a) ? 'warn' : a === 'en reparación' ? 'bad' : GONE.includes(a) ? 'neutral' : 'info';
   return '<span class="badge ' + cls + '">' + esc(a) + '</span>';
 }
+/** Miniatura: muestra la ilustración y, si hay foto, se voltea como una carta para ver la foto real. */
 function thumb(item, opts) {
   opts = opts || {};
   const ph = photoFor(item);
-  const tag = opts.noTag ? '' : '<span class="tag">' + (ph ? 'Foto propia' : 'Ilustración') + '</span>';
-  return '<div class="thumb ' + (opts.cls || '') + '">' + (ph ? '<img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '">' : illusSVG(item)) + tag + '</div>';
+  const cls = opts.cls || '';
+  if (!ph) return '<div class="thumb ' + cls + '">' + illusSVG(item) + (opts.noTag ? '' : '<span class="tag">Ilustración</span>') + '</div>';
+  if (opts.noFlip) return '<div class="thumb ' + cls + '"><img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '">' + (opts.noTag ? '' : '<span class="tag">Tu foto</span>') + '</div>';
+  const key = S.space + ':' + item.id; const fl = UI.flipped.has(key);
+  return '<div class="thumb flip ' + cls + (fl ? ' flipped' : '') + '"' + (opts.style ? ' style="' + opts.style + '"' : '') + '><div class="flip-in"><div class="face front">' + illusSVG(item) + '</div><div class="face back"><img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '"></div></div>' +
+    (opts.noTag ? '' : '<span class="tag">' + (fl ? 'Tu foto' : 'Ilustración') + '</span>') +
+    '<button type="button" class="flip-btn" data-act="flip" data-key="' + esc(key) + '" aria-pressed="' + fl + '" aria-label="' + (fl ? 'Ver la ilustración de ' : 'Ver la foto real de ') + esc(item.name) + '">' + (fl ? IC.spark : IC.camera) + '</button></div>';
 }
 function matLabel(item) {
   const unk = /no confirmado|desconocido/.test(norm(item.material));

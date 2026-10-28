@@ -32,7 +32,7 @@ function renderModal() {
     case 'onboard': return renderOnboard(m);
     case 'quickWear': {
       const items = ownedItems(w, w.activeProfileId).filter(isUsable);
-      return modalWrap('Registrar uso rápido', '<p class="small muted">Para una prenda que usaste sin un outfit guardado. Cuenta como uso confirmado hoy.</p><div class="grid items">' + items.map((i) => '<button class="item-card" data-act="quickWearItem" data-item="' + i.id + '">' + thumb(i, { noTag: true }) + '<span class="name">' + esc(i.name) + '</span></button>').join('') + '</div>');
+      return modalWrap('Registrar uso rápido', '<p class="small muted">Para una prenda que usaste sin un outfit guardado. Cuenta como uso confirmado hoy.</p><div class="grid items">' + items.map((i) => '<button class="item-card" data-act="quickWearItem" data-item="' + i.id + '">' + thumb(i, { noTag: true, noFlip: true }) + '<span class="name">' + esc(i.name) + '</span></button>').join('') + '</div>');
     }
     default: return '';
   }
@@ -82,7 +82,7 @@ function renderItemForm(m) {
   }).join('') + '</div></div>';
   const types = QUICK_TYPES[d.category] || [];
   const typeChips = types.length ? '<div class="field"><span class="lbl">Tipo</span><div class="chip-scroll">' + types.map((t) => '<button type="button" class="chip btnchip" data-act="mfSet" data-path="subtype" data-val="' + esc(t) + '" aria-pressed="' + (d.subtype === t) + '">' + esc(t) + '</button>').join('') + '</div></div>' : '';
-  const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
+  const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + (m.detected ? ' <span class="chip explore" style="padding:1px 8px">' + (norm(d.color) === norm(m.detected) ? 'detectado en tu foto' : 'en tu foto parece ' + esc(m.detected)) + '</span>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
   const nameField = '<div class="field"><label for="if-name">Nombre' + (quick ? ' (opcional)' : ' *') + '</label><input class="input" id="if-name" value="' + esc(d.name || '') + '" placeholder="' + esc(suggestedName(d)) + '"' + bindAttr('mf', 'name') + '></div>';
   const details = '<div class="form-grid">' +
     (quick ? '' : fSelect('if-cat', 'Categoría *', 'mf', 'category', CATEGORIES[d.category] ? d.category : '__custom', catOpts)) +
@@ -135,7 +135,7 @@ function renderSwap(m) {
   const altList = (role, current, slot) => {
     const alts = owned.filter((i) => roleOf(i) === role && (!current || i.id !== current.id) && !c.itemIds.includes(i.id) && meetsHard(i, (d.hard || {})[slot]));
     if (!alts.length) return '<span class="small muted">No tienes alternativas compatibles registradas.</span>';
-    return '<div class="grid items">' + alts.map((a) => '<button class="item-card" data-act="' + (current ? 'swapTo' : 'addPiece') + '" data-from="' + (current ? current.id : '') + '" data-to="' + a.id + '"' + (isUsable(a) ? '' : ' aria-disabled="true"') + '>' + thumb(a, { noTag: true }) + '<span class="name">' + esc(a.name) + '</span>' +
+    return '<div class="grid items">' + alts.map((a) => '<button class="item-card" data-act="' + (current ? 'swapTo' : 'addPiece') + '" data-from="' + (current ? current.id : '') + '" data-to="' + a.id + '"' + (isUsable(a) ? '' : ' aria-disabled="true"') + '>' + thumb(a, { noTag: true, noFlip: true }) + '<span class="name">' + esc(a.name) + '</span>' +
       (isUsable(a) ? (formalityOk(a, d) ? '' : '<span class="badge warn">menos adecuada al código</span>') : availBadge(a.availability)) + '</button>').join('') + '</div>';
   };
   const slotRole = { superior: 'top', inferior: 'bottom', calzado: 'shoes', capa: 'layer' };
@@ -149,7 +149,7 @@ function renderSwap(m) {
   });
   const optional = items.filter((i) => roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa')));
   const optHTML = '<div class="stack tight"><b>Opcionales (no cambian la completitud)</b>' + (optional.length ? '<div class="row">' + optional.map((i) => '<span class="chip">' + esc(i.name) + ' <button class="btn sm ghost" style="padding:2px 6px" data-act="removePiece" data-item="' + i.id + '" aria-label="Quitar ' + esc(i.name) + '">' + IC.x + '</button></span>').join('') + '</div>' : '<span class="small muted">Sin accesorios.</span>') +
-    '<details class="more"><summary>Añadir accesorio o capa opcional</summary><div style="margin-top:8px"><div class="grid items">' + owned.filter((i) => (roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'))) && !c.itemIds.includes(i.id) && isUsable(i)).map((a) => '<button class="item-card" data-act="addPiece" data-to="' + a.id + '">' + thumb(a, { noTag: true }) + '<span class="name">' + esc(a.name) + '</span></button>').join('') + '</div></div></details></div>';
+    '<details class="more"><summary>Añadir accesorio o capa opcional</summary><div style="margin-top:8px"><div class="grid items">' + owned.filter((i) => (roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'))) && !c.itemIds.includes(i.id) && isUsable(i)).map((a) => '<button class="item-card" data-act="addPiece" data-to="' + a.id + '">' + thumb(a, { noTag: true, noFlip: true }) + '<span class="name">' + esc(a.name) + '</span></button>').join('') + '</div></div></details></div>';
   return modalWrap('Cambiar una prenda', '<p class="small muted">Solo aparecen prendas registradas de este perfil. Las no disponibles se muestran con su estado y no se pueden elegir.</p>' + blocks.join('<hr class="sep">') + '<hr class="sep">' + optHTML, { eyebrow: c.name });
 }
 function renderPlanModal(m) {
@@ -481,7 +481,7 @@ const ACT = {
   addItem: () => openModal({ type: 'item', mode: 'add', draft: blankItemDraft() }),
   reusePhoto: (el) => { const ph = photoFor(w_item(el.dataset.item)); openModal({ type: 'item', mode: 'add', draft: blankItemDraft(), photo: ph ? Object.assign({}, ph) : null }); },
   dupDismiss: () => { UI.modal.dupes = null; render(); },
-  itemSave: (el) => { const mm = UI.modal; mm._gid = mm._gid || String(Math.random()).slice(2); guard('is' + mm._gid, () => {
+  itemSave: (el) => { const mm = UI.modal; mm._gid = mm._gid || String(Math.random()).slice(2); guard('is' + mm._gid + (el.dataset.force ? 'f' : ''), () => {
     const m = UI.modal; const w = ws(); const d = Object.assign({}, m.draft);
     if (d.category === '__custom') d.category = norm(d.customCategory || '') || 'otra';
     if (!CATEGORIES[d.category] && d.customCategory) d.category = norm(d.customCategory);

@@ -7,7 +7,7 @@ const COLOR_HEX = {
   'azul oscuro': '#2F4868', 'gris': '#8D9094', 'oliva': '#6C7242', 'negro': '#2A2A2A', 'marron': '#7B4F2E', 'marrón': '#7B4F2E',
   'plateado': '#C5CAD0', 'camel': '#C09A6A', 'marfil': '#EFE6D2', 'salvia': '#A7BEA1', 'azul': '#4C78A6', 'burdeos': '#6D1F2E',
   'dorado': '#CDA65C', 'arena': '#D7C5A2', 'rojo': '#B23A3A', 'verde': '#3F7A4F', 'rosa': '#E3A6B4', 'amarillo': '#E6C350',
-  'morado': '#6E4E8C', 'lila': '#B8A2D6', 'naranja': '#DD8243', 'crema': '#EFE3C8', 'vino': '#6D1F2E', 'jean': '#4A6C93'
+  'morado': '#6E4E8C', 'mostaza': '#C9A13B', 'coral': '#E07A5F', 'verde bosque': '#2F5D45', 'esmeralda': '#1F7A5C', 'lavanda': '#B9A7D9', 'fucsia': '#C2387A', 'azul rey': '#2B4FA3', 'rosa palo': '#E8C4C0', 'verde azulado': '#2E7F7C', 'blanco roto': '#F1ECE0', 'berenjena': '#4E2A44', 'lila': '#B8A2D6', 'naranja': '#DD8243', 'crema': '#EFE3C8', 'vino': '#6D1F2E', 'jean': '#4A6C93'
 };
 function colorHex(c) {
   const n = norm(c);
@@ -24,14 +24,15 @@ function shade(hex, amt) {
   const f = (x) => Math.max(0, Math.min(255, Math.round(amt < 0 ? x * (1 + amt) : x + (255 - x) * amt)));
   return '#' + [f(r), f(g), f(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
+function hexLum(hex) { const n = parseInt(String(hex).replace('#', ''), 16); if (isNaN(n)) return 0.5; const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
 let ILLUS_UID = 0;
 function illusSVG(item, opts) {
   opts = opts || {};
   const uid = 'p' + (++ILLUS_UID);
   const twoTone = norm(item.color).includes(' y ');
-  const base = colorHex(twoTone ? item.color.split(' y ')[0] : item.color);
+  const base = item.photoHex && /^#[0-9a-f]{6}$/i.test(item.photoHex) ? item.photoHex.toUpperCase() : colorHex(twoTone ? item.color.split(' y ')[0] : item.color);
   const second = twoTone ? colorHex(item.color.split(' y ')[1]) : null;
-  const light = base === '#F3F1EB' || base === '#EFE6D2' || base === '#EFE3C8';
+  const light = hexLum(base) > 0.82;
   const line = light ? '#9A968B' : shade(base, -0.35);
   const fill = twoTone ? 'url(#' + uid + ')' : base;
   const detail = light ? '#B9B4A8' : shade(base, base === '#2A2A2A' ? 0.25 : -0.22);

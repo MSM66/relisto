@@ -117,7 +117,10 @@ Object.assign(ACT, {
     const m = UI.modal; if (!m || !m.draft) return; const d = m.draft; const v = el.dataset.val;
     if (el.dataset.path === 'category') { if (d.category !== v) { d.category = v; d.subtype = ''; } }
     else if (el.dataset.path === 'subtype') d.subtype = d.subtype === v ? '' : v;
-    else if (el.dataset.path === 'color') d.color = norm(d.color) === norm(v) ? '' : v;
+    else if (el.dataset.path === 'color') {
+      d.color = v;
+      d.photoHex = m.detectedHex && norm(d.color) === norm(m.detected || '') ? m.detectedHex : null;
+    }
     render();
   },
   share: () => shareApp(),

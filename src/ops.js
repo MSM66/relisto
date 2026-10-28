@@ -11,6 +11,20 @@ function freshState(today) {
 }
 function resetDemo(S, today) { S.demo = buildDemoWorkspace(SEED, today); return S; }
 
+const CODE_PREFIX = { superior: 'SUP', inferior: 'INF', cuerpo_completo: 'ENT', capa: 'CAP', calzado: 'CAL', bolso: 'BOL', accesorio: 'ACC' };
+/** Código visible y estable por prenda (p. ej. SUP-003). Nunca se reutiliza dentro de un mismo armario. */
+function assignCode(ws, item) {
+  if (item.code) return false;
+  const pre = CODE_PREFIX[item.category] || 'OTR';
+  ws.seq.codes = ws.seq.codes || {};
+  const k = item.ownerId + ':' + pre;
+  let n = ws.seq.codes[k] || 0;
+  const used = new Set(ws.items.filter((i) => i.ownerId === item.ownerId && i.code).map((i) => i.code));
+  let code; do { n++; code = pre + '-' + String(n).padStart(3, '0'); } while (used.has(code));
+  ws.seq.codes[k] = n; item.code = code;
+  return true;
+}
+function ensureCodes(ws) { if (!ws) return false; let ch = false; ws.items.forEach((i) => { if (assignCode(ws, i)) ch = true; }); return ch; }
 function addItem(ws, data, today) {
   const prefix = ws.mode === 'demo' ? 'D' : 'MI';
   let id = nextId(ws, 'item', prefix);
@@ -23,8 +37,9 @@ function addItem(ws, data, today) {
     createdAt: today, acquisition: '', baselineLastUsed: null, baselineWearCount: 0, attributeSource: 'confirmado por la persona',
     origin: ws.mode === 'demo' ? 'demo' : 'real', exclusions: { temporada: false, ceremonial: false, sentimental: false, trabajo: false, guardada: false },
     repairEstimate: null, repairReadyDays: null, notes: '', updatedAt: today
-  }, data, { id, subtype });
+  }, data, { id, subtype, code: null });
   ws.items.push(item);
+  assignCode(ws, item);
   return item;
 }
 function updateItem(ws, id, data, today) {

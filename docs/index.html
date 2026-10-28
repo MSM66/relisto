@@ -418,12 +418,88 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .celebrate b { position: absolute; top: calc(50% + 56px); font-family: var(--font-display); font-weight: 400; font-size: 26px; color: var(--ink); background: var(--surface); padding: 4px 14px; border-radius: 12px; animation: fade 1.5s ease forwards; }
 @media (max-width: 959px) { .toast { top: calc(66px + env(safe-area-inset-top, 0px)); bottom: auto; } }
 .install-bar { display: grid; gap: 8px; padding: 10px 12px; border-radius: 16px; background: var(--explore); color: var(--on-explore); }
-.today-banner > .stack { flex: 1 1 170px; }
+.today-banner > .stack { flex: 1 1 55%; }
 .today-banner > .btn { margin-left: auto; }
 @keyframes burst { to { transform: rotate(var(--a)) translateY(-110px) scale(.6); opacity: 0; } }
 @keyframes pop { from { transform: scale(.3); } to { transform: scale(1); } }
 @keyframes fade { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
 .reduce-motion .celebrate { display: none; }
+
+/* ===================== RELISTO 3 ===================== */
+.thumb.flip { perspective: 900px; background: transparent; overflow: visible; }
+.flip-in { position: relative; width: 100%; height: 100%; transition: transform .55s cubic-bezier(.3,.7,.3,1); transform-style: preserve-3d; }
+.thumb.flip.flipped .flip-in { transform: rotateY(180deg); }
+.thumb.flip .face { position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; display: grid; place-items: center; background: var(--tile); }
+.thumb.flip .face.back { transform: rotateY(180deg); }
+.thumb.flip .face.front > svg { width: 82%; height: 82%; }
+.thumb.flip .face img { width: 100%; height: 100%; object-fit: cover; }
+.thumb .tag { z-index: 2; }
+.flip-btn { position: absolute; right: 6px; top: 6px; z-index: 3; width: 32px; height: 32px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: #173F35; display: grid; place-items: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.flip-btn svg { width: 17px; height: 17px; }
+.collage .flip-btn { width: 26px; height: 26px; right: 4px; top: 4px; }
+.collage .flip-btn svg { width: 14px; height: 14px; }
+.thumb.xl { max-height: 320px; aspect-ratio: 1 / 1; width: 100%; }
+.item-card { cursor: pointer; }
+.item-open { display: grid; gap: 6px; text-align: left; background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; min-width: 0; }
+.code { display: inline-block; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; font-weight: 700; letter-spacing: .03em; padding: 1px 6px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap; }
+.code-block { display: grid; gap: 6px; padding: 12px; border-radius: 16px; background: var(--surface-2); border: 1px dashed var(--line-strong); }
+.code-big { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 26px; letter-spacing: .06em; }
+.label-preview { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+.label-preview .qr { width: 110px; height: 110px; flex: none; border-radius: 8px; }
+.group { display: grid; gap: 6px; }
+.group-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+.group-head .dot { width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); }
+.group-row { gap: 10px; padding-bottom: 6px; }
+.group-row .item-card { flex: 0 0 158px; }
+.wash-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 14px; background: var(--warn-soft); color: var(--warn); }
+.wash-row { flex-basis: 100%; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; color: var(--ok); }
+.seg2.mini { padding: 3px; border-radius: 12px; display: inline-grid; }
+.seg2.mini button { padding: 6px 12px; font-size: 13px; }
+.style-nudge { display: grid; gap: 8px; padding: 14px; border-radius: 18px; background: linear-gradient(135deg, var(--accent-soft), var(--explore)); color: var(--ink); }
+.style-nudge .eyebrow { color: var(--accent-ink); }
+.nudge-ic { width: 34px; height: 34px; color: var(--accent-ink); flex: none; }
+.under-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 8px; }
+.under-card { display: grid; gap: 4px; text-align: left; padding: 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: inherit; cursor: pointer; font: inherit; }
+.under-card b { text-transform: capitalize; }
+.under-card[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-soft); color: var(--on-soft); }
+.under-sw { display: flex; gap: 3px; }
+.under-sw i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); }
+.face-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+.face-card { display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
+.face-card svg { width: 40px; height: 40px; }
+.face-card[aria-pressed="true"] { border-color: var(--primary); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-soft); }
+.tone-swatch.lg { width: 44px; height: 44px; }
+.palette-card { background: var(--surface); }
+.pal-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
+.pal-sw span { display: grid; justify-items: center; gap: 3px; text-align: center; }
+.pal-sw i { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line-strong); }
+.pal-sw small { font-size: 11px; color: var(--ink-2); line-height: 1.2; }
+.figure { width: 100%; height: 100%; color: var(--ink); }
+.fig-wrap { height: min(62vh, 460px); display: grid; place-items: center; background: radial-gradient(ellipse at 50% 40%, var(--surface-2), var(--tile)); border-radius: 18px; padding: 10px; }
+.fig-canvas { width: 100%; border-radius: 14px; cursor: crosshair; touch-action: manipulation; }
+.look { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .look { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: start; } }
+.look-fig { position: relative; height: min(56vh, 470px); display: grid; place-items: center; background: radial-gradient(ellipse at 50% 40%, var(--surface), var(--tile)); border-radius: 22px; padding: 10px; }
+.look-fig .chip { position: absolute; left: 10px; top: 10px; }
+.look-pieces { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.look-piece { display: grid; gap: 4px; }
+.look-btn { min-height: 40px; }
+.reveal { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .reveal { grid-template-columns: 220px minmax(0, 1fr); } }
+.reveal-fig { height: 300px; display: grid; place-items: center; background: var(--tile); border-radius: 20px; animation: rise .5s ease both; }
+.label-list { display: grid; gap: 4px; max-height: 46vh; overflow-y: auto; }
+.label-row { padding: 6px 4px; border-bottom: 1px solid var(--line); }
+#print-root { display: none; }
+@media print {
+  body > *:not(#print-root) { display: none !important; }
+  #print-root { display: block !important; }
+  .labels-sheet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+  .print-label { display: flex; gap: 3mm; align-items: center; border: 0.3mm dashed #999; border-radius: 3mm; padding: 3mm; break-inside: avoid; color: #111; font-family: Manrope, Arial, sans-serif; }
+  .print-label .qr { width: 24mm; height: 24mm; flex: none; }
+  .print-label b { display: block; font: 700 14pt ui-monospace, Menlo, monospace; }
+  .print-label span { display: block; font-size: 9pt; }
+  .print-label small { font-size: 7pt; letter-spacing: .1em; color: #666; }
+}
 </style>
 </head>
 <body>
@@ -432,7 +508,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 <script>
 "use strict";
 const IS_PWA = true;
-const APP_VERSION = "20261028.1452";
+const APP_VERSION = "20261028.1603";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -620,13 +696,14 @@ function buildDemoWorkspace(seed, ref) {
   }));
   const circular = seed.circularActions.map((c) => Object.assign({ origin: 'demo', createdAt: ref, kind: 'revision', history: [] }, clone(c)));
   const profiles = seed.profiles.map((p) => Object.assign(defaultProfileExtras(), clone(p), { origin: 'demo' }));
-  return {
+  return withCodes({
     mode: 'demo', referenceDate: ref, activeProfileId: 'alex', profiles, items, contexts, templates, wearLogs, missing, offers,
     plans, orders, circular, saved: [], feedback: [], quotes: [], links: [], events: [],
     seq: { order: 1043, log: 1, item: 1, ctx: 1, saved: 1, req: 2, cir: 2, fb: 1, quote: 1 },
     selectedContext: { alex: 'C01', valeria: 'C04', noa: 'C05' }
-  };
+  });
 }
+function withCodes(ws) { ensureCodes(ws); return ws; }
 function defaultProfileExtras() {
   return {
     gender: 'prefiero no indicarlo', expression: 'sin preferencia', heightCm: null, heightUnit: 'cm', sizeSystem: 'EU', build: 'prefiero omitir',
@@ -789,6 +866,10 @@ function scoreOutfit(ws, items, ctx, profile, today) {
   if (favHits.length) { score += 6 * favHits.length; reasons.push({ w: 5, t: 'Usa colores que elegiste: ' + [...new Set(favHits.map((i) => i.color))].join(', ') + '.' }); }
   const avoid = (profile.avoidColors || []).map(norm);
   main.forEach((i) => { if (avoid.some((a) => a && norm(i.color).includes(a))) score -= 12; });
+  if (typeof inPalette === 'function' && PALETTES[profile.undertone]) {
+    const palHits = main.filter((i) => inPalette(profile, i.color));
+    if (palHits.length) { score += 3 * palHits.length; reasons.push({ w: 4, t: 'Tonos de tu paleta ' + PALETTES[profile.undertone].label + ': ' + [...new Set(palHits.map((i) => i.color))].join(', ') + '.' }); }
+  }
   const style = styleFor(main, profile);
   if ((profile.styles || []).includes(style)) { score += 8; reasons.push({ w: 4, t: 'Encaja con tu estilo ' + style + '.' }); }
   const avgF = main.reduce((a, i) => a + i.formality, 0) / Math.max(1, main.length);
@@ -1160,7 +1241,7 @@ const COLOR_HEX = {
   'azul oscuro': '#2F4868', 'gris': '#8D9094', 'oliva': '#6C7242', 'negro': '#2A2A2A', 'marron': '#7B4F2E', 'marrón': '#7B4F2E',
   'plateado': '#C5CAD0', 'camel': '#C09A6A', 'marfil': '#EFE6D2', 'salvia': '#A7BEA1', 'azul': '#4C78A6', 'burdeos': '#6D1F2E',
   'dorado': '#CDA65C', 'arena': '#D7C5A2', 'rojo': '#B23A3A', 'verde': '#3F7A4F', 'rosa': '#E3A6B4', 'amarillo': '#E6C350',
-  'morado': '#6E4E8C', 'lila': '#B8A2D6', 'naranja': '#DD8243', 'crema': '#EFE3C8', 'vino': '#6D1F2E', 'jean': '#4A6C93'
+  'morado': '#6E4E8C', 'mostaza': '#C9A13B', 'coral': '#E07A5F', 'verde bosque': '#2F5D45', 'esmeralda': '#1F7A5C', 'lavanda': '#B9A7D9', 'fucsia': '#C2387A', 'azul rey': '#2B4FA3', 'rosa palo': '#E8C4C0', 'verde azulado': '#2E7F7C', 'blanco roto': '#F1ECE0', 'berenjena': '#4E2A44', 'lila': '#B8A2D6', 'naranja': '#DD8243', 'crema': '#EFE3C8', 'vino': '#6D1F2E', 'jean': '#4A6C93'
 };
 function colorHex(c) {
   const n = norm(c);
@@ -1177,14 +1258,15 @@ function shade(hex, amt) {
   const f = (x) => Math.max(0, Math.min(255, Math.round(amt < 0 ? x * (1 + amt) : x + (255 - x) * amt)));
   return '#' + [f(r), f(g), f(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
+function hexLum(hex) { const n = parseInt(String(hex).replace('#', ''), 16); if (isNaN(n)) return 0.5; const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
 let ILLUS_UID = 0;
 function illusSVG(item, opts) {
   opts = opts || {};
   const uid = 'p' + (++ILLUS_UID);
   const twoTone = norm(item.color).includes(' y ');
-  const base = colorHex(twoTone ? item.color.split(' y ')[0] : item.color);
+  const base = item.photoHex && /^#[0-9a-f]{6}$/i.test(item.photoHex) ? item.photoHex.toUpperCase() : colorHex(twoTone ? item.color.split(' y ')[0] : item.color);
   const second = twoTone ? colorHex(item.color.split(' y ')[1]) : null;
-  const light = base === '#F3F1EB' || base === '#EFE6D2' || base === '#EFE3C8';
+  const light = hexLum(base) > 0.82;
   const line = light ? '#9A968B' : shade(base, -0.35);
   const fill = twoTone ? 'url(#' + uid + ')' : base;
   const detail = light ? '#B9B4A8' : shade(base, base === '#2A2A2A' ? 0.25 : -0.22);
@@ -1306,6 +1388,20 @@ function freshState(today) {
 }
 function resetDemo(S, today) { S.demo = buildDemoWorkspace(SEED, today); return S; }
 
+const CODE_PREFIX = { superior: 'SUP', inferior: 'INF', cuerpo_completo: 'ENT', capa: 'CAP', calzado: 'CAL', bolso: 'BOL', accesorio: 'ACC' };
+/** Código visible y estable por prenda (p. ej. SUP-003). Nunca se reutiliza dentro de un mismo armario. */
+function assignCode(ws, item) {
+  if (item.code) return false;
+  const pre = CODE_PREFIX[item.category] || 'OTR';
+  ws.seq.codes = ws.seq.codes || {};
+  const k = item.ownerId + ':' + pre;
+  let n = ws.seq.codes[k] || 0;
+  const used = new Set(ws.items.filter((i) => i.ownerId === item.ownerId && i.code).map((i) => i.code));
+  let code; do { n++; code = pre + '-' + String(n).padStart(3, '0'); } while (used.has(code));
+  ws.seq.codes[k] = n; item.code = code;
+  return true;
+}
+function ensureCodes(ws) { if (!ws) return false; let ch = false; ws.items.forEach((i) => { if (assignCode(ws, i)) ch = true; }); return ch; }
 function addItem(ws, data, today) {
   const prefix = ws.mode === 'demo' ? 'D' : 'MI';
   let id = nextId(ws, 'item', prefix);
@@ -1318,8 +1414,9 @@ function addItem(ws, data, today) {
     createdAt: today, acquisition: '', baselineLastUsed: null, baselineWearCount: 0, attributeSource: 'confirmado por la persona',
     origin: ws.mode === 'demo' ? 'demo' : 'real', exclusions: { temporada: false, ceremonial: false, sentimental: false, trabajo: false, guardada: false },
     repairEstimate: null, repairReadyDays: null, notes: '', updatedAt: today
-  }, data, { id, subtype });
+  }, data, { id, subtype, code: null });
   ws.items.push(item);
+  assignCode(ws, item);
   return item;
 }
 function updateItem(ws, id, data, today) {
@@ -1653,7 +1750,416 @@ function runSelfTests(today) {
     const f = r.fields;
     return { ok: f.occasion === 'reunión' && f.district === 'San Isidro' && f.walking === 'alta' && f.intent.includes('profesionalismo') && f.intent.includes('cercanía') && f.colorsPref[0] === 'azul', detail: r.found.join(' · ') };
   });
+  check('Cada prenda tiene un código único y estable (SUP-001…)', () => {
+    const T = freshState(today); const w = T.demo; const codes = w.items.map((i) => i.ownerId + ':' + i.code);
+    const a01 = w.items.find((i) => i.id === 'A01').code; const it = addItem(w, { name: 'Polo azul marino', category: 'superior', color: 'azul marino', ownerId: 'alex' }, today);
+    return { ok: new Set(codes).size === 39 && w.items.every((i) => /^[A-Z]{3}-\d{3}$/.test(i.code)) && a01 === 'SUP-001' && it.code === 'SUP-007' && !codes.includes('alex:' + it.code), detail: 'A01 = ' + a01 + ' · nueva = ' + it.code };
+  });
+  check('Prendas iguales se distinguen por código', () => {
+    const T = freshState(today); const w = T.demo; const b = addItem(w, { name: 'Polo azul marino 2', category: 'superior', subtype: 'polo', color: 'azul marino', ownerId: 'alex' }, today);
+    const same = w.items.filter((i) => i.ownerId === 'alex' && i.subtype === 'polo' && norm(i.color) === 'azul marino');
+    return { ok: same.length === 2 && same[0].code !== same[1].code, detail: same.map((i) => i.code).join(' y ') };
+  });
+  check('Código QR: tamaño correcto según la versión', () => { const q = QR.encode('https://msm66.github.io/relisto/#p-SUP-003'); return { ok: q.version === 3 && q.size === 29 && q.modules.length === 29, detail: 'versión ' + q.version + ', ' + q.size + '×' + q.size }; });
+  check('Perfil de estilo: completitud y paleta por subtono', () => {
+    const p = Object.assign(defaultProfileExtras(), { styles: ['casual'], colors: ['azul'], undertone: 'cálido', skinTone: 'Monk 5, seleccionado manualmente', faceShape: 'redondo', build: 'media', fit: 'regular', hair: 'negro' });
+    const c = styleCompleteness(p); const pal = personalPalette(p);
+    return { ok: c.percent === 100 && pal.colors.includes('camel') && pal.contrast === 'alto' && pal.face.necks.includes('cuello en V'), detail: c.percent + '% · contraste ' + pal.contrast };
+  });
+  check('Sugerencias con paleta: no repiten lo que ya tienes y suman combinaciones', () => {
+    const T = freshState(today); const w = T.demo; const p = Object.assign({}, w.profiles[0], { undertone: 'cálido', faceShape: 'redondo' });
+    const sug = styleSuggestions(w, 'alex', p, 4);
+    const dup = sug.some((s) => w.items.some((i) => i.ownerId === 'alex' && !isGone(i) && i.subtype === s.candidate.subtype && norm(i.color) === norm(s.candidate.color)));
+    return { ok: sug.length > 0 && !dup && sug.every((s) => s.added.length > 0), detail: sug.map((s) => s.candidate.name + ' +' + s.added.length).join(' · ') };
+  });
   return out;
+}
+/* =====================================================================
+   CÓDIGO QR (modo byte, corrección M, versiones 1–10). Implementación
+   propia y compacta basada en la norma ISO/IEC 18004, sin dependencias.
+   ===================================================================== */
+const QR = (() => {
+  const ECC_M = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26];
+  const BLOCKS_M = [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+  const rawModules = (v) => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCodewords = (v) => Math.floor(rawModules(v) / 8) - ECC_M[v] * BLOCKS_M[v];
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z & 0xFF; };
+  const divisor = (deg) => { const r = new Array(deg).fill(0); r[deg - 1] = 1; let root = 1; for (let i = 0; i < deg; i++) { for (let j = 0; j < r.length; j++) { r[j] = mul(r[j], root); if (j + 1 < r.length) r[j] ^= r[j + 1]; } root = mul(root, 0x02); } return r; };
+  const remainder = (data, div) => { const r = div.map(() => 0); for (const b of data) { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= mul(c, f); }); } return r; };
+  const alignPos = (v) => { if (v === 1) return []; const n = Math.floor(v / 7) + 2; const step = Math.ceil((v * 4 + 4) / (n * 2 - 2)) * 2; const r = [6]; for (let p = v * 4 + 10; r.length < n; p -= step) r.splice(1, 0, p); return r; };
+  function encode(text) {
+    const bytes = Array.from(TXT_ENC_QR.encode(text));
+    let ver = 0;
+    for (let v = 1; v <= 10; v++) { const cc = v < 10 ? 8 : 16; if (4 + cc + bytes.length * 8 <= dataCodewords(v) * 8) { ver = v; break; } }
+    if (!ver) throw new Error('Texto demasiado largo para el código QR');
+    const bits = []; const put = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, ver < 10 ? 8 : 16); bytes.forEach((b) => put(b, 8));
+    const cap = dataCodewords(ver) * 8;
+    put(0, Math.min(4, cap - bits.length)); while (bits.length % 8) bits.push(0);
+    const data = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; data.push(b); }
+    for (let pad = 0xEC; data.length < dataCodewords(ver); pad ^= 0xEC ^ 0x11) data.push(pad);
+    // Bloques y corrección de errores intercalados
+    const nb = BLOCKS_M[ver]; const eccLen = ECC_M[ver]; const raw = Math.floor(rawModules(ver) / 8);
+    const nShort = nb - raw % nb; const shortLen = Math.floor(raw / nb); const div = divisor(eccLen);
+    const blocks = []; let k = 0;
+    for (let i = 0; i < nb; i++) { const dat = data.slice(k, k + shortLen - eccLen + (i < nShort ? 0 : 1)); k += dat.length; const ecc = remainder(dat, div); if (i < nShort) dat.push(0); blocks.push(dat.concat(ecc)); }
+    const all = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((bl, j) => { if (i !== shortLen - eccLen || j >= nShort) all.push(bl[i]); });
+    // Matriz
+    const size = ver * 4 + 17;
+    const mod = Array.from({ length: size }, () => new Array(size).fill(false));
+    const fn = Array.from({ length: size }, () => new Array(size).fill(false));
+    const set = (x, y, d) => { mod[y][x] = d; fn[y][x] = true; };
+    for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    [[3, 3], [size - 4, 3], [3, size - 4]].forEach(([cx, cy]) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)); const x = cx + dx, y = cy + dy; if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, d !== 2 && d !== 4); } });
+    const ap = alignPos(ver);
+    ap.forEach((a, i) => ap.forEach((b, j) => { if ((i === 0 && j === 0) || (i === 0 && j === ap.length - 1) || (i === ap.length - 1 && j === 0)) return; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(a + dx, b + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+    const drawFormat = (mask) => {
+      const dataF = (0 << 3) | mask; let rem = dataF; for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+      const f = ((dataF << 10) | rem) ^ 0x5412; const bit = (i) => ((f >>> i) & 1) !== 0;
+      for (let i = 0; i <= 5; i++) set(8, i, bit(i));
+      set(8, 7, bit(6)); set(8, 8, bit(7)); set(7, 8, bit(8));
+      for (let i = 9; i < 15; i++) set(14 - i, 8, bit(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, bit(i));
+      for (let i = 8; i < 15; i++) set(8, size - 15 + i, bit(i));
+      set(8, size - 8, true);
+    };
+    drawFormat(0);
+    if (ver >= 7) { let rem = ver; for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25); const vb = (ver << 12) | rem; for (let i = 0; i < 18; i++) { const bt = ((vb >>> i) & 1) !== 0; const a = size - 11 + (i % 3), b = Math.floor(i / 3); set(a, b, bt); set(b, a, bt); } }
+    let bi = 0;
+    for (let right = size - 1; right >= 1; right -= 2) {
+      if (right === 6) right = 5;
+      for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) {
+        const x = right - j; const up = ((right + 1) & 2) === 0; const y = up ? size - 1 - vert : vert;
+        if (!fn[y][x] && bi < all.length * 8) { mod[y][x] = ((all[bi >>> 3] >>> (7 - (bi & 7))) & 1) !== 0; bi++; }
+      }
+    }
+    const maskFn = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x) => x % 3 === 0, (x, y) => (x + y) % 3 === 0, (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => (x * y) % 2 + (x * y) % 3 === 0, (x, y) => ((x * y) % 2 + (x * y) % 3) % 2 === 0, (x, y) => ((x + y) % 2 + (x * y) % 3) % 2 === 0];
+    const applyMask = (m) => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fn[y][x] && maskFn[m](x, y)) mod[y][x] = !mod[y][x]; };
+    const penalty = () => {
+      let p = 0; let dark = 0;
+      for (let y = 0; y < size; y++) { let run = 1; for (let x = 1; x < size; x++) { if (mod[y][x] === mod[y][x - 1]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let x = 0; x < size; x++) { let run = 1; for (let y = 1; y < size; y++) { if (mod[y][x] === mod[y - 1][x]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) { const c = mod[y][x]; if (c === mod[y][x + 1] && c === mod[y + 1][x] && c === mod[y + 1][x + 1]) p += 3; }
+      mod.forEach((r) => r.forEach((c) => { if (c) dark++; }));
+      return p + Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10;
+    };
+    let best = 0, bestP = Infinity;
+    for (let m = 0; m < 8; m++) { applyMask(m); drawFormat(m); const pp = penalty(); if (pp < bestP) { bestP = pp; best = m; } applyMask(m); }
+    applyMask(best); drawFormat(best);
+    return { size, modules: mod, version: ver };
+  }
+  function svg(text, opts) {
+    opts = opts || {};
+    const q = encode(text); const m = 4; const n = q.size + m * 2;
+    let d = '';
+    q.modules.forEach((row, y) => row.forEach((c, x) => { if (c) d += 'M' + (x + m) + ',' + (y + m) + 'h1v1h-1z'; }));
+    return '<svg viewBox="0 0 ' + n + ' ' + n + '" role="img" aria-label="' + (opts.label || 'Código QR') + '" shape-rendering="crispEdges" class="qr"><rect width="' + n + '" height="' + n + '" fill="#fff"/><path d="' + d + '" fill="#111"/></svg>';
+  }
+  return { encode, svg };
+})();
+const TXT_ENC_QR = new TextEncoder();
+/* =====================================================================
+   ESTILO PERSONAL: paleta por subtono, contraste, forma del rostro
+   (visagismo) y sugerencias de prendas que suman. Todo se basa en datos
+   que la persona declara; son sugerencias flexibles, no reglas.
+   ===================================================================== */
+const PALETTES = {
+  'cálido': { label: 'cálida', colors: ['camel', 'terracota', 'oliva', 'mostaza', 'crema', 'marrón', 'coral', 'verde bosque'], metal: 'dorado', hint: 'Tonos con base amarilla o dorada.' },
+  'frío': { label: 'fría', colors: ['azul marino', 'burdeos', 'esmeralda', 'lavanda', 'gris', 'fucsia', 'azul rey', 'blanco'], metal: 'plateado', hint: 'Tonos con base azulada o rosada.' },
+  'neutro': { label: 'neutra', colors: ['azul marino', 'salvia', 'rosa palo', 'gris', 'beige', 'verde azulado', 'blanco roto', 'burdeos'], metal: 'dorado o plateado', hint: 'Te acompañan tonos cálidos y fríos suavizados.' },
+  'oliva': { label: 'oliva', colors: ['oliva', 'berenjena', 'mostaza', 'verde azulado', 'terracota', 'camel', 'burdeos', 'crema'], metal: 'dorado', hint: 'Tonos profundos y terrosos.' }
+};
+const FACE_SHAPES = {
+  ovalado: { label: 'Ovalado', necks: ['casi cualquier cuello'], tip: 'Tu forma admite casi todos los cuellos: elige por gusto y ocasión.', glasses: 'casi cualquier montura', path: 'M50 10 C72 10 82 32 82 52 C82 76 68 92 50 92 C32 92 18 76 18 52 C18 32 28 10 50 10Z' },
+  redondo: { label: 'Redondo', necks: ['cuello en V', 'cuello camisero en punta'], tip: 'Los cuellos en V y las líneas verticales suelen alargar visualmente el rostro.', glasses: 'monturas rectangulares', path: 'M50 12 C75 12 86 32 86 52 C86 74 72 90 50 90 C28 90 14 74 14 52 C14 32 25 12 50 12Z' },
+  cuadrado: { label: 'Cuadrado', necks: ['cuello en V suave', 'cuello redondo'], tip: 'Las formas suaves y redondeadas equilibran una mandíbula marcada.', glasses: 'monturas redondas u ovaladas', path: 'M24 14 H76 Q84 14 84 24 V72 Q84 90 66 90 H34 Q16 90 16 72 V24 Q16 14 24 14Z' },
+  alargado: { label: 'Alargado', necks: ['cuello redondo', 'cuello barco', 'cuello alto'], tip: 'Los cuellos horizontales o altos suelen acortar visualmente el rostro.', glasses: 'monturas anchas', path: 'M50 6 C68 6 76 26 76 50 C76 78 66 96 50 96 C34 96 24 78 24 50 C24 26 32 6 50 6Z' },
+  'corazón': { label: 'Corazón', necks: ['cuello barco', 'cuello redondo'], tip: 'Los cuellos amplios equilibran una frente más ancha que el mentón.', glasses: 'monturas con base ancha', path: 'M18 22 Q18 12 34 12 H66 Q82 12 82 22 Q82 56 50 92 Q18 56 18 22Z' },
+  diamante: { label: 'Diamante', necks: ['cuello barco', 'cuello en V moderado'], tip: 'Los cuellos que suman anchura arriba equilibran pómulos marcados.', glasses: 'monturas ovaladas', path: 'M50 8 Q70 28 84 50 Q70 74 50 94 Q30 74 16 50 Q30 28 50 8Z' }
+};
+const MONK_HEX = ['#f6ede4', '#f3e7db', '#f7ead0', '#eadaba', '#d7bd96', '#a07e56', '#825c43', '#604134', '#3a312a', '#292420'];
+const HAIR_COLORS = { negro: '#1d1a19', 'castaño oscuro': '#3b2a20', 'castaño': '#6b4a33', rubio: '#c9a76a', pelirrojo: '#a4512b', canoso: '#bdbcb8', otro: '#7a6a5a' };
+const HAIR_STYLES = ['corto', 'medio', 'largo', 'recogido', 'rizado', 'rapado'];
+function monkIndex(p) { const m = String((p && p.skinTone) || '').match(/Monk (\d+)/); return m ? Number(m[1]) : null; }
+function skinHex(p) { if (p && p.avatar && p.avatar.skinHex) return p.avatar.skinHex; const i = monkIndex(p); return i ? MONK_HEX[i - 1] : '#c8a17e'; }
+function hairHex(p) { if (p && p.avatar && p.avatar.hairHex) return p.avatar.hairHex; return HAIR_COLORS[(p && p.hair) || ''] || HAIR_COLORS['castaño oscuro']; }
+function contrastLevel(p) {
+  const hasSkin = monkIndex(p) || (p.avatar && p.avatar.skinHex); const hasHair = p.hair || (p.avatar && p.avatar.hairHex);
+  if (hasSkin && hasHair) { const d = Math.abs(hexLum(skinHex(p)) - hexLum(hairHex(p))); return d > 0.45 ? 'alto' : d > 0.22 ? 'medio' : 'bajo'; }
+  return p.contrast || null;
+}
+const CONTRAST_TIP = {
+  alto: 'Tu contraste natural es alto: combinaciones claras y oscuras juntas (blanco con azul marino, negro con crema) suelen verse nítidas.',
+  medio: 'Tu contraste es medio: combina un tono claro con uno medio, sin extremos.',
+  bajo: 'Tu contraste es suave: tonos cercanos entre sí (beige con camel, gris con azul grisáceo) suelen armonizar.'
+};
+/** Qué tan completo está el perfil de estilo y qué falta. */
+function styleCompleteness(p) {
+  const checks = [
+    ['styles', 'Estilos', (p.styles || []).length > 0],
+    ['colors', 'Colores favoritos', (p.colors || []).length > 0],
+    ['undertone', 'Subtono', p.undertone && p.undertone !== 'no sé'],
+    ['skin', 'Tono de piel', !!(monkIndex(p) || (p.avatar && p.avatar.skinHex))],
+    ['face', 'Forma del rostro', !!(p.faceShape && FACE_SHAPES[p.faceShape])],
+    ['build', 'Complexión', p.build && p.build !== 'prefiero omitir'],
+    ['fit', 'Ajuste preferido', !!p.fit],
+    ['hair', 'Cabello', !!(p.hair || (p.avatar && p.avatar.hairStyle))]
+  ];
+  const done = checks.filter((c) => c[2]).length;
+  return { percent: Math.round((100 * done) / checks.length), done, total: checks.length, missing: checks.filter((c) => !c[2]).map((c) => c[1]), paletteReady: !!PALETTES[p.undertone] };
+}
+function personalPalette(p) {
+  const pal = PALETTES[p.undertone]; if (!pal) return null;
+  const avoid = (p.avoidColors || []).map(norm);
+  return Object.assign({}, pal, { colors: pal.colors.filter((c) => !avoid.includes(norm(c))), contrast: contrastLevel(p), face: FACE_SHAPES[p.faceShape] || null });
+}
+function inPalette(p, color) { const pal = PALETTES[p && p.undertone]; return !!pal && pal.colors.some((c) => norm(color).includes(norm(c))); }
+
+/* ---------- Sugerencias de prendas que suman, con paleta y rostro ---------- */
+const STYLE_ARCHETYPES = [
+  { type: 'camiseta', category: 'superior', formality: 1, neck: 'redondo' }, { type: 'camiseta', category: 'superior', formality: 1, neck: 'V' },
+  { type: 'camisa', category: 'superior', formality: 3, neck: 'camisero' }, { type: 'polo', category: 'superior', formality: 2, neck: 'camisero' },
+  { type: 'suéter', category: 'superior', formality: 2, neck: 'redondo', warmth: 3 }, { type: 'blusa', category: 'superior', formality: 3, neck: 'barco' },
+  { type: 'pantalón', category: 'inferior', formality: 3 }, { type: 'chino', category: 'inferior', formality: 2 }, { type: 'jean', category: 'inferior', formality: 2 },
+  { type: 'falda', category: 'inferior', formality: 3 }, { type: 'blazer', category: 'capa', formality: 4, warmth: 2 },
+  { type: 'zapatillas', category: 'calzado', formality: 1 }, { type: 'mocasines', category: 'calzado', formality: 3 }
+];
+const NECK_FOR_FACE = { redondo: 'V', cuadrado: 'redondo', alargado: 'barco', 'corazón': 'barco', diamante: 'barco', ovalado: null };
+function neckLabel(n) { return { V: 'cuello en V', redondo: 'cuello redondo', barco: 'cuello barco', camisero: 'cuello camisero' }[n] || ''; }
+function styleSuggestions(ws, ownerId, p, limit) {
+  const pal = personalPalette(p);
+  if (!pal) return [];
+  const colors = pal.colors.concat(['blanco', 'negro', 'gris', 'azul marino', 'beige']).filter((c, i, a) => a.indexOf(c) === i);
+  const wantNeck = NECK_FOR_FACE[p.faceShape] || null;
+  const fit = p.fit === 'relajado' || p.fit === 'oversized' ? 'relajado' : p.fit === 'ceñido' ? 'ceñido' : 'regular';
+  const owned = ownedItems(ws, ownerId).filter((i) => !isGone(i));
+  const out = [];
+  STYLE_ARCHETYPES.forEach((a, ai) => {
+    if (wantNeck && a.neck && a.neck !== wantNeck && a.neck !== 'camisero' && ['camiseta', 'blusa'].includes(a.type)) return;
+    colors.forEach((color) => {
+      if (owned.some((i) => i.subtype === a.type && norm(i.color) === norm(color))) return;
+      const cand = { id: 'SUG' + ai + '-' + norm(color).replace(/\s/g, ''), ownerId, name: (a.type.charAt(0).toUpperCase() + a.type.slice(1)) + ' ' + agreeColor(a.type, color) + (a.neck && a.neck !== 'camisero' ? ' (' + neckLabel(a.neck) + ')' : ''),
+        category: a.category, subtype: a.type, color, cut: a.category === 'calzado' ? 'bajo' : fit, formality: a.formality, warmth: a.warmth || 1, availability: 'disponible', material: 'material no confirmado', hypothetical: true };
+      const v = purchaseValue(ws, ownerId, cand);
+      if (!v.added.length) return;
+      const palBonus = inPalette(p, color) ? 6 : 0;
+      const favBonus = (p.colors || []).some((c) => norm(c) === norm(color)) ? 4 : 0;
+      const reasons = [];
+      reasons.push('Permitiría ' + v.added.length + ' combinaciones nuevas con tus prendas.');
+      if (palBonus) reasons.push('El ' + color + ' está en tu paleta ' + pal.label + '.');
+      else if (['blanco', 'negro', 'gris', 'azul marino', 'beige'].includes(color)) reasons.push('Neutro que combina con casi todo tu armario.');
+      if (a.neck && wantNeck && a.neck === wantNeck && pal.face) reasons.push(cap1(neckLabel(a.neck)) + ': ' + pal.face.tip.charAt(0).toLowerCase() + pal.face.tip.slice(1));
+      if (a.category !== 'calzado' && p.fit) reasons.push('Corte ' + fit + ', como prefieres.');
+      out.push({ candidate: cand, added: v.added, before: v.before, after: v.after, score: v.added.length * 2 + palBonus + favBonus, reasons });
+    });
+  });
+  out.sort((x, y) => y.score - x.score);
+  // Variedad: primero una por categoría y color distinto; luego se completa por puntaje.
+  const picked = []; const seenType = new Set(); const seenCat = new Set(); const seenColor = new Set(); const max = limit || 3;
+  for (const s of out) { const c = s.candidate; if (seenCat.has(c.category) || seenColor.has(norm(c.color))) continue; seenCat.add(c.category); seenColor.add(norm(c.color)); seenType.add(c.subtype); picked.push(s); if (picked.length >= max) return picked; }
+  for (const s of out) { if (picked.includes(s) || seenType.has(s.candidate.subtype)) continue; seenType.add(s.candidate.subtype); picked.push(s); if (picked.length >= max) break; }
+  return picked;
+}
+const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+/* ---------- Color dominante de una foto ---------- */
+function dominantColor(blob) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(blob); const img = new Image();
+    img.onload = () => {
+      const N = 48; const cv = document.createElement('canvas'); cv.width = N; cv.height = N;
+      const ctx = cv.getContext('2d', { willReadFrequently: true }); ctx.drawImage(img, 0, 0, N, N);
+      let px; try { px = ctx.getImageData(0, 0, N, N).data; } catch (e) { URL.revokeObjectURL(url); return resolve(null); }
+      URL.revokeObjectURL(url);
+      // Fondo estimado con el borde de la imagen
+      let br = 0, bg = 0, bb = 0, bn = 0;
+      for (let i = 0; i < N; i++) for (const [x, y] of [[i, 0], [i, N - 1], [0, i], [N - 1, i]]) { const k = (y * N + x) * 4; br += px[k]; bg += px[k + 1]; bb += px[k + 2]; bn++; }
+      br /= bn; bg /= bn; bb /= bn;
+      const buckets = new Map();
+      for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+        const k = (y * N + x) * 4; const r = px[k], g = px[k + 1], b = px[k + 2];
+        const dBg = Math.abs(r - br) + Math.abs(g - bg) + Math.abs(b - bb);
+        const dx = x / N - 0.5, dy = y / N - 0.5; const center = 1.6 - Math.sqrt(dx * dx + dy * dy) * 2;
+        const w = Math.max(0.05, center) * (dBg < 40 ? 0.15 : 1);
+        const key = (r >> 4) + ',' + (g >> 4) + ',' + (b >> 4);
+        const e = buckets.get(key) || { w: 0, r: 0, g: 0, b: 0 }; e.w += w; e.r += r * w; e.g += g * w; e.b += b * w; buckets.set(key, e);
+      }
+      let best = null; buckets.forEach((e) => { if (!best || e.w > best.w) best = e; });
+      if (!best) return resolve(null);
+      const hex = '#' + [best.r / best.w, best.g / best.w, best.b / best.w].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+      resolve(hex);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
+}
+function hexToRgb(h) { const n = parseInt(String(h).replace('#', ''), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+function nearestColorName(hex) {
+  const [r, g, b] = hexToRgb(hex); let best = null, bd = Infinity;
+  QUICK_COLORS.forEach((name) => {
+    const ch = colorHex(name); if (!ch.startsWith('#')) return;
+    const [r2, g2, b2] = hexToRgb(ch); const rm = (r + r2) / 2;
+    const d = Math.sqrt((2 + rm / 256) * (r - r2) ** 2 + 4 * (g - g2) ** 2 + (2 + (255 - rm) / 256) * (b - b2) ** 2);
+    if (d < bd) { bd = d; best = name; }
+  });
+  return best;
+}
+/* =====================================================================
+   FIGURA ILUSTRADA: una silueta tipo figurín, con el tono de piel,
+   cabello y complexión que la persona elige, vestida con las prendas
+   reales del outfit (color de la ficha o tomado de su foto).
+   Es una vista ilustrativa: no representa ajuste, tejido ni talla.
+   ===================================================================== */
+const BUILDS = { delgada: { sh: 37, wa: 26, hi: 32, limb: 8.5 }, media: { sh: 41, wa: 30, hi: 36, limb: 9.5 }, 'atlética': { sh: 46, wa: 31, hi: 36, limb: 10.5 }, robusta: { sh: 47, wa: 40, hi: 44, limb: 11.5 } };
+function garmentHex(item) { return item.photoHex || colorHex(norm(item.color).includes(' y ') ? item.color.split(' y ')[0] : item.color); }
+function darker(hex, a) { return shade(hex.startsWith('#') ? hex : '#888888', -(a || 0.3)); }
+let FIG_UID = 0;
+function figureSVG(p, items, opts) {
+  opts = opts || {};
+  const uid = 'f' + (++FIG_UID);
+  const b = BUILDS[p && p.build] || BUILDS.media;
+  const cx = 100; const skin = skinHex(p || {}); const skinD = darker(skin, 0.18);
+  const hair = hairHex(p || {}); const style = (p && p.avatar && p.avatar.hairStyle) || (p && p.hair ? 'medio' : 'corto');
+  const role = (r) => items.filter((i) => roleOf(i) === r);
+  const top = role('top')[0]; const bottom = role('bottom')[0]; const full = role('full')[0]; const layer = role('layer')[0]; const shoes = role('shoes')[0];
+  const acc = role('accessory');
+  const out = [];
+  const st = (hex) => 'stroke="' + darker(hex, 0.35) + '" stroke-width="1.4" stroke-linejoin="round"';
+  const pattern = (item, base) => {
+    if (!item || !norm(item.color).includes(' y ')) return base;
+    const id = uid + 'p' + item.id; const c2 = colorHex(item.color.split(' y ')[1]);
+    out.push('<defs><pattern id="' + id + '" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="' + c2 + '"/><rect width="3.5" height="7" fill="' + base + '"/></pattern></defs>');
+    return 'url(#' + id + ')';
+  };
+  const face = (p && FACE_SHAPES[p.faceShape]) ? p.faceShape : 'ovalado';
+  const headRx = { redondo: 22.5, alargado: 18.5, cuadrado: 21, 'corazón': 20, diamante: 19.5, ovalado: 20 }[face];
+  const headRy = { redondo: 24, alargado: 28, cuadrado: 24.5, 'corazón': 25.5, diamante: 26, ovalado: 26 }[face];
+  const Y = { head: 44, neck0: 64, sh: 92, waist: 182, hip: 212, crotch: 232, knee: 305, ankle: 384 };
+  const armL = [[cx - b.sh + 3, Y.sh + 5], [cx - b.sh - 9, 212]]; const armR = [[cx + b.sh - 3, Y.sh + 5], [cx + b.sh + 9, 212]];
+  const lerp = (a, c, t) => [a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t];
+  const line = (a, c, w, col, extra) => '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + c[0].toFixed(1) + '" y2="' + c[1].toFixed(1) + '" stroke="' + col + '" stroke-width="' + w + '" stroke-linecap="round"' + (extra || '') + '/>';
+  // Cabello de atrás
+  if (style === 'largo') out.push('<path d="M' + (cx - headRx - 4) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 10) + ' 110 ' + (cx - b.sh + 6) + ' 132 L' + (cx + b.sh - 6) + ' 132 Q' + (cx + headRx + 10) + ' 110 ' + (cx + headRx + 4) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
+  if (style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 6) + ' 80 ' + (cx - headRx + 2) + ' 86 L' + (cx + headRx - 2) + ' 86 Q' + (cx + headRx + 6) + ' 80 ' + (cx + headRx + 3) + ' ' + (Y.head - 2) + ' Z" fill="' + hair + '"/>');
+  // Piernas y brazos (piel)
+  const legL = 'M' + (cx - b.hi + 1) + ' ' + (Y.hip - 4) + ' L' + (cx - 21) + ' ' + Y.ankle + ' L' + (cx - 9) + ' ' + Y.ankle + ' L' + (cx - 2) + ' ' + Y.crotch + ' Z';
+  const legR = 'M' + (cx + b.hi - 1) + ' ' + (Y.hip - 4) + ' L' + (cx + 21) + ' ' + Y.ankle + ' L' + (cx + 9) + ' ' + Y.ankle + ' L' + (cx + 2) + ' ' + Y.crotch + ' Z';
+  out.push('<path d="' + legL + '" fill="' + skin + '"/><path d="' + legR + '" fill="' + skin + '"/>');
+  out.push(line(armL[0], armL[1], b.limb * 1.6, skin) + line(armR[0], armR[1], b.limb * 1.6, skin));
+  out.push('<circle cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/><circle cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/>');
+  // Torso, cuello y cabeza
+  const torso = 'M' + (cx - b.sh) + ' ' + Y.sh + ' Q' + (cx - b.sh - 1) + ' 120 ' + (cx - b.wa) + ' ' + Y.waist + ' Q' + (cx - b.hi - 1) + ' 198 ' + (cx - b.hi) + ' ' + Y.hip + ' L' + (cx + b.hi) + ' ' + Y.hip + ' Q' + (cx + b.hi + 1) + ' 198 ' + (cx + b.wa) + ' ' + Y.waist + ' Q' + (cx + b.sh + 1) + ' 120 ' + (cx + b.sh) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh) + ' ' + Y.sh + ' Z';
+  out.push('<path d="' + torso + '" fill="' + skin + '"/>');
+  out.push('<rect x="' + (cx - 8) + '" y="' + Y.neck0 + '" width="16" height="' + (Y.sh - Y.neck0 + 4) + '" rx="6" fill="' + skinD + '"/>');
+  out.push(face === 'cuadrado' ? '<rect x="' + (cx - headRx) + '" y="' + (Y.head - headRy) + '" width="' + headRx * 2 + '" height="' + headRy * 2 + '" rx="11" fill="' + skin + '"/>'
+    : '<ellipse cx="' + cx + '" cy="' + Y.head + '" rx="' + headRx + '" ry="' + headRy + '" fill="' + skin + '"/>');
+  // Pies (piel) si no hay calzado o hay sandalias
+  const feet = (col) => '<ellipse cx="' + (cx - 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/><ellipse cx="' + (cx + 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/>';
+  if (!shoes || shoes.subtype === 'sandalias') out.push(feet(skin));
+  // Parte inferior
+  const missingStyle = 'fill="none" stroke="#9A968B" stroke-width="1.6" stroke-dasharray="4 4"';
+  const drawBottom = (it) => {
+    const col = pattern(it, garmentHex(it)); const s = st(garmentHex(it));
+    const relaxed = /relaj|oversized|amplio|cargo/.test(norm(it.cut) + ' ' + it.subtype) ? 5 : 0;
+    if (it.subtype === 'falda') {
+      const hem = /midi|evas/.test(norm(it.cut)) ? 318 : 292;
+      out.push('<path d="M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.hi + 20) + ' ' + hem + ' Q' + cx + ' ' + (hem + 8) + ' ' + (cx - b.hi - 20) + ' ' + hem + ' Z" fill="' + col + '" ' + s + '/>');
+      return;
+    }
+    const hemY = it.subtype === 'short' ? 280 : Y.ankle + 2; const t = (hemY - Y.hip) / (Y.ankle - Y.hip);
+    const ox = (cx - b.hi) + ((cx - 22) - (cx - b.hi)) * t - relaxed; const ix = (cx - 2) + ((cx - 8) - (cx - 2)) * t + relaxed * 0.4;
+    const d = 'M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' Q' + (cx + b.hi + 2) + ' 200 ' + (cx + b.hi + 1) + ' ' + Y.hip + ' L' + (2 * cx - ox) + ' ' + hemY + ' L' + (2 * cx - ix) + ' ' + hemY + ' L' + (cx + 1) + ' ' + Y.crotch + ' L' + (cx - 1) + ' ' + Y.crotch + ' L' + ix + ' ' + hemY + ' L' + ox + ' ' + hemY + ' L' + (cx - b.hi - 1) + ' ' + Y.hip + ' Q' + (cx - b.hi - 2) + ' 200 ' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' Z';
+    out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
+    if (it.subtype === 'jean') out.push('<path d="M' + (cx - b.wa + 4) + ' ' + (Y.waist + 6) + ' Q' + (cx - 12) + ' ' + (Y.waist + 18) + ' ' + (cx - 4) + ' ' + (Y.waist + 6) + ' M' + (cx + b.wa - 4) + ' ' + (Y.waist + 6) + ' Q' + (cx + 12) + ' ' + (Y.waist + 18) + ' ' + (cx + 4) + ' ' + (Y.waist + 6) + '" fill="none" stroke="' + shade(garmentHex(it), 0.35) + '" stroke-width="1" stroke-dasharray="2 2"/>');
+    if (it.subtype === 'pantalón de vestir' || it.subtype === 'pantalón') out.push('<path d="M' + (cx - 16) + ' ' + (Y.hip) + ' L' + ((ox + ix) / 2) + ' ' + hemY + ' M' + (cx + 16) + ' ' + Y.hip + ' L' + (2 * cx - (ox + ix) / 2) + ' ' + hemY + '" stroke="' + darker(garmentHex(it), 0.2) + '" stroke-width="0.8"/>');
+  };
+  if (full && full.subtype === 'enterizo') drawBottom(Object.assign({}, full, { subtype: 'pantalón' }));
+  else if (bottom) drawBottom(bottom);
+  else if (!full) out.push('<path d="M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' L' + (cx + 22) + ' ' + Y.ankle + ' L' + (cx + 8) + ' ' + Y.ankle + ' L' + cx + ' ' + Y.crotch + ' L' + (cx - 8) + ' ' + Y.ankle + ' L' + (cx - 22) + ' ' + Y.ankle + ' Z" ' + missingStyle + '/>');
+  // Calzado
+  if (shoes) {
+    const c = garmentHex(shoes); const s = st(c);
+    const sole = shoes.subtype === 'zapatillas' ? '#F4F2EC' : darker(c, 0.45);
+    [-1, 1].forEach((side) => {
+      const x = cx + side * 16;
+      if (shoes.subtype === 'botines') out.push('<path d="M' + (x - 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 10) + ' ' + (Y.ankle + 6) + ' Q' + (x + side * 16) + ' ' + (Y.ankle + 6) + ' ' + (x + side * 15) + ' ' + (Y.ankle + 12) + ' L' + (x - 11) + ' ' + (Y.ankle + 12) + ' Z" fill="' + c + '" ' + s + '/>');
+      else if (shoes.subtype === 'sandalias') out.push('<path d="M' + (x - 10) + ' ' + (Y.ankle + 4) + ' L' + (x + 10) + ' ' + (Y.ankle + 9) + ' M' + (x - 9) + ' ' + (Y.ankle + 10) + ' L' + (x + 9) + ' ' + (Y.ankle + 4) + '" stroke="' + c + '" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="' + x + '" cy="' + (Y.ankle + 14) + '" rx="13" ry="3" fill="' + darker(c, 0.3) + '"/>');
+      else out.push('<path d="M' + (x - 11) + ' ' + (Y.ankle - 2) + ' Q' + x + ' ' + (Y.ankle - 7) + ' ' + (x + 10) + ' ' + (Y.ankle - 1) + ' Q' + (x + side * 17) + ' ' + (Y.ankle + 3) + ' ' + (x + side * 16) + ' ' + (Y.ankle + 10) + ' L' + (x - side * 12) + ' ' + (Y.ankle + 10) + ' Z" fill="' + c + '" ' + s + '/><rect x="' + (Math.min(x - side * 12, x + side * 16) - 1) + '" y="' + (Y.ankle + 9) + '" width="30" height="4" rx="2" fill="' + sole + '"/>');
+    });
+  } else out.push('<g ' + missingStyle + '><rect x="' + (cx - 30) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/><rect x="' + (cx + 4) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/></g>');
+  // Parte superior o vestido
+  const neckPath = (kind, y0) => kind === 'V' ? 'M' + (cx - 11) + ' ' + y0 + ' L' + cx + ' ' + (y0 + 20) + ' L' + (cx + 11) + ' ' + y0 : kind === 'barco' ? 'M' + (cx - 22) + ' ' + (y0 + 1) + ' Q' + cx + ' ' + (y0 + 7) + ' ' + (cx + 22) + ' ' + (y0 + 1) : 'M' + (cx - 11) + ' ' + y0 + ' Q' + cx + ' ' + (y0 + 12) + ' ' + (cx + 11) + ' ' + y0;
+  const drawTop = (it, hemY, isDress) => {
+    const base = garmentHex(it); const col = pattern(it, base); const s = st(base);
+    const loose = /relaj|oversized/.test(norm(it.cut)) ? 4 : 0;
+    const sleeve = isDress ? (/midi/.test(norm(it.cut)) ? 'short' : 'none') : ['camiseta', 'polo', 'prenda superior'].includes(it.subtype) ? 'short' : it.subtype === 'top' ? 'none' : 'long';
+    const sleeveW = b.limb * 1.6 + 6 + loose;
+    if (sleeve !== 'none') {
+      [armL, armR].forEach((a) => { const end = sleeve === 'short' ? lerp(a[0], a[1], 0.32) : lerp(a[0], a[1], 0.97); out.push(line(a[0], end, sleeveW + 2, darker(base, 0.35)) + line(a[0], end, sleeveW, col)); });
+    }
+    let d;
+    if (isDress) {
+      const hem = /midi/.test(norm(it.cut)) ? 330 : 300;
+      d = 'M' + (cx - b.sh - loose) + ' ' + Y.sh + ' Q' + (cx - b.sh - 1) + ' 120 ' + (cx - b.wa) + ' ' + Y.waist + ' L' + (cx - b.hi - 22) + ' ' + hem + ' Q' + cx + ' ' + (hem + 8) + ' ' + (cx + b.hi + 22) + ' ' + hem + ' L' + (cx + b.wa) + ' ' + Y.waist + ' Q' + (cx + b.sh + 1) + ' 120 ' + (cx + b.sh + loose) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh - loose) + ' ' + Y.sh + ' Z';
+    } else {
+      const hx = hemY > Y.waist + 10 ? b.hi + loose : b.wa + 2 + loose;
+      d = 'M' + (cx - b.sh - 1 - loose) + ' ' + Y.sh + ' Q' + (cx - b.sh - 2 - loose) + ' 120 ' + (cx - b.wa - 1 - loose) + ' ' + Math.min(Y.waist, hemY) + ' L' + (cx - hx) + ' ' + hemY + ' L' + (cx + hx) + ' ' + hemY + ' L' + (cx + b.wa + 1 + loose) + ' ' + Math.min(Y.waist, hemY) + ' Q' + (cx + b.sh + 2 + loose) + ' 120 ' + (cx + b.sh + 1 + loose) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh - 1 - loose) + ' ' + Y.sh + ' Z';
+    }
+    out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
+    const neckKind = (it.neck) || (it.subtype === 'blusa' ? 'barco' : it.subtype === 'top' ? 'barco' : 'redondo');
+    if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) {
+      out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' L' + cx + ' ' + (Y.sh + 8) + ' L' + (cx + 10) + ' ' + (Y.sh - 7) + ' L' + (cx + 4) + ' ' + (Y.sh - 9) + ' L' + cx + ' ' + (Y.sh - 2) + ' L' + (cx - 4) + ' ' + (Y.sh - 9) + ' Z" fill="' + col + '" ' + s + '/>');
+      const bottomBtn = it.subtype === 'polo' ? Y.sh + 26 : hemY - 6;
+      out.push('<line x1="' + cx + '" y1="' + (Y.sh + 8) + '" x2="' + cx + '" y2="' + bottomBtn + '" stroke="' + darker(base, 0.3) + '" stroke-width="1"/>');
+      for (let y = Y.sh + 16; y < bottomBtn; y += 18) out.push('<circle cx="' + (cx + 2.5) + '" cy="' + y + '" r="1.4" fill="' + darker(base, 0.4) + '"/>');
+    } else {
+      out.push('<path d="' + neckPath(neckKind, Y.sh - 8) + '" fill="' + skin + '" stroke="' + darker(base, 0.35) + '" stroke-width="1.4"/>');
+    }
+    if (it.subtype === 'suéter') out.push('<rect x="' + (cx - (hemY > Y.waist + 10 ? b.hi : b.wa + 2) - loose) + '" y="' + (hemY - 6) + '" width="' + 2 * ((hemY > Y.waist + 10 ? b.hi : b.wa + 2) + loose) + '" height="6" fill="' + darker(base, 0.15) + '"/>');
+  };
+  const tucked = top && bottom && (top.formality >= 3 || bottom.subtype === 'falda');
+  if (full && full.subtype !== 'enterizo') drawTop(full, 0, true);
+  else if (full) drawTop(Object.assign({}, full, { subtype: 'top' }), Y.waist + 2, false);
+  else if (top) drawTop(top, tucked ? Y.waist + 2 : 226, false);
+  else out.push('<path d="M' + (cx - b.sh) + ' ' + Y.sh + ' L' + (cx - b.wa) + ' ' + Y.waist + ' L' + (cx + b.wa) + ' ' + Y.waist + ' L' + (cx + b.sh) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh) + ' ' + Y.sh + ' Z" ' + missingStyle + '/>');
+  // Cinturón
+  const belt = acc.find((i) => i.subtype === 'cinturón');
+  if (belt && (bottom || full) && (tucked || !top)) { const c = garmentHex(belt); out.push('<rect x="' + (cx - b.wa - 2) + '" y="' + (Y.waist - 3) + '" width="' + (2 * b.wa + 4) + '" height="7" fill="' + c + '" ' + st(c) + '/><rect x="' + (cx - 5) + '" y="' + (Y.waist - 4) + '" width="10" height="9" rx="1.5" fill="none" stroke="#C9B27A" stroke-width="2"/>'); }
+  // Capa
+  if (layer) {
+    const base = garmentHex(layer); const col = pattern(layer, base); const s = st(base);
+    const hem = layer.subtype === 'abrigo' ? 300 : layer.subtype === 'casaca' ? 230 : 238;
+    if (layer.subtype !== 'chaleco') [armL, armR].forEach((a) => { const end = lerp(a[0], a[1], 0.98); out.push(line(a[0], end, b.limb * 1.6 + 10, darker(base, 0.35)) + line(a[0], end, b.limb * 1.6 + 8, col)); });
+    [-1, 1].forEach((sd) => {
+      const sh = cx + sd * (b.sh + 3); const hx = cx + sd * (b.hi + 6);
+      out.push('<path d="M' + sh + ' ' + (Y.sh - 1) + ' Q' + (cx + sd * (b.sh + 4)) + ' 130 ' + (cx + sd * (b.wa + 4)) + ' ' + Y.waist + ' L' + hx + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + ' L' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' Z" fill="' + col + '" ' + s + '/>');
+      if (['blazer', 'abrigo'].includes(layer.subtype)) out.push('<path d="M' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' L' + (cx + sd * 21) + ' ' + (Y.sh + 26) + ' L' + (cx + sd * 12) + ' ' + (Y.sh + 30) + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + '" fill="' + darker(base, 0.12) + '" ' + s + '/>');
+    });
+    if (layer.subtype === 'blazer') out.push('<circle cx="' + (cx + 6) + '" cy="' + (Y.sh + 82) + '" r="2" fill="' + darker(base, 0.45) + '"/>');
+  }
+  // Bolso o mochila
+  const bag = role('accessory').find((i) => i.category === 'bolso');
+  if (bag) {
+    const c = garmentHex(bag);
+    if (bag.subtype === 'mochila') out.push(line([cx - b.sh + 12, Y.sh - 4], [cx - b.wa + 6, 176], 5, c) + line([cx + b.sh - 12, Y.sh - 4], [cx + b.wa - 6, 176], 5, c));
+    else out.push(line([cx + b.sh - 10, Y.sh - 4], [cx - b.hi - 4, 206], 3, darker(c, 0.2)) + '<rect x="' + (cx - b.hi - 22) + '" y="198" width="30" height="24" rx="5" fill="' + c + '" ' + st(c) + '/>');
+  }
+  // Accesorios
+  acc.forEach((i) => {
+    const c = garmentHex(i);
+    if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5) + '" y="' + (armL[1][1] - 4) + '" width="10" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
+    if (i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
+    if (i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
+    if (i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
+  });
+  // Cabello de adelante
+  const capTop = Y.head - headRy - 4;
+  const cap = 'M' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 3) + ' ' + capTop + ' ' + cx + ' ' + capTop + ' Q' + (cx + headRx + 3) + ' ' + capTop + ' ' + (cx + headRx + 2) + ' ' + (Y.head - 2) + ' Q' + (cx + headRx - 4) + ' ' + (Y.head - 14) + ' ' + (cx + 6) + ' ' + (Y.head - 16) + ' Q' + (cx - 10) + ' ' + (Y.head - 18) + ' ' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Z';
+  if (style === 'rapado') out.push('<path d="' + cap + '" fill="' + hair + '" opacity=".45"/>');
+  else if (style === 'rizado') { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); for (let a = -150; a <= -30; a += 20) { const r = a * Math.PI / 180; out.push('<circle cx="' + (cx + Math.cos(r) * (headRx + 2)).toFixed(1) + '" cy="' + (Y.head - 6 + Math.sin(r) * (headRy + 1)).toFixed(1) + '" r="7" fill="' + hair + '"/>'); } }
+  else { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); if (style === 'recogido') out.push('<circle cx="' + cx + '" cy="' + (capTop - 5) + '" r="9" fill="' + hair + '"/>'); }
+  if (acc.some((i) => i.subtype === 'sombrero')) { const h = acc.find((i) => i.subtype === 'sombrero'); const c = garmentHex(h); out.push('<ellipse cx="' + cx + '" cy="' + (capTop + 8) + '" rx="' + (headRx + 16) + '" ry="6" fill="' + c + '" ' + st(c) + '/><path d="M' + (cx - headRx + 2) + ' ' + (capTop + 8) + ' Q' + cx + ' ' + (capTop - 26) + ' ' + (cx + headRx - 2) + ' ' + (capTop + 8) + ' Z" fill="' + c + '" ' + st(c) + '/>'); }
+  return '<svg viewBox="0 0 200 420" class="figure" role="img" aria-label="' + esc(opts.label || 'Figura ilustrativa con el outfit') + '"><ellipse cx="100" cy="404" rx="54" ry="7" fill="currentColor" opacity=".08"/>' + out.join('') + '</svg>';
 }
 /* =====================================================================
    PLATAFORMA LOCAL (app instalable): IndexedDB para datos y fotos,
@@ -1723,10 +2229,16 @@ function attachPhoto(modal, file) {
   const ph = readImageFile(file);
   modal.photo = ph;
   compressImage(file).then((blob) => {
-    if (blob === file) return;
-    ph.file = blob; ph.url = URL.createObjectURL(blob);
-    if (UI.modal === modal && modal.photo === ph) render();
-  });
+    if (blob !== file) { ph.file = blob; ph.url = URL.createObjectURL(blob); }
+    return dominantColor(ph.file);
+  }).then((hex) => {
+    if (!hex || modal.photo !== ph) return;
+    const d = modal.draft; const name = nearestColorName(hex);
+    modal.detectedHex = hex; modal.detected = name;
+    if (!d.color || d.color === 'sin color' || d.color === modal.prevDetected) { d.color = name; d.photoHex = hex; }
+    else if (norm(d.color) === norm(name)) d.photoHex = hex;
+    modal.prevDetected = name;
+  }).catch(() => {}).then(() => { if (UI.modal === modal && modal.photo === ph) render(); });
   return ph;
 }
 /** Guarda una foto: las del armario personal van cifradas con la clave de la cuenta; las de la demo, tal cual. */
@@ -1790,6 +2302,7 @@ async function initLocal() {
     } else if (parsed && parsed.space === 'demo') S.space = 'demo';
     if (!raw) await doSave();
     render();
+    handleItemHash();
     if (!UI.auth) maybeAutoTour();
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then((p) => { CAP.persisted = p; }).catch(() => {});
     if (navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then((e) => { CAP.usage = e; }).catch(() => {});
@@ -2187,7 +2700,7 @@ const CAP = { storage: 'pending', doc: null, sample: null, aiImages: false, dirt
 const UI = {
   view: 'hoy', modal: null, toast: null, toastTimer: null,
   gen: {}, draft: {}, ctxOpen: false, nl: '', nlFound: [],
-  closet: { tab: 'prendas', q: '', cat: 'todas', avail: 'activas', sort: 'reciente' },
+  closet: { tab: 'prendas', q: '', cat: 'todas', avail: 'activas', sort: 'reciente', mode: 'grid' }, flipped: new Set(),
   plan: { tab: 'faltantes', explore: {}, filters: {}, result: {}, link: '' },
   circ: { threshold: {}, custom: '', flow: {}, period: 30 },
   profTab: 'esenciales', busy: new Set(), tests: null, exportText: '', importText: '', importMsg: null, sceneHint: true
@@ -2313,6 +2826,9 @@ const IC = {
   lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>',
   share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
+  qr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="14" y="3.5" width="6.5" height="6.5" rx="1"/><rect x="3.5" y="14" width="6.5" height="6.5" rx="1"/><path d="M14 14h3v3h-3zM17.5 17.5h3v3M14 20.5h2"/></svg>',
+  figure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.6" r="2.4"/><path d="M8 9h8l-1 6h-6zM9.5 15l-1 6.5M14.5 15l1 6.5"/></svg>',
+  palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.3 0 1.8-.9 1.8-1.8 0-1.2-1-1.6-1-2.6 0-1 .8-1.6 1.8-1.6h2.1a3.8 3.8 0 0 0 3.8-3.8C20.5 6.7 16.7 3.5 12 3.5z"/><circle cx="7.6" cy="11.5" r="1.2"/><circle cx="10" cy="7.4" r="1.2"/><circle cx="14.6" cy="7.4" r="1.2"/></svg>',
   hanger: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 17a5 5 0 1 1 5 5c-2.7 0-5 2-5 4.5v1.5"/><path d="M32 28 9 44c-2.4 1.7-1.2 5 1.7 5h42.6c2.9 0 4.1-3.3 1.7-5z"/></svg>'
 };
 const LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M33.5 13.5A15 15 0 1 0 35 20" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round"/><path d="M35 9.5v5.2h-5.2" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="20.3" y="27.2" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="21" fill="currentColor">R</text></svg>';
@@ -2322,11 +2838,17 @@ function availBadge(a) {
   const cls = a === 'disponible' ? 'ok' : ['por lavar', 'en lavandería'].includes(a) ? 'warn' : a === 'en reparación' ? 'bad' : GONE.includes(a) ? 'neutral' : 'info';
   return '<span class="badge ' + cls + '">' + esc(a) + '</span>';
 }
+/** Miniatura: muestra la ilustración y, si hay foto, se voltea como una carta para ver la foto real. */
 function thumb(item, opts) {
   opts = opts || {};
   const ph = photoFor(item);
-  const tag = opts.noTag ? '' : '<span class="tag">' + (ph ? 'Foto propia' : 'Ilustración') + '</span>';
-  return '<div class="thumb ' + (opts.cls || '') + '">' + (ph ? '<img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '">' : illusSVG(item)) + tag + '</div>';
+  const cls = opts.cls || '';
+  if (!ph) return '<div class="thumb ' + cls + '">' + illusSVG(item) + (opts.noTag ? '' : '<span class="tag">Ilustración</span>') + '</div>';
+  if (opts.noFlip) return '<div class="thumb ' + cls + '"><img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '">' + (opts.noTag ? '' : '<span class="tag">Tu foto</span>') + '</div>';
+  const key = S.space + ':' + item.id; const fl = UI.flipped.has(key);
+  return '<div class="thumb flip ' + cls + (fl ? ' flipped' : '') + '"' + (opts.style ? ' style="' + opts.style + '"' : '') + '><div class="flip-in"><div class="face front">' + illusSVG(item) + '</div><div class="face back"><img src="' + ph.url + '" alt="Foto de ' + esc(item.name) + '"></div></div>' +
+    (opts.noTag ? '' : '<span class="tag">' + (fl ? 'Tu foto' : 'Ilustración') + '</span>') +
+    '<button type="button" class="flip-btn" data-act="flip" data-key="' + esc(key) + '" aria-pressed="' + fl + '" aria-label="' + (fl ? 'Ver la ilustración de ' : 'Ver la foto real de ') + esc(item.name) + '">' + (fl ? IC.spark : IC.camera) + '</button></div>';
 }
 function matLabel(item) {
   const unk = /no confirmado|desconocido/.test(norm(item.material));
@@ -2468,6 +2990,7 @@ function render() {
   const modalScroll = mroot.querySelector('.modal') ? mroot.querySelector('.modal').scrollTop : 0;
   const carScroll = Array.from(document.querySelectorAll('[data-carousel]')).map((c) => c.scrollLeft);
   if (IS_PWA && UI.auth) { document.getElementById('app').innerHTML = renderAuth(); mroot.innerHTML = ''; renderTourLayer(); focusAuth(); return; }
+  if (ensureCodes(ws())) scheduleSave();
   document.getElementById('app').innerHTML = renderShell();
   mroot.innerHTML = UI.modal ? renderModal() : '';
   if (UI.modal && mroot.querySelector('.modal')) mroot.querySelector('.modal').scrollTop = modalScroll;
@@ -2588,7 +3111,7 @@ function todayBanner() {
   const w = ws();
   const l = w.wearLogs.filter((x) => x.ownerId === w.activeProfileId && x.date === TODAY && ['elegido', 'planificado', 'usado'].includes(x.status)).pop();
   if (!l) return '';
-  const thumbs = l.snapshot.items.slice(0, 3).map((s) => { const it = w.items.find((i) => i.id === s.id) || s; return '<span class="mini">' + thumb(Object.assign({ cut: 'regular' }, it), { noTag: true }) + '</span>'; }).join('');
+  const thumbs = l.snapshot.items.slice(0, 3).map((s) => { const it = w.items.find((i) => i.id === s.id) || s; return '<span class="mini">' + thumb(Object.assign({ cut: 'regular' }, it), { noTag: true, noFlip: true }) + '</span>'; }).join('');
   if (l.status === 'usado') {
     return '<div class="today-banner done" role="status"><span class="minis">' + thumbs + '</span><span class="stack tight" style="flex:1;min-width:0"><b>Hoy usaste «' + esc(l.snapshot.name) + '»</b><span class="small">Registrado: +1 uso en cada prenda.</span></span><button class="btn sm ghost" data-act="undoWear" data-log="' + l.id + '">Deshacer</button></div>';
   }
@@ -2695,7 +3218,7 @@ function outfitCard(c, idx, opts) {
   const anyPhoto = items.some((i) => photoFor(i));
   const pieces = '<ul class="clean pieces">' + items.map((i) => {
     const optional = roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'));
-    return '<li><span class="dot" style="background:' + colorHex(i.color) + '"></span><span style="min-width:0"><b>' + esc(i.name) + '</b> <span class="muted">· ' + esc(CATEGORIES[i.category] || i.category) + ' · ' + matLabel(i) + ' · corte ' + esc(i.cut) + '</span>' +
+    return '<li><span class="dot" style="background:' + (i.photoHex || colorHex(i.color)) + '"></span><span style="min-width:0"><b>' + esc(i.name) + '</b> <span class="code">' + esc(i.code || '') + '</span> <span class="muted">· ' + esc(CATEGORIES[i.category] || i.category) + ' · ' + matLabel(i) + ' · corte ' + esc(i.cut) + '</span>' +
       (optional ? ' <span class="chip" style="padding:1px 7px;font-size:11px">opcional</span>' : '') + (isUsable(i) ? '' : ' ' + availBadge(i.availability)) + '</span></li>';
   }).join('') + '</ul>';
   const units = '<ul class="clean units">' + comp.units.map((u) => {
@@ -2732,7 +3255,7 @@ function outfitCard(c, idx, opts) {
     '<div class="row between" style="flex-wrap:nowrap"><span class="role">' + esc(role) + '</span><span class="pct' + (partial ? ' partial' : '') + '"><b class="num">' + comp.percent + '% completo</b></span></div>' +
     '<h3>' + esc(c.name) + '</h3>' + collage + reasons +
     (partial ? '<div class="stack tight"><span class="small num muted">' + comp.covered + ' de ' + comp.total + ' unidades imprescindibles</span>' + units + '</div>' : '') +
-    primary + icons +
+    primary + (invalid ? '' : '<button type="button" class="btn ghost wide look-btn" data-act="lookOpen" data-key="' + esc(c.key) + '">' + IC.figure + 'Ver outfit completo</button>') + icons +
     '<details class="more"><summary>Detalles: prendas, completitud y cómo llevarlo</summary><div class="stack" style="margin-top:10px">' +
     '<div class="row" style="gap:4px"><span class="chip">' + esc(c.style || '') + '</span><span class="chip info" title="Sugerencia por reglas de demostración, sin IA">' + source + '</span></div>' +
     pieces + '<div class="stack tight"><div class="row between"><b class="small">Completitud</b><span class="small muted num">' + comp.covered + ' de ' + comp.total + ' unidades</span></div><div class="meter' + (partial ? ' partial' : '') + '" role="img" aria-label="' + comp.percent + ' por ciento"><i style="width:' + comp.percent + '%"></i></div>' + (partial ? '' : units) +
@@ -2790,7 +3313,7 @@ function renderItems() {
     if (c.avail === 'disponibles' && !isUsable(i)) return false;
     if (c.avail === 'no disponibles' && (isUsable(i) || isGone(i))) return false;
     if (c.avail === 'salieron' && !isGone(i)) return false;
-    if (q && !norm([i.name, i.color, i.material, i.weave, i.subtype, i.id, (i.tags || []).join(' ')].join(' ')).includes(q)) return false;
+    if (q && !norm([i.name, i.color, i.material, i.weave, i.subtype, i.id, i.code, (i.tags || []).join(' ')].join(' ')).includes(q)) return false;
     return true;
   }).map((i) => ({ i, st: itemStats(w, i) }));
   const lu = (x) => x.st.lastUsed || '0000';
@@ -2805,11 +3328,11 @@ function renderItems() {
     (UI.closet.showFilters ? '<div class="form-grid">' + fSelect('closet-av', 'Disponibilidad', 'ui', 'closet.avail', c.avail, [['activas', 'Activas'], ['disponibles', 'Disponibles'], ['no disponibles', 'No disponibles'], ['salieron', 'Vendidas o donadas'], ['todas', 'Todas']]) +
       fSelect('closet-sort', 'Ordenar', 'ui', 'closet.sort', c.sort, [['reciente', 'Último uso: reciente'], ['olvidadas', 'Último uso: más antiguo'], ['usos', 'Más usadas'], ['nombre', 'Nombre']]) + '</div>' : '') +
     '<div class="chip-scroll">' + ['todas'].concat(cats).filter((k) => k === 'todas' || all.some((i) => i.category === k)).map((k) => '<button class="chip btnchip" data-act="closetCat" data-cat="' + esc(k) + '" aria-pressed="' + (c.cat === k) + '">' + esc(k === 'todas' ? 'Todas' : CATEGORIES[k] || k) + ' <span class="num">' + (k === 'todas' ? all.length : all.filter((i) => i.category === k).length) + '</span></button>').join('') + '</div>' +
-    '<div class="row between"><span class="tiny muted"><b class="num">' + all.filter((i) => !isGone(i)).length + '</b> activas · <b class="num">' + avail + '</b> disponibles' + (isDemo() ? ' · fichas ficticias' : '') + '</span><button class="btn sm ghost" data-act="quickWear">Registrar uso rápido</button></div></div>';
-  const grid = list.length ? '<div class="grid items">' + list.map(({ i, st }) => '<button type="button" class="item-card' + (isGone(i) ? ' gone' : '') + '" data-act="openItem" data-item="' + i.id + '">' + thumb(i) +
-    '<span class="name">' + esc(i.name) + '</span><span class="row" style="gap:4px">' + availBadge(i.availability) + '</span>' +
-    '<span class="meta">' + (st.lastUsed ? 'Último uso ' + relDays(daysBetween(st.lastUsed, TODAY)) : 'Sin usos registrados') + ' · <span class="num">' + st.wearCount + '</span> usos</span></button>').join('') + '</div>'
-    : emptyState(all.length ? 'Nada coincide con los filtros' : 'Tu armario está vacío', all.length ? 'Prueba otra búsqueda o categoría.' : 'Registra una prenda con o sin foto. Con superior, inferior y calzado ya hay outfits.', '<button class="btn primary" data-act="addItem">Agregar prenda</button>');
+    '<div class="row between"><div class="seg2 mini" role="group" aria-label="Vista"><button type="button" data-act="closetMode" data-val="grid" aria-pressed="' + (c.mode !== 'tipo') + '">Todas</button><button type="button" data-act="closetMode" data-val="tipo" aria-pressed="' + (c.mode === 'tipo') + '">Por tipo</button></div>' +
+    '<span class="tiny muted"><b class="num">' + all.filter((i) => !isGone(i)).length + '</b> activas · <b class="num">' + avail + '</b> disponibles' + (isDemo() ? ' · ficticias' : '') + '</span></div>' +
+    washBar(all) + '<div class="row"><button class="btn sm ghost" data-act="quickWear">Registrar uso rápido</button>' + (IS_PWA ? '<button class="btn sm ghost" data-act="labelsOpen">' + IC.qr + 'Etiquetas QR</button>' : '') + '</div></div>';
+  const grid = list.length ? (c.mode === 'tipo' ? renderItemGroups(list) : '<div class="grid items">' + list.map(({ i, st }) => itemCard(i, st)).join('') + '</div>')
+    : emptyState(all.length ? 'Nada coincide con los filtros' : 'Tu armario está vacío', all.length ? 'Prueba otra búsqueda o categoría.' : 'Toma una foto, elige qué es y su color. Con una parte de arriba, una de abajo y calzado ya hay outfits.', '<button class="btn primary" data-act="addItem">' + IC.camera + 'Agregar prenda</button>');
   return filters + grid;
 }
 function miniCollage(itemIds) {
@@ -2826,7 +3349,7 @@ function renderSaved() {
     return '<article class="outfit"><span class="role">Guardado · ' + esc(ctx ? ctx.name : 'sin contexto') + '</span><h3>' + esc(s.name) + '</h3>' + miniCollage(s.itemIds) +
       '<span class="small muted">' + esc(s.itemIds.map((id) => (w.items.find((i) => i.id === id) || { name: id }).name).join(', ')) + '</span>' +
       (gone.length ? '<div class="note bad">Incluye prendas que ya no están disponibles para nuevas sugerencias.</div>' : '') +
-      '<div class="row">' + (gone.length ? '' : '<button class="btn sm primary" data-act="useSaved" data-id="' + s.id + '">Lo usaré hoy</button>') + '<button class="btn sm ghost" data-act="unsave" data-id="' + s.id + '">Quitar de guardados</button></div></article>';
+      '<div class="row">' + (gone.length ? '' : '<button class="btn sm primary" data-act="useSaved" data-id="' + s.id + '">Lo usaré hoy</button><button class="btn sm" data-act="lookSaved" data-id="' + s.id + '">' + IC.figure + 'Verlo puesto</button>') + '<button class="btn sm ghost" data-act="unsave" data-id="' + s.id + '">Quitar de guardados</button></div></article>';
   }).join('') + '</div>';
 }
 const LOG_STATUS = { elegido: ['info', 'Elegido (intención)'], planificado: ['info', 'Planificado'], usado: ['ok', 'Usado (confirmado)'], deshecho: ['neutral', 'Uso deshecho'], descartado: ['neutral', 'Elección cancelada'] };
@@ -2882,9 +3405,11 @@ function renderNeeds() {
   const reqCards = reqs.length ? reqs.map(renderRequirement).join('') : '<div class="card">' + emptyState('Sin faltantes guardados', 'Cuando a un outfit le falte una pieza, regístrala desde la tarjeta o aquí.', '<button class="btn" data-act="newReq">Registrar un faltante</button>') + '</div>';
   const plans = w.plans.filter((x) => x.ownerId === p.id);
   const quotes = w.quotes.filter((q) => q.ownerId === p.id);
-  const sugg = versatileSuggestions(w, p.id);
+  const styled = styleCompleteness(p).paletteReady;
+  const sugg = styled ? styleSuggestions(w, p.id, p, 4) : versatileSuggestions(w, p.id);
   const value = '<div class="stack">' + sectionTitle('Lo que suma a mi armario', '', 'Valor estimado por combinaciones') +
     '<p class="small muted" style="max-width:70ch">Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.</p>' +
+    (styled ? '' : '<div class="card explore row between"><span class="small" style="flex:1;min-width:200px"><b>Sugerencias a tu medida.</b> Con tu subtono, tono de piel y forma del rostro, RELISTO elige colores y cuellos de tu paleta.</span><button class="btn sm primary" data-act="styleOpen">' + IC.palette + 'Completar en 1 minuto</button></div>') +
     (sugg.length ? '<div class="grid two">' + sugg.map((s) => valueCard(s)).join('') + '</div>' : '<div class="note">Con tu armario actual no hay una prenda versátil que sume combinaciones sin duplicar algo que ya tienes.</div>') + '</div>';
   const plansHTML = '<div class="card stack"><span class="eyebrow">Planes de compra</span>' + (plans.length ? plans.map((pl) => '<div class="row between"><span><b>' + esc(pl.id) + '</b> · ' + esc(pl.reason || '') + '<br><span class="small muted">Presupuesto ' + fmtPEN(pl.budgetPEN) + ' · fecha planificada ' + fmtDate(pl.plannedDate) + '</span></span><span class="badge info">' + esc(pl.status) + '</span></div>').join('<hr class="sep">') : '<span class="small muted">Sin planes por ahora.</span>') + '</div>';
   const quotesHTML = '<div class="card stack"><span class="eyebrow">Cotizaciones y enlaces guardados</span>' + (quotes.length ? quotes.map((q) => '<div class="row between"><span><b>' + esc(q.label) + '</b><br><span class="small muted">' + esc(q.detail) + ' · guardada ' + fmtDate(q.date) + '</span></span><span class="badge ' + (q.kind === 'link' ? 'neutral' : 'warn') + '">' + esc(q.status) + '</span></div>').join('<hr class="sep">') + '<p class="tiny muted">Actualiza precios y stock antes de comprar: una cotización guardada puede cambiar.</p>' : '<span class="small muted">Aún no guardas cotizaciones.</span>') + '</div>';
@@ -2894,7 +3419,8 @@ function renderNeeds() {
 function valueCard(s) {
   const c = s.candidate; const open = UI.plan.openValue === c.id;
   return '<div class="card stack"><div class="row" style="flex-wrap:nowrap"><div style="width:76px;flex:none">' + thumb(c, { noTag: true }) + '</div><div class="stack tight"><b>' + esc(c.name) + '</b><span class="small">Esta prenda abre nuevas combinaciones: permitiría <b class="num">' + s.added.length + '</b> combinaciones nuevas con tus prendas (de ' + s.before + ' a ' + s.after + ').</span></div></div>' +
-    '<span class="tiny muted">Candidata hipotética: talla y material no confirmados. Sugerencia por reglas de demostración.</span>' +
+    (s.reasons ? '<ul class="clean why stack tight">' + s.reasons.slice(1, 4).map((r) => '<li>' + esc(r) + '</li>').join('') + '</ul>' : '') +
+    '<span class="tiny muted">Candidata hipotética: talla y material no confirmados. ' + (s.reasons ? 'Sugerencia por tu paleta y reglas de combinación.' : 'Sugerencia por reglas de demostración.') + '</span>' +
     '<div class="row"><button class="btn sm" data-act="toggleValue" data-id="' + c.id + '" aria-expanded="' + open + '">' + (open ? 'Ocultar combinaciones' : 'Ver las ' + s.added.length + ' combinaciones') + '</button><button class="btn sm ghost" data-act="similarCheck" data-name="' + esc(c.name) + '">Ya tengo algo parecido</button></div>' +
     (open ? '<ol class="small" style="margin:0;padding-left:20px;display:grid;gap:3px">' + s.added.map((a) => '<li>' + esc(a.items.map((i) => i.name).join(' + ')) + ' <span class="muted">(' + esc(a.contexts.join(', ')) + ')</span></li>').join('') + '</ol>' : '') + '</div>';
 }
@@ -3094,12 +3620,12 @@ function renderCircular() {
 const MONK = ['#f6ede4', '#f3e7db', '#f7ead0', '#eadaba', '#d7bd96', '#a07e56', '#825c43', '#604134', '#3a312a', '#292420'];
 function renderProfile() {
   const p = prof(); const t = UI.profTab;
-  const tabs = [['esenciales', 'Lo esencial'], ['medidas', 'Medidas y ajuste'], ['color', 'Color'], ['comodidad', 'Comodidad'], ['estilo', 'Estilo'], ['datos', 'Privacidad y datos']];
+  const tabs = [['esenciales', 'Lo esencial'], ['medidas', 'Medidas y ajuste'], ['color', 'Color y rostro'], ['figura', 'Tu figura'], ['comodidad', 'Comodidad'], ['estilo', 'Estilo'], ['datos', 'Privacidad y datos']];
   const tabsHTML = '<div class="tabs" role="tablist">' + tabs.map(([id, l]) => '<button role="tab" type="button" data-act="profTab" data-tab="' + id + '" aria-selected="' + (t === id) + '">' + l + '</button>').join('') + '</div>';
   const skip = (section) => '<button class="btn sm ghost" data-act="skip" data-section="' + section + '">Prefiero omitir</button>';
   let body = '';
   if (t === 'esenciales') {
-    body = '<div class="card stack"><p class="small muted">Solo lo mínimo para empezar: nombre o alias, un estilo y una ocasión. Todo lo demás es opcional y puedes completarlo después.</p><div class="form-grid">' +
+    body = renderStyleNudge(false) + '<div class="card stack"><p class="small muted">Solo lo mínimo para empezar: nombre o alias, un estilo y una ocasión. Todo lo demás es opcional y puedes completarlo después.</p><div class="form-grid">' +
       fInput('p-name', 'Nombre o alias', 'prof', 'name', p.name) +
       fSelect('p-gender', 'Género', 'prof', 'gender', p.gender, ['masculino', 'femenino', 'otro', 'autodescripción', 'prefiero no indicarlo']) +
       (p.gender === 'autodescripción' ? fInput('p-gself', 'Autodescripción', 'prof', 'genderSelf', p.genderSelf || '') : '') +
@@ -3122,10 +3648,16 @@ function renderProfile() {
       '<g font-size="11" fill="var(--ink-2)" font-family="Manrope, sans-serif"><text x="134" y="82">pecho</text><text x="130" y="108">cintura</text><text x="130" y="132">cadera</text><text x="106" y="190">entrepierna</text></g></svg>' +
       '<ul class="small" style="margin:0;padding-left:18px;display:grid;gap:4px"><li>Usa una cinta flexible, sobre ropa ligera, sin apretar.</li><li>Pecho/busto: la parte más amplia, cinta horizontal.</li><li>Cintura: la parte más estrecha del torso.</li><li>Cadera: la parte más amplia, con pies juntos.</li><li>Entrepierna: desde la ingle hasta el suelo, sin calzado.</li><li>Pie: del talón al dedo más largo, de pie.</li></ul></div></div>';
   } else if (t === 'color') {
-    body = '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
-      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad, y no requiere fotos de tu cuerpo o rostro.</span>' +
-      '<div class="form-grid">' + fSelect('p-under', 'Subtono', 'prof', 'undertone', p.undertone, ['cálido', 'frío', 'neutro', 'oliva', 'no sé']) + fInput('p-hair', 'Cabello (opcional)', 'prof', 'hair', p.hair) + fInput('p-eyes', 'Ojos (opcional)', 'prof', 'eyes', p.eyes) + '</div>' +
-      '<p class="small muted">Las armonías de color son sugerencias flexibles y editables, no reglas.</p><div class="row">' + skip('color') + '</div></div>';
+    body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(k) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
+      '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="no sé" aria-pressed="' + (p.undertone === 'no sé') + '"><b>No sé</b><span class="tiny">Prueba: ¿te favorecen más las joyas doradas (cálido) o plateadas (frío)? ¿Ambas? (neutro)</span></button></div></div>' +
+      '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
+      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad.</span></div>' +
+      '<div class="card stack"><span class="eyebrow">Forma del rostro (visagismo, opcional)</span>' + faceShapePicker(p) + '</div>' +
+      '<div class="card stack"><span class="eyebrow">Cabello y ojos (opcional)</span><div class="field"><span class="lbl">Color de cabello</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
+      '<div class="form-grid">' + fInput('p-eyes', 'Ojos', 'prof', 'eyes', p.eyes) + '</div></div>' +
+      renderPaletteCard(p) + '<p class="small muted">Las armonías de color y el visagismo son sugerencias flexibles basadas en lo que declaras, no reglas. Tu gusto manda.</p><div class="row">' + skip('color') + '</div>';
+  } else if (t === 'figura') {
+    body = renderFigureTab();
   } else if (t === 'comodidad') {
     body = '<div class="card stack"><div class="form-grid">' + fSelect('p-heat', 'Sensibilidad al calor', 'prof', 'comfort.calor', p.comfort.calor, ['baja', 'normal', 'alta']) + fSelect('p-cold', 'Sensibilidad al frío', 'prof', 'comfort.frio', p.comfort.frio, ['baja', 'normal', 'alta']) +
       fSelect('p-cov', 'Preferencia de cobertura', 'prof', 'comfort.coverage', p.comfort.coverage, ['sin preferencia', 'más cobertura', 'cobertura estándar', 'menos cobertura']) + fInput('p-mob', 'Movilidad (opcional)', 'prof', 'comfort.mobility', p.comfort.mobility) + '</div>' +
@@ -3253,7 +3785,7 @@ function renderModal() {
     case 'onboard': return renderOnboard(m);
     case 'quickWear': {
       const items = ownedItems(w, w.activeProfileId).filter(isUsable);
-      return modalWrap('Registrar uso rápido', '<p class="small muted">Para una prenda que usaste sin un outfit guardado. Cuenta como uso confirmado hoy.</p><div class="grid items">' + items.map((i) => '<button class="item-card" data-act="quickWearItem" data-item="' + i.id + '">' + thumb(i, { noTag: true }) + '<span class="name">' + esc(i.name) + '</span></button>').join('') + '</div>');
+      return modalWrap('Registrar uso rápido', '<p class="small muted">Para una prenda que usaste sin un outfit guardado. Cuenta como uso confirmado hoy.</p><div class="grid items">' + items.map((i) => '<button class="item-card" data-act="quickWearItem" data-item="' + i.id + '">' + thumb(i, { noTag: true, noFlip: true }) + '<span class="name">' + esc(i.name) + '</span></button>').join('') + '</div>');
     }
     default: return '';
   }
@@ -3303,7 +3835,7 @@ function renderItemForm(m) {
   }).join('') + '</div></div>';
   const types = QUICK_TYPES[d.category] || [];
   const typeChips = types.length ? '<div class="field"><span class="lbl">Tipo</span><div class="chip-scroll">' + types.map((t) => '<button type="button" class="chip btnchip" data-act="mfSet" data-path="subtype" data-val="' + esc(t) + '" aria-pressed="' + (d.subtype === t) + '">' + esc(t) + '</button>').join('') + '</div></div>' : '';
-  const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
+  const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + (m.detected ? ' <span class="chip explore" style="padding:1px 8px">' + (norm(d.color) === norm(m.detected) ? 'detectado en tu foto' : 'en tu foto parece ' + esc(m.detected)) + '</span>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
   const nameField = '<div class="field"><label for="if-name">Nombre' + (quick ? ' (opcional)' : ' *') + '</label><input class="input" id="if-name" value="' + esc(d.name || '') + '" placeholder="' + esc(suggestedName(d)) + '"' + bindAttr('mf', 'name') + '></div>';
   const details = '<div class="form-grid">' +
     (quick ? '' : fSelect('if-cat', 'Categoría *', 'mf', 'category', CATEGORIES[d.category] ? d.category : '__custom', catOpts)) +
@@ -3356,7 +3888,7 @@ function renderSwap(m) {
   const altList = (role, current, slot) => {
     const alts = owned.filter((i) => roleOf(i) === role && (!current || i.id !== current.id) && !c.itemIds.includes(i.id) && meetsHard(i, (d.hard || {})[slot]));
     if (!alts.length) return '<span class="small muted">No tienes alternativas compatibles registradas.</span>';
-    return '<div class="grid items">' + alts.map((a) => '<button class="item-card" data-act="' + (current ? 'swapTo' : 'addPiece') + '" data-from="' + (current ? current.id : '') + '" data-to="' + a.id + '"' + (isUsable(a) ? '' : ' aria-disabled="true"') + '>' + thumb(a, { noTag: true }) + '<span class="name">' + esc(a.name) + '</span>' +
+    return '<div class="grid items">' + alts.map((a) => '<button class="item-card" data-act="' + (current ? 'swapTo' : 'addPiece') + '" data-from="' + (current ? current.id : '') + '" data-to="' + a.id + '"' + (isUsable(a) ? '' : ' aria-disabled="true"') + '>' + thumb(a, { noTag: true, noFlip: true }) + '<span class="name">' + esc(a.name) + '</span>' +
       (isUsable(a) ? (formalityOk(a, d) ? '' : '<span class="badge warn">menos adecuada al código</span>') : availBadge(a.availability)) + '</button>').join('') + '</div>';
   };
   const slotRole = { superior: 'top', inferior: 'bottom', calzado: 'shoes', capa: 'layer' };
@@ -3370,7 +3902,7 @@ function renderSwap(m) {
   });
   const optional = items.filter((i) => roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa')));
   const optHTML = '<div class="stack tight"><b>Opcionales (no cambian la completitud)</b>' + (optional.length ? '<div class="row">' + optional.map((i) => '<span class="chip">' + esc(i.name) + ' <button class="btn sm ghost" style="padding:2px 6px" data-act="removePiece" data-item="' + i.id + '" aria-label="Quitar ' + esc(i.name) + '">' + IC.x + '</button></span>').join('') + '</div>' : '<span class="small muted">Sin accesorios.</span>') +
-    '<details class="more"><summary>Añadir accesorio o capa opcional</summary><div style="margin-top:8px"><div class="grid items">' + owned.filter((i) => (roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'))) && !c.itemIds.includes(i.id) && isUsable(i)).map((a) => '<button class="item-card" data-act="addPiece" data-to="' + a.id + '">' + thumb(a, { noTag: true }) + '<span class="name">' + esc(a.name) + '</span></button>').join('') + '</div></div></details></div>';
+    '<details class="more"><summary>Añadir accesorio o capa opcional</summary><div style="margin-top:8px"><div class="grid items">' + owned.filter((i) => (roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'))) && !c.itemIds.includes(i.id) && isUsable(i)).map((a) => '<button class="item-card" data-act="addPiece" data-to="' + a.id + '">' + thumb(a, { noTag: true, noFlip: true }) + '<span class="name">' + esc(a.name) + '</span></button>').join('') + '</div></div></details></div>';
   return modalWrap('Cambiar una prenda', '<p class="small muted">Solo aparecen prendas registradas de este perfil. Las no disponibles se muestran con su estado y no se pueden elegir.</p>' + blocks.join('<hr class="sep">') + '<hr class="sep">' + optHTML, { eyebrow: c.name });
 }
 function renderPlanModal(m) {
@@ -3702,7 +4234,7 @@ const ACT = {
   addItem: () => openModal({ type: 'item', mode: 'add', draft: blankItemDraft() }),
   reusePhoto: (el) => { const ph = photoFor(w_item(el.dataset.item)); openModal({ type: 'item', mode: 'add', draft: blankItemDraft(), photo: ph ? Object.assign({}, ph) : null }); },
   dupDismiss: () => { UI.modal.dupes = null; render(); },
-  itemSave: (el) => { const mm = UI.modal; mm._gid = mm._gid || String(Math.random()).slice(2); guard('is' + mm._gid, () => {
+  itemSave: (el) => { const mm = UI.modal; mm._gid = mm._gid || String(Math.random()).slice(2); guard('is' + mm._gid + (el.dataset.force ? 'f' : ''), () => {
     const m = UI.modal; const w = ws(); const d = Object.assign({}, m.draft);
     if (d.category === '__custom') d.category = norm(d.customCategory || '') || 'otra';
     if (!CATEGORIES[d.category] && d.customCategory) d.category = norm(d.customCategory);
@@ -4062,7 +4594,10 @@ Object.assign(ACT, {
     const m = UI.modal; if (!m || !m.draft) return; const d = m.draft; const v = el.dataset.val;
     if (el.dataset.path === 'category') { if (d.category !== v) { d.category = v; d.subtype = ''; } }
     else if (el.dataset.path === 'subtype') d.subtype = d.subtype === v ? '' : v;
-    else if (el.dataset.path === 'color') d.color = norm(d.color) === norm(v) ? '' : v;
+    else if (el.dataset.path === 'color') {
+      d.color = v;
+      d.photoHex = m.detectedHex && norm(d.color) === norm(m.detected || '') ? m.detectedHex : null;
+    }
     render();
   },
   share: () => shareApp(),
@@ -4132,6 +4667,271 @@ document.addEventListener('submit', (e) => {
   if (UI.auth && UI.auth.busy) return;
   if (kind === 'signup') doSignup(); else if (kind === 'login') doLogin(); else if (kind === 'recover') doRecover();
 });
+/* =====================================================================
+   RELISTO 3: cartas que se voltean, códigos por prenda, agrupación,
+   perfil de estilo con paleta y visagismo, figura ilustrada,
+   "Ver outfit completo", lavado rápido y etiquetas QR.
+   ===================================================================== */
+
+/* ---------- Armario: cartas, grupos y lavado ---------- */
+function siblingsOf(item) { return ownedItems(ws(), item.ownerId).filter((i) => !isGone(i) && i.subtype === item.subtype && norm(i.color) === norm(item.color)); }
+function itemCard(i, st) {
+  const sib = siblingsOf(i); const idx = sib.findIndex((x) => x.id === i.id);
+  return '<div class="item-card' + (isGone(i) ? ' gone' : '') + '" data-act="openItem" data-item="' + i.id + '">' + thumb(i) +
+    '<button type="button" class="item-open" data-act="openItem" data-item="' + i.id + '"><span class="row between" style="flex-wrap:nowrap;gap:6px"><span class="name">' + esc(i.name) + '</span><span class="code">' + esc(i.code || '') + '</span></span>' +
+    '<span class="row" style="gap:4px">' + availBadge(i.availability) + (sib.length > 1 ? '<span class="chip info" style="padding:1px 7px;font-size:11px">' + (idx + 1) + ' de ' + sib.length + '</span>' : '') + '</span>' +
+    '<span class="meta">' + (st.lastUsed ? 'Último uso ' + relDays(daysBetween(st.lastUsed, TODAY)) : 'Sin usos registrados') + ' · <span class="num">' + st.wearCount + '</span> usos</span></button></div>';
+}
+function renderItemGroups(list) {
+  const groups = new Map();
+  list.forEach((x) => { const k = x.i.category + '|' + x.i.subtype + '|' + norm(x.i.color); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(x); });
+  const byCat = {};
+  groups.forEach((arr, k) => { const cat = k.split('|')[0]; (byCat[cat] = byCat[cat] || []).push(arr); });
+  return Object.keys(CATEGORIES).concat(Object.keys(byCat).filter((c) => !CATEGORIES[c])).filter((c) => byCat[c]).map((cat) => {
+    const rows = byCat[cat].sort((a, b) => b.length - a.length || a[0].i.subtype.localeCompare(b[0].i.subtype, 'es'));
+    return '<section class="stack tight"><div class="row between"><h3 class="serif" style="font-size:21px">' + esc(CATEGORIES[cat] || cat) + '</h3><span class="tiny muted">' + plural(rows.reduce((a, r) => a + r.length, 0), 'prenda', 'prendas') + '</span></div>' +
+      rows.map((arr) => {
+        const i0 = arr[0].i;
+        const head = '<div class="group-head"><span class="dot" style="background:' + (i0.photoHex || colorHex(i0.color)) + '"></span><b>' + esc(cap1(i0.subtype)) + ' · ' + esc(i0.color) + '</b>' + (arr.length > 1 ? '<span class="chip info">×' + arr.length + '</span><span class="tiny muted">Distínguelas por su código y foto</span>' : '') + '</div>';
+        return '<div class="group">' + head + '<div class="chip-scroll group-row">' + arr.map(({ i, st }) => itemCard(i, st)).join('') + '</div></div>';
+      }).join('') + '</section>';
+  }).join('');
+}
+function washBar(all) {
+  const dirty = all.filter((i) => ['por lavar', 'en lavandería'].includes(i.availability));
+  if (!dirty.length) return '';
+  return '<div class="wash-bar"><span class="small"><b class="num">' + dirty.length + '</b> ' + (dirty.length === 1 ? 'prenda por lavar' : 'prendas por lavar') + ': ' + esc(dirty.slice(0, 3).map((i) => i.name).join(', ')) + (dirty.length > 3 ? '…' : '') + '</span><button type="button" class="btn sm" data-act="washAll">Ya las lavé</button></div>';
+}
+const _todayBanner = todayBanner;
+todayBanner = function () { // eslint-disable-line no-func-assign
+  const html = _todayBanner(); if (!html) return html;
+  const w = ws(); const l = w.wearLogs.filter((x) => x.ownerId === w.activeProfileId && x.date === TODAY && x.status === 'usado').pop();
+  if (!l || html.indexOf('today-banner done') < 0) return html;
+  const clothes = l.snapshot.items.map((s) => w.items.find((i) => i.id === s.id)).filter((i) => i && !isGone(i) && ['top', 'bottom', 'full', 'layer'].includes(roleOf(i)) && ['disponible', 'por lavar'].includes(i.availability));
+  if (!clothes.length) return html;
+  const row = '<div class="wash-row"><span class="tiny">¿Algo va a lavar?</span>' + clothes.map((i) => '<button type="button" class="chip btnchip" data-act="washToggle" data-item="' + i.id + '" aria-pressed="' + (i.availability === 'por lavar') + '">' + esc(i.name) + '</button>').join('') + '</div>';
+  return html.slice(0, html.lastIndexOf('</div>')) + row + '</div>';
+};
+
+/* ---------- Ficha de prenda ---------- */
+function itemUrl(code) { return location.origin + location.pathname + '#p-' + code; }
+renderItemView = function (m) { // eslint-disable-line no-func-assign
+  const w = ws(); const i = w_item(m.itemId); if (!i) return '';
+  const st = itemStats(w, i); const ds = daysSinceUse(w, i, TODAY);
+  const logs = w.wearLogs.filter((l) => l.status === 'usado' && l.snapshot.items.some((s) => s.id === i.id)).sort((a, b) => b.date.localeCompare(a.date));
+  const row = (k, v) => '<tr><th scope="row">' + k + '</th><td>' + v + '</td></tr>';
+  const ph = photoFor(i); const sib = siblingsOf(i).filter((x) => x.id !== i.id);
+  const visual = '<div class="stack tight">' + thumb(i, { cls: 'xl' }) + (ph ? '<span class="tiny muted">Toca ' + IC.camera.replace('<svg', '<svg style="width:14px;height:14px;vertical-align:-2px"') + ' para voltear entre la ilustración y tu foto. La ilustración usa el color de tu foto.</span>' : '<span class="tiny muted">Ilustración generada por categoría, color y corte. Agrega una foto para verla al voltear la carta.</span>') + '</div>';
+  const codeBlock = '<div class="code-block"><span class="eyebrow">Código de la prenda</span><b class="code-big">' + esc(i.code || '—') + '</b>' +
+    (sib.length ? '<span class="small">Tienes ' + plural(sib.length + 1, 'prenda igual', 'prendas iguales') + ' (' + esc(i.subtype + ' ' + i.color) + '):</span><div class="row">' + sib.map((x) => '<button type="button" class="chip btnchip" data-act="openItem" data-item="' + x.id + '">' + esc(x.code) + ' · ' + esc(x.name) + '</button>').join('') + '</div>' : '<span class="tiny muted">Único en tu armario con este tipo y color.</span>') +
+    (IS_PWA && i.code ? '<details class="more"><summary>Etiqueta QR para la percha o caja</summary><div class="label-preview">' + QR.svg(itemUrl(i.code), { label: 'Código QR de ' + i.code }) + '<span class="stack tight"><b>' + esc(i.code) + '</b><span class="small">' + esc(i.name) + '</span><span class="tiny muted">Escanéala con la cámara del celular para abrir esta prenda en RELISTO.</span></span></div><div class="row"><button class="btn sm" data-act="labelsPrint" data-one="' + i.id + '">Imprimir esta etiqueta</button></div></details>' : '') + '</div>';
+  return modalWrap(i.name, '<div class="grid two"><div class="stack">' + visual + codeBlock +
+    '<div class="field"><label for="iv-av">Disponibilidad</label><select class="input" id="iv-av" data-act-change="avail" data-item="' + i.id + '"' + (isGone(i) ? ' disabled' : '') + '>' + AVAILABILITY.map((a) => opt(a, i.availability)).join('') + '</select></div>' +
+    '<div class="row"><button class="btn sm primary" data-act="useItem" data-item="' + i.id + '"' + (isUsable(i) ? '' : ' disabled') + '>Quiero usar esta prenda</button><button class="btn sm" data-act="itemUseToday" data-item="' + i.id + '"' + (isGone(i) ? ' disabled' : '') + '>Registrar uso hoy</button></div>' +
+    '<div class="row"><button class="btn sm ghost" data-act="editItem" data-item="' + i.id + '">Editar ficha</button>' + (ph ? '<button class="btn sm ghost" data-act="reusePhoto" data-item="' + i.id + '">Usar esta foto para otra prenda</button>' : '') + '</div></div>' +
+    '<div class="stack"><div class="kpis"><div class="kpi"><b class="num">' + st.wearCount + '</b><span>usos' + (i.baselineWearCount ? ' (' + i.baselineWearCount + ' anteriores' + (i.origin === 'demo' ? ', simulados' : '') + ')' : '') + '</span></div><div class="kpi"><b class="num">' + (st.lastUsed ? relDays(ds.days) : '—') + '</b><span>último uso</span></div>' + (i.price ? '<div class="kpi"><b class="num">' + (st.wearCount ? fmtPEN(Math.round(i.price / st.wearCount * 10) / 10) : '—') + '</b><span>costo por uso</span></div>' : '') + '</div>' +
+    '<div class="table-wrap"><table><tbody>' + row('Código', esc(i.code || '—')) + row('Categoría', esc(CATEGORIES[i.category] || i.category) + ' · ' + esc(i.subtype)) + row('Color', '<span class="dot" style="display:inline-block;vertical-align:-1px;background:' + (i.photoHex || colorHex(i.color)) + '"></span> ' + esc(i.color) + (i.photoHex ? ' <span class="tiny muted">(tono tomado de tu foto)</span>' : '') + ' · ' + esc(i.pattern || 'liso')) +
+    row('Fibra o material', matLabel(i)) + row('Tejido o acabado', esc(i.weave || '—')) + row('Corte', esc(i.cut)) + row('Talla', esc(i.size || '—') + ' ' + esc(i.sizeSystem || '')) +
+    row('Formalidad', esc(['', 'casual', 'smart casual', 'business casual', 'formal'][i.formality] || i.formality)) + row('Precio', i.price ? fmtPEN(i.price) + (i.origin === 'demo' ? ' (ficticio)' : '') : '—') +
+    row('Incorporada', fmtDate(i.createdAt)) + row('Último uso', st.lastUsed ? fmtDate(st.lastUsed) : 'sin usos registrados') + row('Origen de los datos', esc(i.attributeSource)) + (i.repairEstimate ? row('Reparación', 'estimado de ejemplo ' + fmtPEN(i.repairEstimate) + ', ' + i.repairReadyDays + ' días') : '') + '</tbody></table></div>' +
+    '<details class="more"><summary>Excluir de revisiones de desuso</summary><div class="row" style="margin-top:6px">' + ['temporada', 'ceremonial', 'sentimental', 'trabajo', 'guardada'].map((k) => '<button class="chip btnchip" data-act="toggleExclusion" data-item="' + i.id + '" data-k="' + k + '" aria-pressed="' + !!i.exclusions[k] + '">' + k + '</button>').join('') + '</div></details>' +
+    '<div class="stack tight"><span class="eyebrow">Historial de uso</span>' + (logs.length ? logs.slice(0, 6).map((l) => '<span class="small">' + fmtDate(l.date) + ' · ' + esc(l.snapshot.name) + '</span>').join('') : '<span class="small muted">Sin registros en la app.</span>') + '</div></div></div>', { eyebrow: (i.code ? i.code + ' · ' : '') + (CATEGORIES[i.category] || i.category) });
+};
+
+/* ---------- Perfil de estilo: incentivo, paleta y rostro ---------- */
+function renderStyleNudge(inline) {
+  const p = prof(); if (!p) return '';
+  const c = styleCompleteness(p);
+  if (c.percent === 100 && !inline) return '';
+  const meter = '<div class="meter" role="img" aria-label="' + c.percent + ' por ciento"><i style="width:' + c.percent + '%;background:var(--accent)"></i></div>';
+  if (c.percent === 100) return '<div class="card soft row between"><span class="small"><b>Tu perfil de estilo está completo.</b> Las sugerencias usan tu paleta y tu rostro.</span><button class="btn sm" data-act="styleOpen">Revisar</button></div>';
+  return '<div class="style-nudge"><div class="row between" style="flex-wrap:nowrap;gap:10px"><span class="stack tight" style="min-width:0"><span class="eyebrow" style="color:inherit">Tu perfil de estilo · ' + c.percent + '%</span><b>' + (c.paletteReady ? 'Afina tus sugerencias' : 'Descubre tu paleta personal') + '</b></span>' + IC.palette.replace('<svg', '<svg class="nudge-ic"') + '</div>' + meter +
+    '<span class="small">Con tu subtono, tono de piel y forma del rostro, RELISTO elige colores y cuellos que suelen armonizar contigo, y sugiere qué prenda sumaría más a tu armario.</span>' +
+    '<span class="tiny">Falta: ' + esc(c.missing.slice(0, 4).join(', ')) + (c.missing.length > 4 ? '…' : '') + '</span>' +
+    '<div class="row"><button class="btn sm primary" data-act="styleOpen">' + IC.spark + 'Completar en 1 minuto</button>' + (inline ? '' : '<button class="btn sm ghost" data-act="styleLater">Ahora no</button>') + '</div></div>';
+}
+function faceShapePicker(p) {
+  return '<div class="face-grid">' + Object.entries(FACE_SHAPES).map(([k, f]) => '<button type="button" class="face-card" data-act="profSet" data-path="faceShape" data-val="' + k + '" aria-pressed="' + (p.faceShape === k) + '"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="' + f.path + '" fill="none" stroke="currentColor" stroke-width="5"/></svg><span>' + f.label + '</span></button>').join('') +
+    '<button type="button" class="face-card" data-act="profSet" data-path="faceShape" data-val="" aria-pressed="' + !p.faceShape + '"><svg viewBox="0 0 100 100" aria-hidden="true"><text x="50" y="66" text-anchor="middle" font-size="46" fill="currentColor">?</text></svg><span>No sé</span></button></div>' +
+    '<span class="tiny muted">Mírate al espejo con el cabello recogido y compara el ancho de frente, pómulos y mandíbula. Es una guía, no una medida.</span>';
+}
+function renderPaletteCard(p) {
+  const pal = personalPalette(p);
+  if (!pal) return '<div class="card explore stack tight"><b>Tu paleta personal</b><span class="small">Elige tu subtono para ver los colores que suelen armonizar contigo.</span><div class="row"><button class="btn sm primary" data-act="styleOpen">' + IC.palette + 'Descubrir mi paleta</button></div></div>';
+  return '<div class="card palette-card stack"><div class="row between"><span class="stack tight"><span class="eyebrow">Tu paleta personal</span><b class="serif" style="font-size:22px">Paleta ' + esc(pal.label) + '</b></span><span class="chip">Metales: ' + esc(pal.metal) + '</span></div>' +
+    '<div class="pal-sw">' + pal.colors.map((c) => '<span><i style="background:' + colorHex(c) + '"></i><small>' + esc(c) + '</small></span>').join('') + '</div>' +
+    (pal.contrast ? '<p class="small">' + esc(CONTRAST_TIP[pal.contrast]) + '</p>' : '') +
+    (pal.face ? '<p class="small"><b>Rostro ' + esc(pal.face.label.toLowerCase()) + ':</b> ' + esc(pal.face.tip) + ' Prueba ' + esc(pal.face.necks.join(' o ')) + '; en lentes, ' + esc(pal.face.glasses) + '.</p>' : '') +
+    '<p class="tiny muted">Basado en principios generales de colorimetría y visagismo, a partir de lo que declaras. Son sugerencias, no reglas: tu gusto y tu comodidad mandan.</p>' +
+    '<div class="row"><button class="btn sm" data-act="goSuggest">Ver qué sumaría a mi armario</button></div></div>';
+}
+const _renderTodaySide = renderTodaySide;
+renderTodaySide = function () { // eslint-disable-line no-func-assign
+  return (UI.styleLater ? '' : renderStyleNudge(false)) + _renderTodaySide();
+};
+
+/* ---------- Asistente "Tu estilo en 1 minuto" ---------- */
+const STYLE_STEPS = ['undertone', 'skin', 'face', 'hair', 'build', 'colors', 'reveal'];
+function renderStyleWizard(m) {
+  const p = prof(); const step = STYLE_STEPS[m.step]; const n = STYLE_STEPS.length - 1;
+  const prog = '<div class="steps">' + STYLE_STEPS.slice(0, n).map((s, k) => '<span class="' + (k < m.step ? 'done' : k === m.step ? 'now' : '') + '">' + (k + 1) + '</span>').join('') + '</div>';
+  const nav = (canSkip) => '<div class="sheet-foot row">' + (m.step ? '<button class="btn" data-act="styleBack">Atrás</button>' : '') + '<button class="btn primary grow-btn" data-act="styleNext">' + (m.step === n - 1 ? 'Ver mi paleta' : 'Siguiente') + '</button>' + (canSkip ? '<button class="btn ghost" data-act="styleNext">Prefiero omitir</button>' : '') + '</div>';
+  let body = '';
+  if (step === 'undertone') body = '<p class="small">¿Qué te favorece más: joyas doradas o plateadas? ¿Tus venas en la muñeca se ven verdosas (cálido) o azuladas (frío)?</p><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(k) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') + '</div>' + nav(true);
+  else if (step === 'skin') body = '<p class="small">Elige el tono más cercano al tuyo. Sirve para el contraste y para tu figura ilustrada.</p><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch lg" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (monkIndex(p) === i + 1) + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '</div><span class="tiny muted">Escala Monk (Dr. Ellis Monk, CC BY 4.0). RELISTO no infiere nada a partir de este dato.</span>' + nav(true);
+  else if (step === 'face') body = faceShapePicker(p) + nav(true);
+  else if (step === 'hair') body = '<div class="field"><span class="lbl">Color</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
+    '<div class="field"><span class="lbl">Estilo (para tu figura)</span><div class="chip-scroll">' + HAIR_STYLES.map((h) => '<button type="button" class="chip btnchip" data-act="figSet" data-path="hairStyle" data-val="' + h + '" aria-pressed="' + ((p.avatar || {}).hairStyle === h) + '">' + h + '</button>').join('') + '</div></div>' + nav(true);
+  else if (step === 'build') body = '<div class="field"><span class="lbl">Complexión (etiqueta de interfaz, opcional)</span><div class="chip-scroll">' + ['delgada', 'media', 'atlética', 'robusta'].map((b) => '<button type="button" class="chip btnchip" data-act="profSet" data-path="build" data-val="' + b + '" aria-pressed="' + (p.build === b) + '">' + b + '</button>').join('') + '</div></div>' +
+    '<div class="field"><span class="lbl">Ajuste que prefieres</span><div class="chip-scroll">' + ['ceñido', 'regular', 'relajado', 'oversized'].map((b) => '<button type="button" class="chip btnchip" data-act="profSet" data-path="fit" data-val="' + b + '" aria-pressed="' + (p.fit === b) + '">' + b + '</button>').join('') + '</div></div><span class="tiny muted">No pedimos peso ni calculamos IMC.</span>' + nav(true);
+  else if (step === 'colors') {
+    const cols = (personalPalette(p) || { colors: [] }).colors.concat(QUICK_COLORS).filter((c, i, a) => a.indexOf(c) === i).slice(0, 22);
+    body = '<p class="small">Toca los colores que más usas o te gustan.</p><div class="swatches">' + cols.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="toggleList" data-scope="prof" data-path="colors" data-val="' + esc(c) + '" aria-pressed="' + (p.colors || []).includes(c) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div><span class="small muted">' + esc((p.colors || []).join(', ') || 'Ninguno elegido') + '</span>' + nav(true);
+  } else {
+    body = '<div class="reveal"><div class="reveal-fig">' + figureSVG(p, previewItems(), { label: 'Tu figura ilustrada' }) + '</div><div class="stack">' + renderPaletteCard(p) + '</div></div>' +
+      '<div class="sheet-foot row"><button class="btn primary grow-btn" data-act="goSuggest">Ver qué sumaría a mi armario</button><button class="btn" data-act="goFigure">Ajustar mi figura</button></div>';
+  }
+  const titles = { undertone: 'Tu subtono', skin: 'Tu tono de piel', face: 'La forma de tu rostro', hair: 'Tu cabello', build: 'Complexión y ajuste', colors: 'Tus colores favoritos', reveal: 'Tu paleta personal' };
+  return modalWrap(titles[step], (step === 'reveal' ? '' : prog) + body, { eyebrow: 'Tu estilo en 1 minuto' });
+}
+
+/* ---------- Figura ilustrada y "Ver outfit completo" ---------- */
+function previewItems() {
+  const w = ws(); const g = genState();
+  if (g && g.slots[0]) return g.slots[0].itemIds.map((id) => w.items.find((i) => i.id === id)).filter(Boolean);
+  const l = w.wearLogs.filter((x) => x.ownerId === w.activeProfileId && x.status === 'usado' && x.snapshot.items.length > 1).sort((a, b) => b.date.localeCompare(a.date))[0];
+  if (l) return l.snapshot.items.map((s) => w.items.find((i) => i.id === s.id)).filter(Boolean);
+  const d = currentDraft();
+  const r = d ? generateOutfits(w, d, prof(), genOpts(d), TODAY) : null;
+  const c = r && (r.complete[0] || r.partial[0]);
+  return c ? c.itemIds.map((id) => w.items.find((i) => i.id === id)).filter(Boolean) : [];
+}
+function renderFigureTab() {
+  const p = prof(); const av = p.avatar || {};
+  const fp = UI.figPhoto;
+  return '<div class="grid two"><div class="card stack fig-card"><span class="eyebrow">Tu figura ilustrada</span><div class="fig-wrap">' + figureSVG(p, previewItems(), { label: 'Tu figura con un outfit de tu armario' }) + '</div><span class="tiny muted">Vista ilustrativa con un outfit de tu armario. No representa ajuste, tejido ni talla reales.</span></div>' +
+    '<div class="stack"><div class="card stack"><div class="field"><span class="lbl">Tono de piel</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (!av.skinHex && monkIndex(p) === i + 1) + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + (av.skinHex ? '<span class="tone-swatch" style="background:' + av.skinHex + '" aria-pressed="true" title="Tomado de tu foto"></span><button class="btn sm ghost" data-act="figSet" data-path="skinHex" data-val="">Quitar tono de foto</button>' : '') + '</div></div>' +
+    '<div class="field"><span class="lbl">Cabello</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (!av.hairHex && p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + (av.hairHex ? '<span class="swatch" style="background:' + av.hairHex + '" aria-pressed="true" title="Tomado de tu foto"></span>' : '') + '</div>' +
+    '<div class="chip-scroll">' + HAIR_STYLES.map((h) => '<button type="button" class="chip btnchip" data-act="figSet" data-path="hairStyle" data-val="' + h + '" aria-pressed="' + (av.hairStyle === h) + '">' + h + '</button>').join('') + '</div></div>' +
+    '<div class="field"><span class="lbl">Complexión</span><div class="chip-scroll">' + ['delgada', 'media', 'atlética', 'robusta'].map((b) => '<button type="button" class="chip btnchip" data-act="profSet" data-path="build" data-val="' + b + '" aria-pressed="' + (p.build === b) + '">' + b + '</button>').join('') + '</div></div>' +
+    '<div class="field"><span class="lbl">Rostro</span>' + faceShapePicker(p) + '</div></div>' +
+    '<div class="card stack"><span class="eyebrow">Desde tu foto (opcional)</span><p class="small">Sube una foto tuya y toca tu piel o tu cabello: la figura toma esos tonos. Tú eliges; RELISTO no analiza tu rostro.</p>' +
+    '<div class="row"><label class="btn sm" for="fig-photo" tabindex="0">' + IC.camera + (fp ? 'Otra foto' : 'Subir mi foto') + '</label><input id="fig-photo" type="file" accept="image/*" hidden data-act-change="figPhoto">' +
+    (fp ? '<div class="seg2 mini" role="group" aria-label="Qué tono elegir"><button type="button" data-act="figMode" data-val="skin" aria-pressed="' + (UI.figMode !== 'hair') + '">Piel</button><button type="button" data-act="figMode" data-val="hair" aria-pressed="' + (UI.figMode === 'hair') + '">Cabello</button></div>' : '') + '</div>' +
+    (fp ? '<canvas id="fig-canvas" class="fig-canvas" data-act="figPick" aria-label="Tu foto: toca para elegir el tono de ' + (UI.figMode === 'hair' ? 'cabello' : 'piel') + '"></canvas><span class="tiny muted">Tu foto no se guarda ni se envía: se descarta al cerrar la app.</span>' : '') + '</div></div></div>';
+}
+function lookItems(m) {
+  const w = ws();
+  if (m.itemIds) return m.itemIds.map((id) => w.items.find((i) => i.id === id)).filter(Boolean);
+  const c = findCandidate(m.key); return c ? c.itemIds.map((id) => w.items.find((i) => i.id === id)).filter(Boolean) : [];
+}
+function renderLook(m) {
+  const p = prof(); const items = lookItems(m); const c = m.key ? findCandidate(m.key) : null;
+  const d = currentDraft(); const comp = completeness(ws(), items.map((i) => i.id), d, c && c.template);
+  const log = c ? todayLogFor(c.key) : null; const sc = styleCompleteness(p);
+  const action = !c ? '' : log && log.status === 'usado' ? '<span class="badge ok">Usado hoy · registrado</span>' : log ? '<button class="btn primary grow-btn" data-act="confirmWear" data-log="' + log.id + '">' + IC.check + 'Sí, lo usé</button>' : comp.percent === 100 ? '<button class="btn primary grow-btn" data-act="choose" data-key="' + esc(c.key) + '">' + IC.check + 'Me lo pongo hoy</button>' : '';
+  return modalWrap(m.title || (c ? c.name : 'Outfit completo'), '<div class="look"><div class="look-fig">' + figureSVG(p, items, { label: 'Figura ilustrada con ' + items.map((i) => i.name).join(', ') }) +
+    '<span class="chip">Vista ilustrativa</span></div><div class="stack">' +
+    '<div class="row between"><span class="pct' + (comp.percent < 100 ? ' partial' : '') + '"><b class="num">' + comp.percent + '% completo</b></span><span class="tiny muted">' + comp.covered + ' de ' + comp.total + ' unidades</span></div>' +
+    '<div class="look-pieces">' + items.map((i) => '<div class="look-piece">' + thumb(i, { noTag: true }) + '<span class="tiny"><b>' + esc(i.name) + '</b><br><span class="code">' + esc(i.code || '') + '</span></span></div>').join('') + '</div>' +
+    (c && c.tips ? '<p class="small">' + esc(c.tips.join(' ')) + '</p>' : '') +
+    '<p class="tiny muted">La figura usa tu tono de piel, cabello y complexión, y el color real de cada prenda (de su ficha o de su foto). No representa ajuste, tejido ni talla.</p>' +
+    (sc.percent < 100 ? '<button class="btn sm ghost" data-act="goFigure">' + IC.figure + 'Personalizar mi figura</button>' : '') +
+    '<div class="sheet-foot row">' + action + (c ? '<button class="btn" data-act="swap" data-key="' + esc(c.key) + '">' + IC.swap + 'Cambiar una prenda</button>' : '') + '</div></div></div>', { eyebrow: 'Ver outfit completo' });
+}
+
+/* ---------- Etiquetas QR (app instalada) ---------- */
+function renderLabels(m) {
+  const items = ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i));
+  const sel = m.sel;
+  return modalWrap('Etiquetas QR', '<p class="small">Imprime etiquetas con el código de cada prenda y pégalas en perchas, cajas o bolsas. Al escanearlas con la cámara se abre la prenda en RELISTO.</p>' +
+    '<div class="row"><button class="btn sm" data-act="labelsAll">' + (sel.size === items.length ? 'Quitar todas' : 'Elegir todas') + '</button><span class="small muted">' + sel.size + ' elegidas</span></div>' +
+    '<div class="label-list">' + items.map((i) => '<label class="check label-row" for="lb-' + i.id + '"><input type="checkbox" id="lb-' + i.id + '" data-act-change="labelToggle" data-item="' + i.id + '"' + (sel.has(i.id) ? ' checked' : '') + '><span class="code">' + esc(i.code) + '</span> ' + esc(i.name) + '</label>').join('') + '</div>' +
+    '<p class="tiny muted">En iPhone, la app instalada guarda sus datos aparte de Safari: si al escanear se abre Safari, busca el código en tu armario.</p>' +
+    '<div class="sheet-foot row"><button class="btn primary grow-btn" data-act="labelsPrint"' + (sel.size ? '' : ' disabled') + '>Imprimir ' + plural(sel.size, 'etiqueta', 'etiquetas') + '</button></div>', { eyebrow: 'Tu armario' });
+}
+function printLabels(items) {
+  let root = document.getElementById('print-root');
+  if (!root) { root = document.createElement('div'); root.id = 'print-root'; document.body.appendChild(root); }
+  root.innerHTML = '<div class="labels-sheet">' + items.map((i) => '<div class="print-label">' + QR.svg(itemUrl(i.code)) + '<div><b>' + esc(i.code) + '</b><span>' + esc(i.name) + '</span><small>RELISTO</small></div></div>').join('') + '</div>';
+  setTimeout(() => { try { window.print(); } catch (e) { toast('No se pudo abrir la impresión en este navegador.'); } }, 50);
+}
+
+/* ---------- Enlace directo a una prenda (#p-CÓDIGO) ---------- */
+function handleItemHash() {
+  const mt = String(location.hash || '').match(/^#p-([A-Z]{3}-\d{3})$/);
+  if (!mt) return;
+  if (IS_PWA && UI.auth) { UI.pendingCode = mt[1]; return; }
+  openByCode(mt[1]);
+  try { history.replaceState(null, '', location.pathname); } catch (e) { /* */ }
+}
+function openByCode(code) {
+  const w = ws(); if (!w) return false;
+  const it = w.items.find((i) => i.code === code && i.ownerId === w.activeProfileId);
+  if (!it) { toast('No encontramos la prenda ' + code + ' en este armario.'); return false; }
+  UI.view = 'armario'; openModal({ type: 'itemView', itemId: it.id }); return true;
+}
+window.addEventListener('hashchange', handleItemHash);
+
+/* ---------- Render: lienzo de la foto de referencia ---------- */
+const _render6 = render;
+render = function () { // eslint-disable-line no-func-assign
+  _render6();
+  const cv = document.getElementById('fig-canvas');
+  if (cv && UI.figPhoto && UI.figPhoto.img) {
+    const img = UI.figPhoto.img; const W = Math.min(520, cv.parentElement.clientWidth - 4); const scale = W / img.width;
+    cv.width = W; cv.height = Math.round(img.height * scale);
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  }
+  if (UI.pendingCode && !UI.auth && ws()) { const c = UI.pendingCode; UI.pendingCode = null; setTimeout(() => openByCode(c), 0); }
+};
+
+/* ---------- Acciones ---------- */
+Object.assign(ACT, {
+  flip: (el, e) => { e.stopPropagation(); const k = el.dataset.key; if (UI.flipped.has(k)) UI.flipped.delete(k); else UI.flipped.add(k); const card = el.closest('.flip'); if (card) { card.classList.toggle('flipped'); el.setAttribute('aria-pressed', String(UI.flipped.has(k))); const tag = card.querySelector('.tag'); if (tag) tag.textContent = UI.flipped.has(k) ? 'Tu foto' : 'Ilustración'; el.innerHTML = UI.flipped.has(k) ? IC.spark : IC.camera; } },
+  closetMode: (el) => { UI.closet.mode = el.dataset.val; render(); },
+  lookOpen: (el) => openModal({ type: 'look', key: el.dataset.key }),
+  lookSaved: (el) => { const s = ws().saved.find((x) => x.id === el.dataset.id); if (s) openModal({ type: 'look', itemIds: s.itemIds, title: s.name }); },
+  styleOpen: () => openModal({ type: 'style', step: 0 }),
+  styleNext: () => { UI.modal.step = Math.min(STYLE_STEPS.length - 1, UI.modal.step + 1); if (STYLE_STEPS[UI.modal.step] === 'reveal') { celebrate('Tu paleta'); } render(); const md = document.querySelector('.modal'); if (md) md.scrollTop = 0; },
+  styleBack: () => { UI.modal.step = Math.max(0, UI.modal.step - 1); render(); },
+  styleLater: () => { UI.styleLater = true; render(); },
+  goSuggest: () => { UI.modal = null; UI.view = 'plan'; UI.plan.tab = 'faltantes'; render(); setTimeout(() => { const h = Array.from(document.querySelectorAll('h2')).find((x) => /Lo que suma/.test(x.textContent)); if (h) h.scrollIntoView({ block: 'start' }); }, 0); },
+  goFigure: () => { UI.modal = null; UI.view = 'perfil'; UI.profTab = 'figura'; render(); window.scrollTo(0, 0); },
+  profSet: (el) => { const p = prof(); const k = el.dataset.path; const v = el.dataset.val; p[k] = p[k] === v && k !== 'undertone' ? (k === 'faceShape' ? '' : p[k]) : v; if (k === 'hair') { p.avatar = Object.assign({}, p.avatar, { hairHex: null }); } commit(); },
+  figSet: (el) => { const p = prof(); p.avatar = Object.assign({}, p.avatar); p.avatar[el.dataset.path] = el.dataset.val || null; commit(); },
+  figMode: (el) => { UI.figMode = el.dataset.val; render(); },
+  figPick: (el, e) => {
+    const r = el.getBoundingClientRect(); const x = Math.round((e.clientX - r.left) * (el.width / r.width)); const y = Math.round((e.clientY - r.top) * (el.height / r.height));
+    const ctx = el.getContext('2d'); let d; try { d = ctx.getImageData(Math.max(0, x - 3), Math.max(0, y - 3), 7, 7).data; } catch (er) { return; }
+    let R = 0, G = 0, B = 0, n = 0; for (let k = 0; k < d.length; k += 4) { R += d[k]; G += d[k + 1]; B += d[k + 2]; n++; }
+    const hex = '#' + [R / n, G / n, B / n].map((v) => Math.round(v).toString(16).padStart(2, '0')).join('');
+    const p = prof(); p.avatar = Object.assign({}, p.avatar);
+    if (UI.figMode === 'hair') { p.avatar.hairHex = hex; if (!p.avatar.hairStyle) p.avatar.hairStyle = 'medio'; toast('Color de cabello tomado de tu foto.'); } else { p.avatar.skinHex = hex; toast('Tono de piel tomado de tu foto.'); }
+    commit();
+  },
+  washToggle: (el) => { const i = w_item(el.dataset.item); if (!i) return; i.availability = i.availability === 'por lavar' ? 'disponible' : 'por lavar'; toast(i.availability === 'por lavar' ? i.name + ': por lavar. No aparecerá en sugerencias hasta que la laves.' : i.name + ': disponible.'); commit(); },
+  washAll: () => { const w = ws(); const dirty = ownedItems(w, w.activeProfileId).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability)); dirty.forEach((i) => { i.availability = 'disponible'; }); celebrate(null); toast(plural(dirty.length, 'prenda vuelve', 'prendas vuelven') + ' a estar disponibles.'); commit(); },
+  labelsOpen: () => openModal({ type: 'labels', sel: new Set(ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id)) }),
+  labelsAll: () => { const m = UI.modal; const all = ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id); m.sel = m.sel.size === all.length ? new Set() : new Set(all); render(); },
+  labelsPrint: (el) => { const w = ws(); const ids = el.dataset.one ? [el.dataset.one] : Array.from(UI.modal.sel); printLabels(ids.map((id) => w.items.find((i) => i.id === id)).filter((i) => i && i.code)); }
+});
+Object.assign(CHG, {
+  labelToggle: (el) => { const s = UI.modal.sel; if (el.checked) s.add(el.dataset.item); else s.delete(el.dataset.item); render(); },
+  figPhoto: (el) => {
+    const f = el.files && el.files[0]; el.value = ''; if (!f) return;
+    const img = new Image(); img.onload = () => { UI.figPhoto = { img }; UI.figMode = UI.figMode || 'skin'; render(); toast('Toca tu piel en la foto. Luego elige “Cabello” y toca tu cabello.'); };
+    img.onerror = () => toast('No se pudo abrir esa imagen.'); img.src = URL.createObjectURL(f);
+  }
+});
+const _renderModal6 = renderModal;
+renderModal = function () { // eslint-disable-line no-func-assign
+  const m = UI.modal;
+  if (m.type === 'look') return renderLook(m);
+  if (m.type === 'style') return renderStyleWizard(m);
+  if (m.type === 'labels') return renderLabels(m);
+  return _renderModal6();
+};
 /* ============================ INICIO ============================ */
 render();
 initCapabilities();
