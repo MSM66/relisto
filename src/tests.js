@@ -189,5 +189,15 @@ function runSelfTests(today) {
     const dup = sug.some((s) => w.items.some((i) => i.ownerId === 'alex' && !isGone(i) && i.subtype === s.candidate.subtype && norm(i.color) === norm(s.candidate.color)));
     return { ok: sug.length > 0 && !dup && sug.every((s) => s.added.length > 0), detail: sug.map((s) => s.candidate.name + ' +' + s.added.length).join(' · ') };
   });
+  check('Planificar un día ofrece varias opciones distintas (hasta 12)', () => {
+    const T = freshState(today); const w = T.demo; const c = w.contexts.find((x) => x.id === 'C01');
+    const r = generateOutfits(w, c, w.profiles[0], { onlyAvailable: true }, today); const six = pickDiverse(r.complete, [], 6, w); const twelve = pickDiverse(r.complete, [], 12, w);
+    return { ok: six.length === 6 && twelve.length > 6 && new Set(twelve.map((x) => x.key)).size === twelve.length, detail: six.length + ' y ' + twelve.length + ' opciones' };
+  });
+  check('Figura ilustrada: dibuja ambos zapatos y marca faltantes', () => {
+    const T = freshState(today); const w = T.demo; const g = (ids) => ids.map((id) => w.items.find((i) => i.id === id));
+    const full = figureSVG(w.profiles[0], g(['A01', 'A05', 'A12'])); const miss = figureSVG(w.profiles[0], g(['A01', 'A05']));
+    return { ok: /<svg/.test(full) && (full.match(/stroke-width="1.2"/g) || []).length >= 2 && /stroke-dasharray="4 4"/.test(miss) && !/stroke-dasharray="4 4"/.test(full) };
+  });
   return out;
 }

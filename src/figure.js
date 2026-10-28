@@ -40,7 +40,6 @@ function figureSVG(p, items, opts) {
   const legR = 'M' + (cx + b.hi - 1) + ' ' + (Y.hip - 4) + ' L' + (cx + 21) + ' ' + Y.ankle + ' L' + (cx + 9) + ' ' + Y.ankle + ' L' + (cx + 2) + ' ' + Y.crotch + ' Z';
   out.push('<path d="' + legL + '" fill="' + skin + '"/><path d="' + legR + '" fill="' + skin + '"/>');
   out.push(line(armL[0], armL[1], b.limb * 1.6, skin) + line(armR[0], armR[1], b.limb * 1.6, skin));
-  out.push('<circle cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/><circle cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/>');
   // Torso, cuello y cabeza
   const torso = 'M' + (cx - b.sh) + ' ' + Y.sh + ' Q' + (cx - b.sh - 1) + ' 120 ' + (cx - b.wa) + ' ' + Y.waist + ' Q' + (cx - b.hi - 1) + ' 198 ' + (cx - b.hi) + ' ' + Y.hip + ' L' + (cx + b.hi) + ' ' + Y.hip + ' Q' + (cx + b.hi + 1) + ' 198 ' + (cx + b.wa) + ' ' + Y.waist + ' Q' + (cx + b.sh + 1) + ' 120 ' + (cx + b.sh) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh) + ' ' + Y.sh + ' Z';
   out.push('<path d="' + torso + '" fill="' + skin + '"/>');
@@ -48,8 +47,8 @@ function figureSVG(p, items, opts) {
   out.push(face === 'cuadrado' ? '<rect x="' + (cx - headRx) + '" y="' + (Y.head - headRy) + '" width="' + headRx * 2 + '" height="' + headRy * 2 + '" rx="11" fill="' + skin + '"/>'
     : '<ellipse cx="' + cx + '" cy="' + Y.head + '" rx="' + headRx + '" ry="' + headRy + '" fill="' + skin + '"/>');
   // Pies (piel) si no hay calzado o hay sandalias
-  const feet = (col) => '<ellipse cx="' + (cx - 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/><ellipse cx="' + (cx + 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/>';
-  if (!shoes || shoes.subtype === 'sandalias') out.push(feet(skin));
+  const feet = (col) => '<ellipse cx="' + (cx - 17) + '" cy="' + (Y.ankle + 8) + '" rx="8" ry="7" fill="' + col + '"/><ellipse cx="' + (cx + 17) + '" cy="' + (Y.ankle + 8) + '" rx="8" ry="7" fill="' + col + '"/>';
+  if (!shoes) out.push(feet(skin));
   // Parte inferior
   const missingStyle = 'fill="none" stroke="#9A968B" stroke-width="1.6" stroke-dasharray="4 4"';
   const drawBottom = (it) => {
@@ -70,17 +69,27 @@ function figureSVG(p, items, opts) {
   if (full && full.subtype === 'enterizo') drawBottom(Object.assign({}, full, { subtype: 'pantalón' }));
   else if (bottom) drawBottom(bottom);
   else if (!full) out.push('<path d="M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' L' + (cx + 22) + ' ' + Y.ankle + ' L' + (cx + 8) + ' ' + Y.ankle + ' L' + cx + ' ' + Y.crotch + ' L' + (cx - 8) + ' ' + Y.ankle + ' L' + (cx - 22) + ' ' + Y.ankle + ' Z" ' + missingStyle + '/>');
-  // Calzado
-  if (shoes) {
-    const c = garmentHex(shoes); const s = st(c);
-    const sole = shoes.subtype === 'zapatillas' ? '#F4F2EC' : darker(c, 0.45);
-    [-1, 1].forEach((side) => {
-      const x = cx + side * 16;
-      if (shoes.subtype === 'botines') out.push('<path d="M' + (x - 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 10) + ' ' + (Y.ankle + 6) + ' Q' + (x + side * 16) + ' ' + (Y.ankle + 6) + ' ' + (x + side * 15) + ' ' + (Y.ankle + 12) + ' L' + (x - 11) + ' ' + (Y.ankle + 12) + ' Z" fill="' + c + '" ' + s + '/>');
-      else if (shoes.subtype === 'sandalias') out.push('<path d="M' + (x - 10) + ' ' + (Y.ankle + 4) + ' L' + (x + 10) + ' ' + (Y.ankle + 9) + ' M' + (x - 9) + ' ' + (Y.ankle + 10) + ' L' + (x + 9) + ' ' + (Y.ankle + 4) + '" stroke="' + c + '" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="' + x + '" cy="' + (Y.ankle + 14) + '" rx="13" ry="3" fill="' + darker(c, 0.3) + '"/>');
-      else out.push('<path d="M' + (x - 11) + ' ' + (Y.ankle - 2) + ' Q' + x + ' ' + (Y.ankle - 7) + ' ' + (x + 10) + ' ' + (Y.ankle - 1) + ' Q' + (x + side * 17) + ' ' + (Y.ankle + 3) + ' ' + (x + side * 16) + ' ' + (Y.ankle + 10) + ' L' + (x - side * 12) + ' ' + (Y.ankle + 10) + ' Z" fill="' + c + '" ' + s + '/><rect x="' + (Math.min(x - side * 12, x + side * 16) - 1) + '" y="' + (Y.ankle + 9) + '" width="30" height="4" rx="2" fill="' + sole + '"/>');
-    });
-  } else out.push('<g ' + missingStyle + '><rect x="' + (cx - 30) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/><rect x="' + (cx + 4) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/></g>');
+  // Calzado: vista frontal, punta levemente hacia afuera, suela visible
+  const shoe = (fx, side, it) => {
+    const c = garmentHex(it); const dk = darker(c, 0.38); const ay = Y.ankle; const o = side * 2.5; // giro hacia afuera
+    const body = (top) => 'M' + (fx - 8) + ' ' + top + ' L' + (fx + 8) + ' ' + top + ' Q' + (fx + 10 + o) + ' ' + (ay + 7) + ' ' + (fx + 11 + o) + ' ' + (ay + 11) + ' Q' + (fx + 11 + o) + ' ' + (ay + 15) + ' ' + (fx + 5 + o) + ' ' + (ay + 15) + ' L' + (fx - 5 + o) + ' ' + (ay + 15) + ' Q' + (fx - 11 + o) + ' ' + (ay + 15) + ' ' + (fx - 11 + o) + ' ' + (ay + 11) + ' Q' + (fx - 10 + o) + ' ' + (ay + 7) + ' ' + (fx - 8) + ' ' + top + ' Z';
+    const sole = (h, col) => '<path d="M' + (fx - 11.5 + o) + ' ' + (ay + 13) + ' Q' + (fx - 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx - 5 + o) + ' ' + (ay + 15 + h) + ' L' + (fx + 5 + o) + ' ' + (ay + 15 + h) + ' Q' + (fx + 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx + 11.5 + o) + ' ' + (ay + 13) + ' Z" fill="' + col + '"/>';
+    const sub = it.subtype;
+    if (sub === 'sandalias') {
+      return '<path d="M' + (fx - 7) + ' ' + (ay + 2) + ' Q' + (fx - 9 + o) + ' ' + (ay + 12) + ' ' + (fx - 5 + o) + ' ' + (ay + 15) + ' L' + (fx + 5 + o) + ' ' + (ay + 15) + ' Q' + (fx + 9 + o) + ' ' + (ay + 12) + ' ' + (fx + 7) + ' ' + (ay + 2) + ' Z" fill="' + skin + '"/>' +
+        '<path d="M' + (fx - 9 + o) + ' ' + (ay + 7) + ' L' + (fx + 9 + o) + ' ' + (ay + 7) + ' M' + (fx - 8 + o) + ' ' + (ay + 12) + ' L' + (fx + 8 + o) + ' ' + (ay + 12) + '" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/>' + sole(2, dk);
+    }
+    if (sub === 'botines') return '<path d="M' + (fx - 9) + ' ' + (ay - 22) + ' L' + (fx + 9) + ' ' + (ay - 22) + ' L' + (fx + 9) + ' ' + (ay - 2) + ' Z" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/><rect x="' + (fx - 9) + '" y="' + (ay - 22) + '" width="18" height="22" rx="3" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/><path d="' + body(ay - 2) + '" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' + sole(3, dk) + '<line x1="' + (fx + side * 3) + '" y1="' + (ay - 20) + '" x2="' + (fx + side * 3) + '" y2="' + (ay + 4) + '" stroke="' + dk + '" stroke-width="0.9"/>';
+    const isSneaker = sub === 'zapatillas';
+    let out2 = '<path d="' + body(ay - 3) + '" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' + sole(isSneaker ? 3.5 : 2.2, isSneaker ? '#F4F2EC' : darker(c, 0.5));
+    if (isSneaker) out2 += '<path d="M' + (fx - 4) + ' ' + (ay + 1) + ' L' + (fx + 4) + ' ' + (ay + 1) + ' M' + (fx - 4.5) + ' ' + (ay + 4.5) + ' L' + (fx + 4.5) + ' ' + (ay + 4.5) + '" stroke="' + (hexLum(c) > 0.7 ? '#B9B4A8' : shade(c, 0.45)) + '" stroke-width="1.3" stroke-linecap="round"/>';
+    else if (sub === 'mocasines') out2 += '<path d="M' + (fx - 7 + o) + ' ' + (ay + 6) + ' Q' + (fx + o) + ' ' + (ay + 9) + ' ' + (fx + 7 + o) + ' ' + (ay + 6) + '" fill="none" stroke="' + dk + '" stroke-width="1.6"/>';
+    else if (sub === 'oxford' || /oxford/.test(norm(it.name))) out2 += '<path d="M' + (fx - 3) + ' ' + (ay + 1) + ' L' + (fx + 3) + ' ' + (ay + 1) + ' M' + (fx - 3) + ' ' + (ay + 4) + ' L' + (fx + 3) + ' ' + (ay + 4) + '" stroke="' + shade(c, 0.35) + '" stroke-width="1"/>';
+    if (!isSneaker) out2 += '<ellipse cx="' + (fx + o - side * 4) + '" cy="' + (ay + 10) + '" rx="2.6" ry="1.4" fill="#fff" opacity=".28"/>';
+    return out2;
+  };
+  if (shoes) { out.push(shoe(cx - 15, -1, shoes)); out.push(shoe(cx + 15, 1, shoes)); }
+  else out.push('<g ' + missingStyle + '><path d="M' + (cx - 23) + ' ' + (Y.ankle - 2) + ' h16 l3 16 h-22 z"/><path d="M' + (cx + 7) + ' ' + (Y.ankle - 2) + ' h16 l3 16 h-22 z"/></g>');
   // Parte superior o vestido
   const neckPath = (kind, y0) => kind === 'V' ? 'M' + (cx - 11) + ' ' + y0 + ' L' + cx + ' ' + (y0 + 20) + ' L' + (cx + 11) + ' ' + y0 : kind === 'barco' ? 'M' + (cx - 22) + ' ' + (y0 + 1) + ' Q' + cx + ' ' + (y0 + 7) + ' ' + (cx + 22) + ' ' + (y0 + 1) : 'M' + (cx - 11) + ' ' + y0 + ' Q' + cx + ' ' + (y0 + 12) + ' ' + (cx + 11) + ' ' + y0;
   const drawTop = (it, hemY, isDress) => {
@@ -141,11 +150,13 @@ function figureSVG(p, items, opts) {
   // Accesorios
   acc.forEach((i) => {
     const c = garmentHex(i);
-    if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5) + '" y="' + (armL[1][1] - 4) + '" width="10" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
+    if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5.5) + '" y="' + (armL[1][1] - 9) + '" width="11" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
     if (i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
     if (i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
     if (i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
   });
+  // Manos (encima de las mangas)
+  out.push('<ellipse cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/><ellipse cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/>');
   // Cabello de adelante
   const capTop = Y.head - headRy - 4;
   const cap = 'M' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 3) + ' ' + capTop + ' ' + cx + ' ' + capTop + ' Q' + (cx + headRx + 3) + ' ' + capTop + ' ' + (cx + headRx + 2) + ' ' + (Y.head - 2) + ' Q' + (cx + headRx - 4) + ' ' + (Y.head - 14) + ' ' + (cx + 6) + ' ' + (Y.head - 16) + ' Q' + (cx - 10) + ' ' + (Y.head - 18) + ' ' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Z';

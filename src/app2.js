@@ -74,7 +74,7 @@ function renderShell() {
   const bottom = '<nav class="bottomnav" aria-label="Navegación principal">' + bn('hoy', 'Hoy') + bn('armario', 'Armario') +
     '<button type="button" class="nav-cta" data-act="armaDia" data-tour="nav-arma" aria-label="Arma mi día"><span class="nav-cta-in">' + IC.spark + '</span>Arma</button>' +
     bn('plan', 'Plan') + bn('circular', 'Circular') + '</nav>';
-  const fab = UI.view === 'armario' ? '<button type="button" class="fab-add" data-act="addItem" aria-label="Agregar prenda">' + IC.plus + '</button>' : '';
+  const fab = UI.view === 'armario' && UI.closet.tab === 'prendas' ? '<button type="button" class="fab-add" data-act="addItem" aria-label="Agregar prenda">' + IC.plus + '</button>' : '';
   return '<div class="shell">' + side + '<div style="min-width:0">' + top + '<main class="main" id="main"><div class="main-inner">' +
     '<div class="mobile-only">' + (isDemo() ? '<div class="row">' + flag + '</div>' : '') + '</div>' + renderView() + '</div></main></div></div>' + bottom + fab +
     renderPWABanners() + '<div id="toast" class="toast" role="status" aria-live="polite"' + (UI.toast ? '' : ' hidden') + '>' + esc(UI.toast || '') + '</div>';
@@ -114,7 +114,7 @@ function renderHoy() {
       '<button class="btn ghost" data-act="tourStart">' + IC.spark + 'Ver recorrido rápido</button></section>';
   }
   const ctxs = w.contexts.filter((c) => c.ownerId === p.id);
-  const hint = UI.sceneHint && !UI.tour ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
+  const hint = UI.sceneHint && !UI.tour && !tourDone() ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
   const meta = [d.district, d.time, d.temperatureC + ' °C', d.dressCode].filter(Boolean).join(' · ');
   const extra = [(d.intent || []).slice(0, 2).join(', '), d.mustUse ? 'con ' + ((w.items.find((i) => i.id === d.mustUse) || {}).name || '') : '', Object.keys(d.hard || {}).length ? 'requisitos excluyentes' : ''].filter(Boolean).join(' · ');
   const ctxCard = '<button type="button" class="ctx-card" data-act="ctxSheet" data-tour="ctx" aria-label="Editar el contexto de hoy: ' + esc(d.name || d.occasion) + '">' +
@@ -386,8 +386,8 @@ function renderHistory() {
       return '<div class="card stack tight"><div class="row between"><b>' + esc(l.snapshot.name) + '</b><span class="badge ' + cls + '">' + label + '</span></div>' +
         '<span class="small muted">' + fmtDate(l.date) + ' · ' + esc(l.contextName || l.occasion || '') + (l.origin === 'demo' ? ' · demo' : '') + '</span><span class="small">' + items + '</span>' +
         ((l.recovered || []).length ? '<span class="chip ok">Recuperó ' + plural(l.recovered.length, 'prenda del desuso', 'prendas del desuso') + '</span>' : '') +
-        (l.status === 'usado' ? '<div class="form-grid">' + logRating(l, 'comfort', 'Comodidad') + logRating(l, 'satisfaction', 'Satisfacción') +
-          '<div class="field"><label for="ln-' + l.id + '">Notas</label><input class="input" id="ln-' + l.id + '" value="' + esc(l.notes || '') + '" data-log-note="' + l.id + '"></div></div>' : '') +
+        (l.status === 'usado' ? '<details class="more"' + (l.comfort || l.satisfaction || (l.notes && l.origin !== 'demo') ? ' open' : '') + '><summary>' + (l.comfort || l.satisfaction ? 'Tu valoración: comodidad ' + (l.comfort || '—') + ' · satisfacción ' + (l.satisfaction || '—') : 'Valorar (opcional)') + '</summary><div class="form-grid" style="margin-top:8px">' + logRating(l, 'comfort', 'Comodidad') + logRating(l, 'satisfaction', 'Satisfacción') +
+          '<div class="field"><label for="ln-' + l.id + '">Notas</label><input class="input" id="ln-' + l.id + '" value="' + esc(l.notes || '') + '" data-log-note="' + l.id + '"></div></div></details>' : '') +
         '<div class="row">' + (['elegido', 'planificado'].includes(l.status) ? '<button class="btn sm primary" data-act="confirmWear" data-log="' + l.id + '">' + IC.check + 'Sí, lo usé</button><button class="btn sm ghost" data-act="cancelChoice" data-log="' + l.id + '">Cancelar</button>' : '') +
         (l.status === 'usado' ? '<button class="btn sm ghost" data-act="undoWear" data-log="' + l.id + '">Deshacer confirmación</button>' : '') + '</div></div>';
     }).join('') + '</div>';

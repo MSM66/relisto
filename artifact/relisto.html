@@ -446,7 +446,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .nudge-ic { width: 34px; height: 34px; color: var(--accent-ink); flex: none; }
 .under-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 8px; }
 .under-card { display: grid; gap: 4px; text-align: left; padding: 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: inherit; cursor: pointer; font: inherit; }
-.under-card b { text-transform: capitalize; }
+.under-card b { font-weight: 800; }
 .under-card[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-soft); color: var(--on-soft); }
 .under-sw { display: flex; gap: 3px; }
 .under-sw i { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); }
@@ -486,13 +486,32 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .print-label span { display: block; font-size: 9pt; }
   .print-label small { font-size: 7pt; letter-spacing: .1em; color: #666; }
 }
+
+/* ===================== RELISTO 3.1 ===================== */
+.plan-opt, .cal-entry { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); }
+.plan-opt.done { background: var(--info-soft); border-color: transparent; }
+.plan-opt { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "info info" "minis acts"; row-gap: 8px; }
+.plan-opt > .stack { grid-area: info; }
+.plan-opt > .minis { grid-area: minis; }
+.plan-opt > .plan-acts, .plan-opt > .btn, .plan-opt > .badge { grid-area: acts; justify-self: end; align-self: center; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cal-nav .icon-btn { font-size: 22px; line-height: 1; }
+.icon-btn[disabled] { opacity: .35; cursor: not-allowed; }
+.cal-entry { padding: 6px 8px; gap: 8px; }
+.plan-acts { display: flex; gap: 6px; align-items: center; flex: none; }
+.icon-btn.sm-ic { width: 36px; height: 36px; border-radius: 10px; }
+.icon-btn.sm-ic svg { width: 18px; height: 18px; }
+.cal .day { gap: 8px; }
+.cal .day .minis .mini { width: 30px; margin-right: -8px; }
+.plan-opt .minis .mini { width: 38px; }
+@media (max-width: 959px) { .cal { grid-template-columns: 1fr; } }
 </style>
 <div id="app"></div>
 <div id="modal-root"></div>
 <script>
 "use strict";
 const IS_PWA = false;
-const APP_VERSION = "20261028.1603";
+const APP_VERSION = "20261028.1652";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -1756,6 +1775,16 @@ function runSelfTests(today) {
     const dup = sug.some((s) => w.items.some((i) => i.ownerId === 'alex' && !isGone(i) && i.subtype === s.candidate.subtype && norm(i.color) === norm(s.candidate.color)));
     return { ok: sug.length > 0 && !dup && sug.every((s) => s.added.length > 0), detail: sug.map((s) => s.candidate.name + ' +' + s.added.length).join(' · ') };
   });
+  check('Planificar un día ofrece varias opciones distintas (hasta 12)', () => {
+    const T = freshState(today); const w = T.demo; const c = w.contexts.find((x) => x.id === 'C01');
+    const r = generateOutfits(w, c, w.profiles[0], { onlyAvailable: true }, today); const six = pickDiverse(r.complete, [], 6, w); const twelve = pickDiverse(r.complete, [], 12, w);
+    return { ok: six.length === 6 && twelve.length > 6 && new Set(twelve.map((x) => x.key)).size === twelve.length, detail: six.length + ' y ' + twelve.length + ' opciones' };
+  });
+  check('Figura ilustrada: dibuja ambos zapatos y marca faltantes', () => {
+    const T = freshState(today); const w = T.demo; const g = (ids) => ids.map((id) => w.items.find((i) => i.id === id));
+    const full = figureSVG(w.profiles[0], g(['A01', 'A05', 'A12'])); const miss = figureSVG(w.profiles[0], g(['A01', 'A05']));
+    return { ok: /<svg/.test(full) && (full.match(/stroke-width="1.2"/g) || []).length >= 2 && /stroke-dasharray="4 4"/.test(miss) && !/stroke-dasharray="4 4"/.test(full) };
+  });
   return out;
 }
 /* =====================================================================
@@ -2030,7 +2059,6 @@ function figureSVG(p, items, opts) {
   const legR = 'M' + (cx + b.hi - 1) + ' ' + (Y.hip - 4) + ' L' + (cx + 21) + ' ' + Y.ankle + ' L' + (cx + 9) + ' ' + Y.ankle + ' L' + (cx + 2) + ' ' + Y.crotch + ' Z';
   out.push('<path d="' + legL + '" fill="' + skin + '"/><path d="' + legR + '" fill="' + skin + '"/>');
   out.push(line(armL[0], armL[1], b.limb * 1.6, skin) + line(armR[0], armR[1], b.limb * 1.6, skin));
-  out.push('<circle cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/><circle cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 6) + '" r="' + (b.limb * 0.85) + '" fill="' + skin + '"/>');
   // Torso, cuello y cabeza
   const torso = 'M' + (cx - b.sh) + ' ' + Y.sh + ' Q' + (cx - b.sh - 1) + ' 120 ' + (cx - b.wa) + ' ' + Y.waist + ' Q' + (cx - b.hi - 1) + ' 198 ' + (cx - b.hi) + ' ' + Y.hip + ' L' + (cx + b.hi) + ' ' + Y.hip + ' Q' + (cx + b.hi + 1) + ' 198 ' + (cx + b.wa) + ' ' + Y.waist + ' Q' + (cx + b.sh + 1) + ' 120 ' + (cx + b.sh) + ' ' + Y.sh + ' Q' + cx + ' ' + (Y.sh - 12) + ' ' + (cx - b.sh) + ' ' + Y.sh + ' Z';
   out.push('<path d="' + torso + '" fill="' + skin + '"/>');
@@ -2038,8 +2066,8 @@ function figureSVG(p, items, opts) {
   out.push(face === 'cuadrado' ? '<rect x="' + (cx - headRx) + '" y="' + (Y.head - headRy) + '" width="' + headRx * 2 + '" height="' + headRy * 2 + '" rx="11" fill="' + skin + '"/>'
     : '<ellipse cx="' + cx + '" cy="' + Y.head + '" rx="' + headRx + '" ry="' + headRy + '" fill="' + skin + '"/>');
   // Pies (piel) si no hay calzado o hay sandalias
-  const feet = (col) => '<ellipse cx="' + (cx - 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/><ellipse cx="' + (cx + 16) + '" cy="' + (Y.ankle + 8) + '" rx="12" ry="6" fill="' + col + '"/>';
-  if (!shoes || shoes.subtype === 'sandalias') out.push(feet(skin));
+  const feet = (col) => '<ellipse cx="' + (cx - 17) + '" cy="' + (Y.ankle + 8) + '" rx="8" ry="7" fill="' + col + '"/><ellipse cx="' + (cx + 17) + '" cy="' + (Y.ankle + 8) + '" rx="8" ry="7" fill="' + col + '"/>';
+  if (!shoes) out.push(feet(skin));
   // Parte inferior
   const missingStyle = 'fill="none" stroke="#9A968B" stroke-width="1.6" stroke-dasharray="4 4"';
   const drawBottom = (it) => {
@@ -2060,17 +2088,27 @@ function figureSVG(p, items, opts) {
   if (full && full.subtype === 'enterizo') drawBottom(Object.assign({}, full, { subtype: 'pantalón' }));
   else if (bottom) drawBottom(bottom);
   else if (!full) out.push('<path d="M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' L' + (cx + 22) + ' ' + Y.ankle + ' L' + (cx + 8) + ' ' + Y.ankle + ' L' + cx + ' ' + Y.crotch + ' L' + (cx - 8) + ' ' + Y.ankle + ' L' + (cx - 22) + ' ' + Y.ankle + ' Z" ' + missingStyle + '/>');
-  // Calzado
-  if (shoes) {
-    const c = garmentHex(shoes); const s = st(c);
-    const sole = shoes.subtype === 'zapatillas' ? '#F4F2EC' : darker(c, 0.45);
-    [-1, 1].forEach((side) => {
-      const x = cx + side * 16;
-      if (shoes.subtype === 'botines') out.push('<path d="M' + (x - 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 9) + ' ' + (Y.ankle - 24) + ' L' + (x + 10) + ' ' + (Y.ankle + 6) + ' Q' + (x + side * 16) + ' ' + (Y.ankle + 6) + ' ' + (x + side * 15) + ' ' + (Y.ankle + 12) + ' L' + (x - 11) + ' ' + (Y.ankle + 12) + ' Z" fill="' + c + '" ' + s + '/>');
-      else if (shoes.subtype === 'sandalias') out.push('<path d="M' + (x - 10) + ' ' + (Y.ankle + 4) + ' L' + (x + 10) + ' ' + (Y.ankle + 9) + ' M' + (x - 9) + ' ' + (Y.ankle + 10) + ' L' + (x + 9) + ' ' + (Y.ankle + 4) + '" stroke="' + c + '" stroke-width="3.2" stroke-linecap="round"/><ellipse cx="' + x + '" cy="' + (Y.ankle + 14) + '" rx="13" ry="3" fill="' + darker(c, 0.3) + '"/>');
-      else out.push('<path d="M' + (x - 11) + ' ' + (Y.ankle - 2) + ' Q' + x + ' ' + (Y.ankle - 7) + ' ' + (x + 10) + ' ' + (Y.ankle - 1) + ' Q' + (x + side * 17) + ' ' + (Y.ankle + 3) + ' ' + (x + side * 16) + ' ' + (Y.ankle + 10) + ' L' + (x - side * 12) + ' ' + (Y.ankle + 10) + ' Z" fill="' + c + '" ' + s + '/><rect x="' + (Math.min(x - side * 12, x + side * 16) - 1) + '" y="' + (Y.ankle + 9) + '" width="30" height="4" rx="2" fill="' + sole + '"/>');
-    });
-  } else out.push('<g ' + missingStyle + '><rect x="' + (cx - 30) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/><rect x="' + (cx + 4) + '" y="' + (Y.ankle + 1) + '" width="26" height="12" rx="5"/></g>');
+  // Calzado: vista frontal, punta levemente hacia afuera, suela visible
+  const shoe = (fx, side, it) => {
+    const c = garmentHex(it); const dk = darker(c, 0.38); const ay = Y.ankle; const o = side * 2.5; // giro hacia afuera
+    const body = (top) => 'M' + (fx - 8) + ' ' + top + ' L' + (fx + 8) + ' ' + top + ' Q' + (fx + 10 + o) + ' ' + (ay + 7) + ' ' + (fx + 11 + o) + ' ' + (ay + 11) + ' Q' + (fx + 11 + o) + ' ' + (ay + 15) + ' ' + (fx + 5 + o) + ' ' + (ay + 15) + ' L' + (fx - 5 + o) + ' ' + (ay + 15) + ' Q' + (fx - 11 + o) + ' ' + (ay + 15) + ' ' + (fx - 11 + o) + ' ' + (ay + 11) + ' Q' + (fx - 10 + o) + ' ' + (ay + 7) + ' ' + (fx - 8) + ' ' + top + ' Z';
+    const sole = (h, col) => '<path d="M' + (fx - 11.5 + o) + ' ' + (ay + 13) + ' Q' + (fx - 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx - 5 + o) + ' ' + (ay + 15 + h) + ' L' + (fx + 5 + o) + ' ' + (ay + 15 + h) + ' Q' + (fx + 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx + 11.5 + o) + ' ' + (ay + 13) + ' Z" fill="' + col + '"/>';
+    const sub = it.subtype;
+    if (sub === 'sandalias') {
+      return '<path d="M' + (fx - 7) + ' ' + (ay + 2) + ' Q' + (fx - 9 + o) + ' ' + (ay + 12) + ' ' + (fx - 5 + o) + ' ' + (ay + 15) + ' L' + (fx + 5 + o) + ' ' + (ay + 15) + ' Q' + (fx + 9 + o) + ' ' + (ay + 12) + ' ' + (fx + 7) + ' ' + (ay + 2) + ' Z" fill="' + skin + '"/>' +
+        '<path d="M' + (fx - 9 + o) + ' ' + (ay + 7) + ' L' + (fx + 9 + o) + ' ' + (ay + 7) + ' M' + (fx - 8 + o) + ' ' + (ay + 12) + ' L' + (fx + 8 + o) + ' ' + (ay + 12) + '" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/>' + sole(2, dk);
+    }
+    if (sub === 'botines') return '<path d="M' + (fx - 9) + ' ' + (ay - 22) + ' L' + (fx + 9) + ' ' + (ay - 22) + ' L' + (fx + 9) + ' ' + (ay - 2) + ' Z" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/><rect x="' + (fx - 9) + '" y="' + (ay - 22) + '" width="18" height="22" rx="3" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/><path d="' + body(ay - 2) + '" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' + sole(3, dk) + '<line x1="' + (fx + side * 3) + '" y1="' + (ay - 20) + '" x2="' + (fx + side * 3) + '" y2="' + (ay + 4) + '" stroke="' + dk + '" stroke-width="0.9"/>';
+    const isSneaker = sub === 'zapatillas';
+    let out2 = '<path d="' + body(ay - 3) + '" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' + sole(isSneaker ? 3.5 : 2.2, isSneaker ? '#F4F2EC' : darker(c, 0.5));
+    if (isSneaker) out2 += '<path d="M' + (fx - 4) + ' ' + (ay + 1) + ' L' + (fx + 4) + ' ' + (ay + 1) + ' M' + (fx - 4.5) + ' ' + (ay + 4.5) + ' L' + (fx + 4.5) + ' ' + (ay + 4.5) + '" stroke="' + (hexLum(c) > 0.7 ? '#B9B4A8' : shade(c, 0.45)) + '" stroke-width="1.3" stroke-linecap="round"/>';
+    else if (sub === 'mocasines') out2 += '<path d="M' + (fx - 7 + o) + ' ' + (ay + 6) + ' Q' + (fx + o) + ' ' + (ay + 9) + ' ' + (fx + 7 + o) + ' ' + (ay + 6) + '" fill="none" stroke="' + dk + '" stroke-width="1.6"/>';
+    else if (sub === 'oxford' || /oxford/.test(norm(it.name))) out2 += '<path d="M' + (fx - 3) + ' ' + (ay + 1) + ' L' + (fx + 3) + ' ' + (ay + 1) + ' M' + (fx - 3) + ' ' + (ay + 4) + ' L' + (fx + 3) + ' ' + (ay + 4) + '" stroke="' + shade(c, 0.35) + '" stroke-width="1"/>';
+    if (!isSneaker) out2 += '<ellipse cx="' + (fx + o - side * 4) + '" cy="' + (ay + 10) + '" rx="2.6" ry="1.4" fill="#fff" opacity=".28"/>';
+    return out2;
+  };
+  if (shoes) { out.push(shoe(cx - 15, -1, shoes)); out.push(shoe(cx + 15, 1, shoes)); }
+  else out.push('<g ' + missingStyle + '><path d="M' + (cx - 23) + ' ' + (Y.ankle - 2) + ' h16 l3 16 h-22 z"/><path d="M' + (cx + 7) + ' ' + (Y.ankle - 2) + ' h16 l3 16 h-22 z"/></g>');
   // Parte superior o vestido
   const neckPath = (kind, y0) => kind === 'V' ? 'M' + (cx - 11) + ' ' + y0 + ' L' + cx + ' ' + (y0 + 20) + ' L' + (cx + 11) + ' ' + y0 : kind === 'barco' ? 'M' + (cx - 22) + ' ' + (y0 + 1) + ' Q' + cx + ' ' + (y0 + 7) + ' ' + (cx + 22) + ' ' + (y0 + 1) : 'M' + (cx - 11) + ' ' + y0 + ' Q' + cx + ' ' + (y0 + 12) + ' ' + (cx + 11) + ' ' + y0;
   const drawTop = (it, hemY, isDress) => {
@@ -2131,11 +2169,13 @@ function figureSVG(p, items, opts) {
   // Accesorios
   acc.forEach((i) => {
     const c = garmentHex(i);
-    if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5) + '" y="' + (armL[1][1] - 4) + '" width="10" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
+    if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5.5) + '" y="' + (armL[1][1] - 9) + '" width="11" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
     if (i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
     if (i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
     if (i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
   });
+  // Manos (encima de las mangas)
+  out.push('<ellipse cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/><ellipse cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/>');
   // Cabello de adelante
   const capTop = Y.head - headRy - 4;
   const cap = 'M' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 3) + ' ' + capTop + ' ' + cx + ' ' + capTop + ' Q' + (cx + headRx + 3) + ' ' + capTop + ' ' + (cx + headRx + 2) + ' ' + (Y.head - 2) + ' Q' + (cx + headRx - 4) + ' ' + (Y.head - 14) + ' ' + (cx + 6) + ' ' + (Y.head - 16) + ' Q' + (cx - 10) + ' ' + (Y.head - 18) + ' ' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Z';
@@ -3036,7 +3076,7 @@ function renderShell() {
   const bottom = '<nav class="bottomnav" aria-label="Navegación principal">' + bn('hoy', 'Hoy') + bn('armario', 'Armario') +
     '<button type="button" class="nav-cta" data-act="armaDia" data-tour="nav-arma" aria-label="Arma mi día"><span class="nav-cta-in">' + IC.spark + '</span>Arma</button>' +
     bn('plan', 'Plan') + bn('circular', 'Circular') + '</nav>';
-  const fab = UI.view === 'armario' ? '<button type="button" class="fab-add" data-act="addItem" aria-label="Agregar prenda">' + IC.plus + '</button>' : '';
+  const fab = UI.view === 'armario' && UI.closet.tab === 'prendas' ? '<button type="button" class="fab-add" data-act="addItem" aria-label="Agregar prenda">' + IC.plus + '</button>' : '';
   return '<div class="shell">' + side + '<div style="min-width:0">' + top + '<main class="main" id="main"><div class="main-inner">' +
     '<div class="mobile-only">' + (isDemo() ? '<div class="row">' + flag + '</div>' : '') + '</div>' + renderView() + '</div></main></div></div>' + bottom + fab +
     renderPWABanners() + '<div id="toast" class="toast" role="status" aria-live="polite"' + (UI.toast ? '' : ' hidden') + '>' + esc(UI.toast || '') + '</div>';
@@ -3076,7 +3116,7 @@ function renderHoy() {
       '<button class="btn ghost" data-act="tourStart">' + IC.spark + 'Ver recorrido rápido</button></section>';
   }
   const ctxs = w.contexts.filter((c) => c.ownerId === p.id);
-  const hint = UI.sceneHint && !UI.tour ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
+  const hint = UI.sceneHint && !UI.tour && !tourDone() ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
   const meta = [d.district, d.time, d.temperatureC + ' °C', d.dressCode].filter(Boolean).join(' · ');
   const extra = [(d.intent || []).slice(0, 2).join(', '), d.mustUse ? 'con ' + ((w.items.find((i) => i.id === d.mustUse) || {}).name || '') : '', Object.keys(d.hard || {}).length ? 'requisitos excluyentes' : ''].filter(Boolean).join(' · ');
   const ctxCard = '<button type="button" class="ctx-card" data-act="ctxSheet" data-tour="ctx" aria-label="Editar el contexto de hoy: ' + esc(d.name || d.occasion) + '">' +
@@ -3348,8 +3388,8 @@ function renderHistory() {
       return '<div class="card stack tight"><div class="row between"><b>' + esc(l.snapshot.name) + '</b><span class="badge ' + cls + '">' + label + '</span></div>' +
         '<span class="small muted">' + fmtDate(l.date) + ' · ' + esc(l.contextName || l.occasion || '') + (l.origin === 'demo' ? ' · demo' : '') + '</span><span class="small">' + items + '</span>' +
         ((l.recovered || []).length ? '<span class="chip ok">Recuperó ' + plural(l.recovered.length, 'prenda del desuso', 'prendas del desuso') + '</span>' : '') +
-        (l.status === 'usado' ? '<div class="form-grid">' + logRating(l, 'comfort', 'Comodidad') + logRating(l, 'satisfaction', 'Satisfacción') +
-          '<div class="field"><label for="ln-' + l.id + '">Notas</label><input class="input" id="ln-' + l.id + '" value="' + esc(l.notes || '') + '" data-log-note="' + l.id + '"></div></div>' : '') +
+        (l.status === 'usado' ? '<details class="more"' + (l.comfort || l.satisfaction || (l.notes && l.origin !== 'demo') ? ' open' : '') + '><summary>' + (l.comfort || l.satisfaction ? 'Tu valoración: comodidad ' + (l.comfort || '—') + ' · satisfacción ' + (l.satisfaction || '—') : 'Valorar (opcional)') + '</summary><div class="form-grid" style="margin-top:8px">' + logRating(l, 'comfort', 'Comodidad') + logRating(l, 'satisfaction', 'Satisfacción') +
+          '<div class="field"><label for="ln-' + l.id + '">Notas</label><input class="input" id="ln-' + l.id + '" value="' + esc(l.notes || '') + '" data-log-note="' + l.id + '"></div></div></details>' : '') +
         '<div class="row">' + (['elegido', 'planificado'].includes(l.status) ? '<button class="btn sm primary" data-act="confirmWear" data-log="' + l.id + '">' + IC.check + 'Sí, lo usé</button><button class="btn sm ghost" data-act="cancelChoice" data-log="' + l.id + '">Cancelar</button>' : '') +
         (l.status === 'usado' ? '<button class="btn sm ghost" data-act="undoWear" data-log="' + l.id + '">Deshacer confirmación</button>' : '') + '</div></div>';
     }).join('') + '</div>';
@@ -3632,7 +3672,7 @@ function renderProfile() {
       '<g font-size="11" fill="var(--ink-2)" font-family="Manrope, sans-serif"><text x="134" y="82">pecho</text><text x="130" y="108">cintura</text><text x="130" y="132">cadera</text><text x="106" y="190">entrepierna</text></g></svg>' +
       '<ul class="small" style="margin:0;padding-left:18px;display:grid;gap:4px"><li>Usa una cinta flexible, sobre ropa ligera, sin apretar.</li><li>Pecho/busto: la parte más amplia, cinta horizontal.</li><li>Cintura: la parte más estrecha del torso.</li><li>Cadera: la parte más amplia, con pies juntos.</li><li>Entrepierna: desde la ingle hasta el suelo, sin calzado.</li><li>Pie: del talón al dedo más largo, de pie.</li></ul></div></div>';
   } else if (t === 'color') {
-    body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(k) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
+    body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(cap1(k)) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
       '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="no sé" aria-pressed="' + (p.undertone === 'no sé') + '"><b>No sé</b><span class="tiny">Prueba: ¿te favorecen más las joyas doradas (cálido) o plateadas (frío)? ¿Ambas? (neutro)</span></button></div></div>' +
       '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
       '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad.</span></div>' +
@@ -4761,7 +4801,7 @@ function renderStyleWizard(m) {
   const prog = '<div class="steps">' + STYLE_STEPS.slice(0, n).map((s, k) => '<span class="' + (k < m.step ? 'done' : k === m.step ? 'now' : '') + '">' + (k + 1) + '</span>').join('') + '</div>';
   const nav = (canSkip) => '<div class="sheet-foot row">' + (m.step ? '<button class="btn" data-act="styleBack">Atrás</button>' : '') + '<button class="btn primary grow-btn" data-act="styleNext">' + (m.step === n - 1 ? 'Ver mi paleta' : 'Siguiente') + '</button>' + (canSkip ? '<button class="btn ghost" data-act="styleNext">Prefiero omitir</button>' : '') + '</div>';
   let body = '';
-  if (step === 'undertone') body = '<p class="small">¿Qué te favorece más: joyas doradas o plateadas? ¿Tus venas en la muñeca se ven verdosas (cálido) o azuladas (frío)?</p><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(k) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') + '</div>' + nav(true);
+  if (step === 'undertone') body = '<p class="small">¿Qué te favorece más: joyas doradas o plateadas? ¿Tus venas en la muñeca se ven verdosas (cálido) o azuladas (frío)?</p><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(cap1(k)) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') + '</div>' + nav(true);
   else if (step === 'skin') body = '<p class="small">Elige el tono más cercano al tuyo. Sirve para el contraste y para tu figura ilustrada.</p><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch lg" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (monkIndex(p) === i + 1) + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '</div><span class="tiny muted">Escala Monk (Dr. Ellis Monk, CC BY 4.0). RELISTO no infiere nada a partir de este dato.</span>' + nav(true);
   else if (step === 'face') body = faceShapePicker(p) + nav(true);
   else if (step === 'hair') body = '<div class="field"><span class="lbl">Color</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
@@ -4915,6 +4955,102 @@ renderModal = function () { // eslint-disable-line no-func-assign
   if (m.type === 'style') return renderStyleWizard(m);
   if (m.type === 'labels') return renderLabels(m);
   return _renderModal6();
+};
+/* =====================================================================
+   RELISTO 3.1: calendario con varias opciones por día y ajustes de UX.
+   ===================================================================== */
+function miniRow(ids, n) {
+  const w = ws();
+  return '<span class="minis">' + ids.map((id) => w.items.find((i) => i.id === id)).filter(Boolean).filter((i) => roleOf(i) !== 'accessory').slice(0, n || 4)
+    .map((i) => '<span class="mini">' + thumb(i, { noTag: true, noFlip: true }) + '</span>').join('') + '</span>';
+}
+function plannedNear(date, ownerId) {
+  const w = ws(); const near = new Map();
+  w.wearLogs.filter((l) => l.ownerId === ownerId && ['planificado', 'elegido'].includes(l.status) && l.date !== date && Math.abs(daysBetween(date, l.date)) <= 1)
+    .forEach((l) => l.snapshot.items.forEach((s) => near.set(s.id, l.date)));
+  return near;
+}
+function renderPlanDay(m) {
+  const w = ws(); const p = prof();
+  const ctxs = w.contexts.filter((c) => c.ownerId === p.id);
+  const ctx = ctxs.find((c) => c.id === m.ctxId) || ctxs[0];
+  const dayLabel = fmtDate(m.date, { weekday: 'long', day: 'numeric', month: 'long', year: undefined });
+  if (!ctx) return modalWrap('Planificar el ' + dayLabel, emptyState('Sin contextos', 'Crea un contexto en Hoy para planificar.', ''));
+  const r = generateOutfits(w, ctx, p, { onlyAvailable: true }, TODAY);
+  const ranked = r.complete;
+  const options = pickDiverse(ranked, [], Math.min(12, m.limit || 6), w);
+  m.options = options; m.ctx = ctx;
+  const near = plannedNear(m.date, p.id);
+  const already = w.wearLogs.filter((l) => l.ownerId === p.id && l.date === m.date && ['planificado', 'elegido', 'usado'].includes(l.status));
+  const saved = w.saved.filter((s) => s.ownerId === p.id);
+  const ctxChips = '<div class="stack tight"><span class="eyebrow">¿Para qué ocasión?</span><div class="chip-scroll">' + ctxs.map((c) => '<button type="button" class="chip btnchip" data-act="planCtx" data-id="' + c.id + '" aria-pressed="' + (c.id === ctx.id) + '">' + esc(c.name) + '</button>').join('') + '</div></div>';
+  const alreadyHTML = already.length ? '<div class="stack tight"><span class="eyebrow">Ya planificado ese día</span>' + already.map((l) => '<div class="plan-opt done">' + miniRow(l.snapshot.items.map((s) => s.id), 3) + '<span class="stack tight" style="flex:1;min-width:0"><b class="small">' + esc(l.snapshot.name) + '</b><span class="tiny muted">' + esc(l.contextName || '') + '</span></span>' + (l.status !== 'usado' ? '<button class="btn sm ghost" data-act="cancelChoice" data-log="' + l.id + '">Quitar</button>' : '<span class="badge ok">Usado</span>') + '</div>').join('') + '</div>' : '';
+  const plannedKeys = new Set(already.map((l) => l.key));
+  const opts = options.length ? '<div class="stack tight"><span class="eyebrow">' + plural(options.length, 'opción', 'opciones') + ' con tu ropa disponible</span>' + options.map((c, idx) => {
+    const clash = c.itemIds.filter((id) => near.has(id)).map((id) => w.items.find((i) => i.id === id)).filter(Boolean);
+    const isPlanned = plannedKeys.has(c.key);
+    return '<div class="plan-opt">' + miniRow(c.itemIds, 4) + '<span class="stack tight" style="flex:1;min-width:0"><b class="small">' + esc(c.name) + '</b><span class="tiny muted">' + esc(c.style || '') + (c.reasons && c.reasons[0] ? ' · ' + esc(c.reasons[0]) : '') + '</span>' +
+      (clash.length ? '<span class="tiny" style="color:var(--warn)">' + esc(clash.map((i) => i.name).join(', ')) + ' ya está en un día seguido</span>' : '') + '</span>' +
+      '<span class="plan-acts"><button type="button" class="icon-btn soft sm-ic" data-act="planLook" data-idx="' + idx + '" aria-label="Ver ' + esc(c.name) + ' puesto">' + IC.figure + '</button>' +
+      (isPlanned ? '<span class="badge info">Elegido</span>' : '<button type="button" class="btn sm primary" data-act="planPickIdx" data-idx="' + idx + '">Elegir</button>') + '</span></div>';
+  }).join('') + (ranked.length > options.length && options.length < 12 ? '<button class="btn sm wide" data-act="planMore">' + IC.plus + 'Ver más opciones</button>' : '') + '</div>'
+    : '<div class="note">' + esc(r.notes[0] || 'No hay combinaciones completas para este contexto con tu ropa disponible.') + '</div>';
+  const savedHTML = saved.length ? '<details class="more"><summary>Tus outfits guardados (' + saved.length + ')</summary><div class="stack tight" style="margin-top:8px">' + saved.map((s) => '<div class="plan-opt">' + miniRow(s.itemIds, 4) + '<span class="stack tight" style="flex:1;min-width:0"><b class="small">' + esc(s.name) + '</b></span><button type="button" class="btn sm" data-act="planPick" data-saved="' + s.id + '" data-date="' + m.date + '">Elegir</button></div>').join('') + '</div></details>' : '';
+  return modalWrap('Planificar el ' + dayLabel, '<p class="small muted">Planificar no cuenta como uso. Ese día confirmas con “Sí, lo usé”. Puedes planificar más de una opción para el mismo día.</p>' + ctxChips + alreadyHTML + opts + savedHTML, { eyebrow: 'Calendario' });
+}
+renderCalendar = function () { // eslint-disable-line no-func-assign
+  const w = ws(); const p = prof(); const off = UI.calOffset || 0;
+  const days = Array.from({ length: 7 }, (_, i) => addDays(TODAY, i + off));
+  const logs = w.wearLogs.filter((l) => l.ownerId === p.id && ['planificado', 'elegido', 'usado'].includes(l.status));
+  const warnings = [];
+  days.forEach((d) => {
+    logs.filter((l) => l.date === d && l.status !== 'usado').forEach((l) => l.snapshot.items.forEach((s) => {
+      const it = w.items.find((x) => x.id === s.id);
+      if (it && !isUsable(it)) warnings.push(fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short', year: undefined }) + ': ' + it.name + ' está ' + it.availability + '.');
+      if (logs.some((l2) => l2 !== l && l2.status !== 'usado' && l2.date > d && daysBetween(d, l2.date) <= 1 && l2.snapshot.items.some((x) => x.id === s.id)) && it) warnings.push(it.name + ' aparece en días seguidos: ¿podrás lavarla a tiempo?');
+    }));
+  });
+  const nav = '<div class="cal-nav"><button class="icon-btn soft sm-ic" data-act="calNav" data-d="-7" aria-label="Semana anterior"' + (off <= 0 ? ' disabled' : '') + '>‹</button><b class="small">' + (off ? '' : 'Esta semana · ') + esc(fmtDate(days[0], { day: 'numeric', month: 'short', year: undefined })) + ' – ' + esc(fmtDate(days[6], { day: 'numeric', month: 'short', year: undefined })) + '</b><button class="icon-btn soft sm-ic" data-act="calNav" data-d="7" aria-label="Semana siguiente"' + (off >= 21 ? ' disabled' : '') + '>›</button></div>';
+  return '<div class="note">Elige qué ponerte cada día. RELISTO te avisa si una prenda está por lavar o se repite en días seguidos.</div>' + nav +
+    [...new Set(warnings)].map((x) => '<div class="note bad">' + esc(x) + '</div>').join('') +
+    '<div class="cal">' + days.map((d) => {
+      const l = logs.filter((x) => x.date === d);
+      return '<div class="day' + (d === TODAY ? ' today' : '') + '"><div class="row between" style="flex-wrap:nowrap"><b class="small">' + esc(fmtDate(d, { weekday: 'long', day: 'numeric', month: 'short', year: undefined })) + '</b>' + (d === TODAY ? '<span class="chip ok" style="padding:1px 8px">Hoy</span>' : '') + '</div>' +
+        (l.length ? l.map((x) => '<div class="cal-entry">' + miniRow(x.snapshot.items.map((s) => s.id), 3) + '<span class="stack tight" style="min-width:0;flex:1"><b class="small">' + esc(x.snapshot.name) + '</b><span class="badge ' + (LOG_STATUS[x.status] || ['neutral'])[0] + '">' + esc((LOG_STATUS[x.status] || [0, x.status])[1]) + '</span></span>' +
+          '<span class="plan-acts"><button type="button" class="icon-btn soft sm-ic" data-act="calLook" data-log="' + x.id + '" aria-label="Ver puesto">' + IC.figure + '</button>' + (x.status !== 'usado' ? '<button type="button" class="icon-btn soft sm-ic" data-act="cancelChoice" data-log="' + x.id + '" aria-label="Quitar del calendario">' + IC.x + '</button>' : '') + '</span></div>').join('') : '<span class="tiny muted">Libre</span>') +
+        '<button class="btn sm' + (l.length ? ' ghost' : '') + '" data-act="planDay" data-date="' + d + '">' + IC.plus + (l.length ? 'Otra opción' : 'Planificar') + '</button></div>';
+    }).join('') + '</div>';
+};
+Object.assign(ACT, {
+  planDay: (el) => openModal({ type: 'planday', date: el.dataset.date, ctxId: (currentDraft() || {}).id, limit: 6 }),
+  planCtx: (el) => { UI.modal.ctxId = el.dataset.id; UI.modal.limit = 6; render(); },
+  planMore: () => { UI.modal.limit = Math.min(12, (UI.modal.limit || 6) + 6); render(); },
+  planPickIdx: (el) => guard('pp' + el.dataset.idx + UI.modal.date, () => {
+    const m = UI.modal; const c = m.options[Number(el.dataset.idx)]; if (!c) return;
+    chooseOutfit(ws(), c, m.ctx, TODAY, 'planificado', m.date);
+    UI.modal = null; celebrate(null);
+    toast('«' + c.name + '» planificado para el ' + fmtDate(m.date, { weekday: 'long', day: 'numeric', month: 'long', year: undefined }) + '.'); commit();
+  }),
+  planLook: (el) => { const m = UI.modal; const c = m.options[Number(el.dataset.idx)]; if (!c) return; UI.lookBack = { type: 'planday', date: m.date, ctxId: m.ctxId, limit: m.limit }; openModal({ type: 'look', itemIds: c.itemIds, title: c.name, back: true }); },
+  calLook: (el) => { const l = ws().wearLogs.find((x) => x.id === el.dataset.log); if (l) openModal({ type: 'look', itemIds: l.snapshot.items.map((s) => s.id).filter((id) => w_item(id)), title: l.snapshot.name }); },
+  calNav: (el) => { UI.calOffset = Math.max(0, Math.min(21, (UI.calOffset || 0) + Number(el.dataset.d))); render(); },
+  lookBack: () => { const b = UI.lookBack; UI.lookBack = null; openModal(b); }
+});
+const _renderModal7 = renderModal;
+renderModal = function () { // eslint-disable-line no-func-assign
+  const m = UI.modal;
+  if (m.type === 'planday') return renderPlanDay(m);
+  if (m.type === 'look' && m.back && UI.lookBack) return _renderModal7().replace('<div class="sheet-foot row">', '<div class="sheet-foot row"><button class="btn" data-act="lookBack">‹ Volver a las opciones</button>');
+  return _renderModal7();
+};
+// Un solo outfit "para hoy": al elegir otro, el anterior (si aún no se usó) deja de estar elegido.
+const _choose7 = ACT.choose;
+ACT.choose = (el, e) => {
+  const w = ws(); const key = el.dataset.key;
+  const prev = w.wearLogs.filter((l) => l.ownerId === w.activeProfileId && l.date === TODAY && l.status === 'elegido' && l.key !== key);
+  prev.forEach((l) => { l.status = 'descartado'; });
+  _choose7(el, e);
+  if (prev.length) toast('Cambiaste tu elección de hoy. Cuando lo uses, confirma con “Sí, lo usé”.');
 };
 /* ============================ INICIO ============================ */
 render();
