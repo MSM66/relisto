@@ -37,28 +37,57 @@ function renderModal() {
     default: return '';
   }
 }
+const QUICK_TYPES = {
+  superior: ['camiseta', 'polo', 'camisa', 'blusa', 'suéter', 'top'], inferior: ['jean', 'pantalón', 'chino', 'falda', 'short'],
+  cuerpo_completo: ['vestido', 'enterizo'], capa: ['blazer', 'casaca', 'abrigo', 'chaleco', 'sobrecamisa'],
+  calzado: ['zapatillas', 'zapatos', 'mocasines', 'botines', 'sandalias'], bolso: ['mochila', 'bolso'], accesorio: ['cinturón', 'reloj', 'collar', 'lentes', 'pañuelo', 'sombrero']
+};
+const QUICK_CAT_ICON = { superior: 'camisa', inferior: 'pantalón', cuerpo_completo: 'vestido', capa: 'blazer', calzado: 'zapatillas', bolso: 'mochila', accesorio: 'reloj' };
+const QUICK_CAT_LABEL = { superior: 'Superior', inferior: 'Inferior', cuerpo_completo: 'Vestido', capa: 'Capa', calzado: 'Calzado', bolso: 'Bolso', accesorio: 'Accesorio' };
+const QUICK_COLORS = ['blanco', 'negro', 'gris', 'beige', 'arena', 'camel', 'marrón', 'azul marino', 'azul', 'celeste', 'verde', 'oliva', 'burdeos', 'rojo', 'terracota', 'rosa', 'amarillo', 'lila'];
+const FEM_TYPES = ['camiseta', 'camisa', 'blusa', 'falda', 'casaca', 'chaqueta', 'sobrecamisa', 'mochila', 'zapatillas', 'sandalias', 'chompa', 'prenda superior', 'prenda inferior', 'capa'];
+const PLURAL_TYPES = ['zapatillas', 'zapatos', 'mocasines', 'botines', 'sandalias', 'lentes'];
+function agreeColor(type, color) {
+  const c = String(color || '').trim(); if (!c || c.includes(' ')) return c;
+  const fem = FEM_TYPES.includes(type); const pl = PLURAL_TYPES.includes(type);
+  if (/o$/.test(c)) return c.slice(0, -1) + (fem ? 'a' : 'o') + (pl ? 's' : '');
+  if (pl && /^(azul|gris|marrón|verde)$/.test(c)) return (c === 'marrón' ? 'marron' : c) + (/[aeiou]$/.test(c) ? 's' : 'es');
+  return c;
+}
+function suggestedName(d) {
+  const type = (d.subtype || '').trim() || (QUICK_TYPES[d.category] || [])[0] || 'prenda';
+  const name = type.charAt(0).toUpperCase() + type.slice(1);
+  return d.color && d.color !== 'sin color' ? name + ' ' + agreeColor(type, d.color) : name;
+}
 function renderItemForm(m) {
   const d = m.draft; const ph = m.photo;
+  const quick = m.mode !== 'edit';
   const catOpts = Object.entries(CATEGORIES).map(([k, v]) => [k, v]).concat([['__custom', 'Otra (personalizada)']]);
   const ai = m.ai || {};
-  const aiBlock = ph && ph.file ? (CAP.aiImages ? '<div class="card explore stack tight"><b>Sugerencia con IA (opcional)</b><span class="small">Envía esta foto a Claude para proponer categoría, colores y corte. Revisa y confirma antes de guardar. Nunca se asume material, talla, marca ni certificaciones por la apariencia.</span>' +
+  const aiBlock = ph && ph.file ? (CAP.aiImages ? '<div class="card explore stack tight"><b>Sugerencia con IA (opcional)</b><span class="small">Claude propone categoría, colores y corte a partir de la foto. Tú confirmas antes de guardar. Nunca supone material, talla ni marca.</span>' +
     '<div class="row"><button class="btn sm" data-act="aiSuggest"' + (ai.state === 'loading' ? ' disabled' : '') + '>' + IC.spark + (ai.state === 'loading' ? 'Analizando…' : 'Sugerir con IA') + '</button></div>' +
-    (ai.msg ? '<div class="note ' + (ai.state === 'error' ? 'bad' : 'info') + '">' + esc(ai.msg) + '</div>' : '') + '</div>'
-    : '<div class="note">' + (IS_PWA ? 'Completa la ficha a mano: la sugerencia con IA solo está disponible en la versión dentro de Claude.' : 'Análisis de imagen no disponible en esta vista: completa la ficha manualmente. La foto se conserva como referencia.') + '</div>') : '';
+    (ai.msg ? '<div class="note ' + (ai.state === 'error' ? 'bad' : 'info') + '">' + esc(ai.msg) + '</div>' : '') + '</div>' : '') : '';
   const dup = m.dupes && m.dupes.length ? '<div class="note bad stack tight"><b>Posible duplicado</b><span>Ya tienes ' + esc(m.dupes.map((i) => i.name + ' (' + i.id + ')').join(', ')) + ' con la misma categoría, color y tipo. Revísalo: no se elimina nada automáticamente.</span><div class="row"><button class="btn sm primary" data-act="itemSave" data-force="1">Guardar igualmente</button><button class="btn sm ghost" data-act="dupDismiss">Revisar la ficha</button></div></div>' : '';
   const src = d.attributeSource && /sugerido/.test(d.attributeSource) ? '<span class="chip explore">Atributos sugeridos por imagen: confirma o corrige</span>' : '';
-  return modalWrap(m.mode === 'edit' ? 'Editar ficha' : m.mode === 'fromOrder' ? 'Revisar ficha del pedido' : 'Agregar prenda',
-    (m.mode === 'fromOrder' ? '<div class="note sim">Prenda de un pedido simulado. Se añadirá una sola vez al armario.</div>' : '') +
-    '<div class="grid two"><div class="stack">' + (ph ? '<img class="preview-img" src="' + ph.url + '" alt="Vista previa de la foto elegida">' : (m.mode === 'edit' ? thumb(w_item(m.itemId)) : '<div class="thumb">' + illusSVG(Object.assign({ name: d.name || 'prenda' }, d, { subtype: deriveSubtype(d.name || '', d.category) })) + '<span class="tag">Ilustración</span></div>')) +
-    '<div class="row"><label class="btn sm" for="photo-in" tabindex="0">' + IC.camera + (ph ? 'Cambiar foto' : 'Subir foto') + '</label><input id="photo-in" type="file" accept="image/*" hidden data-act-change="photo">' +
-    '<label class="btn sm ghost" for="cam-in" tabindex="0">Usar cámara</label><input id="cam-in" type="file" accept="image/*" capture="environment" hidden data-act-change="photo">' +
-    (ph ? (ph.cropped ? '<button class="btn sm ghost" data-act="restorePhoto">Ver original</button>' : '<button class="btn sm ghost" data-act="cropPhoto">Recortar cuadrado</button>') : '') + '</div>' +
-    '<span class="tiny muted">Puedes registrar sin foto. ' + (IS_PWA ? 'Las fotos se guardan en este teléfono, reducidas de tamaño, y entran en el respaldo completo.' : 'Las fotos viven solo en esta sesión: no se guardan entre sesiones ni se exportan.') + ' Fondo limpio automático: no disponible en esta versión. Si la foto tiene varias prendas, registra cada una y usa “Usar esta foto para otra prenda”.</span>' + aiBlock + '</div>' +
-    '<div class="stack">' + src + '<div class="form-grid">' +
-    fInput('if-name', 'Nombre *', 'mf', 'name', d.name) +
-    fSelect('if-cat', 'Categoría *', 'mf', 'category', CATEGORIES[d.category] ? d.category : '__custom', catOpts) +
+  const preview = ph ? '<img class="preview-img" src="' + ph.url + '" alt="Vista previa de la foto elegida">'
+    : (m.mode === 'edit' ? thumb(w_item(m.itemId)) : '<div class="thumb">' + illusSVG(Object.assign({ name: d.name || 'prenda' }, d, { subtype: d.subtype || (QUICK_TYPES[d.category] || [''])[0] || deriveSubtype(d.name || '', d.category) })) + '<span class="tag">Ilustración</span></div>');
+  const photoZone = '<div class="photo-zone">' + preview +
+    '<div class="photo-actions"><label class="btn primary" for="cam-in" tabindex="0">' + IC.camera + (ph ? 'Otra foto' : 'Tomar foto') + '</label><input id="cam-in" type="file" accept="image/*" capture="environment" hidden data-act-change="photo">' +
+    '<label class="btn" for="photo-in" tabindex="0">Galería</label><input id="photo-in" type="file" accept="image/*" hidden data-act-change="photo">' +
+    (ph ? (ph.cropped ? '<button class="btn ghost" data-act="restorePhoto">Original</button>' : '<button class="btn ghost" data-act="cropPhoto">Recortar</button>') : '') + '</div>' +
+    '<span class="tiny muted">La foto es opcional. ' + (IS_PWA ? 'Se guarda en este teléfono, reducida de tamaño.' : 'Vive solo en esta sesión.') + '</span>' + aiBlock + '</div>';
+  const catChips = '<div class="field"><span class="lbl">¿Qué es?</span><div class="cat-grid">' + Object.keys(CATEGORIES).map((k) => {
+    const sample = { name: CATEGORIES[k], category: k, subtype: QUICK_CAT_ICON[k], color: d.category === k && d.color && d.color !== 'sin color' ? d.color : 'gris', cut: 'regular' };
+    return '<button type="button" class="cat-chip" data-act="mfSet" data-path="category" data-val="' + k + '" aria-pressed="' + (d.category === k) + '">' + illusSVG(sample) + '<span>' + esc(QUICK_CAT_LABEL[k]) + '</span></button>';
+  }).join('') + '</div></div>';
+  const types = QUICK_TYPES[d.category] || [];
+  const typeChips = types.length ? '<div class="field"><span class="lbl">Tipo</span><div class="chip-scroll">' + types.map((t) => '<button type="button" class="chip btnchip" data-act="mfSet" data-path="subtype" data-val="' + esc(t) + '" aria-pressed="' + (d.subtype === t) + '">' + esc(t) + '</button>').join('') + '</div></div>' : '';
+  const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
+  const nameField = '<div class="field"><label for="if-name">Nombre' + (quick ? ' (opcional)' : ' *') + '</label><input class="input" id="if-name" value="' + esc(d.name || '') + '" placeholder="' + esc(suggestedName(d)) + '"' + bindAttr('mf', 'name') + '></div>';
+  const details = '<div class="form-grid">' +
+    (quick ? '' : fSelect('if-cat', 'Categoría *', 'mf', 'category', CATEGORIES[d.category] ? d.category : '__custom', catOpts)) +
     (!CATEGORIES[d.category] ? fInput('if-ccat', 'Categoría personalizada', 'mf', 'customCategory', d.customCategory || (d.category !== '__custom' ? d.category : '')) : '') +
-    fInput('if-sub', 'Subtipo', 'mf', 'subtype', d.subtype || '') + fInput('if-col', 'Color(es)', 'mf', 'color', d.color) +
+    fInput('if-sub', 'Subtipo', 'mf', 'subtype', d.subtype || '') + fInput('if-col', 'Color(es)', 'mf', 'color', d.color === 'sin color' ? '' : d.color) +
     fSelect('if-pat', 'Estampado', 'mf', 'pattern', d.pattern || 'liso', ['liso', 'rayas', 'cuadros', 'floral', 'estampado', 'otro']) +
     fInput('if-mat', 'Fibra o material', 'mf', 'material', d.material) + fInput('if-wea', 'Tejido o acabado', 'mf', 'weave', d.weave) +
     fInput('if-cut', 'Corte', 'mf', 'cut', d.cut) + fInput('if-size', 'Talla', 'mf', 'size', d.size) +
@@ -69,9 +98,15 @@ function renderItemForm(m) {
     fInput('if-price', 'Precio (S/, opcional)', 'mf', 'price', d.price ?? '', 'number') + fInput('if-date', 'Fecha de incorporación', 'mf', 'createdAt', d.createdAt || TODAY, 'date') +
     fSelect('if-acq', 'Adquisición (opcional)', 'mf', 'acquisition', d.acquisition || '', [['', '—'], 'nueva', 'segunda mano', 'regalo', 'intercambio', 'préstamo recibido']) +
     fInput('if-care', 'Notas de cuidado', 'mf', 'care', d.care) + fInput('if-tags', 'Etiquetas personales (separadas por coma)', 'mf', 'tagsText', d.tagsText ?? (d.tags || []).join(', ')) + '</div>' +
-    '<span class="tiny muted">Material y talla desconocidos se quedan como “no confirmado”. Una prenda nueva no recibe usos ni antigüedad inventados.</span></div></div>' +
-    dup + '<div class="row"><button class="btn primary" data-act="itemSave">' + IC.check + (m.mode === 'edit' ? 'Guardar cambios' : 'Confirmar y guardar') + '</button><button class="btn ghost" data-act="closeModal">Cancelar</button>' + (m.queue && m.queue.length ? '<span class="small muted">Quedan ' + m.queue.length + ' fotos del lote</span>' : '') + '</div>',
-    { eyebrow: isDemo() ? 'Espacio de demostración' : 'Tu espacio personal' });
+    '<span class="tiny muted">Material y talla desconocidos quedan como “no confirmado”. Una prenda nueva no recibe usos ni antigüedad inventados.</span>';
+  const foot = '<div class="sheet-foot row"><button class="btn primary lg grow-btn" data-act="itemSave">' + IC.check + (m.mode === 'edit' ? 'Guardar cambios' : 'Guardar') + '</button>' +
+    (m.mode === 'add' && !(m.queue && m.queue.length) ? '<button class="btn lg" data-act="itemSave" data-again="1">Guardar y otra</button>' : '') +
+    (m.queue && m.queue.length ? '<span class="small muted">Quedan ' + m.queue.length + ' fotos del lote</span>' : '') + '</div>';
+  const body = (m.mode === 'fromOrder' ? '<div class="note sim">Prenda de un pedido simulado. Se añadirá una sola vez al armario.</div>' : '') +
+    '<div class="grid two"><div class="stack">' + photoZone + '</div><div class="stack">' + src +
+    (quick ? catChips + typeChips + colorChips + nameField + '<details class="more"' + (m.mode === 'fromOrder' ? ' open' : '') + '><summary>Más detalles (opcional): material, talla, precio…</summary><div class="stack" style="margin-top:10px">' + details + '</div></details>'
+      : nameField + details) + '</div></div>' + dup + foot;
+  return modalWrap(m.mode === 'edit' ? 'Editar ficha' : m.mode === 'fromOrder' ? 'Revisar ficha del pedido' : 'Agregar prenda', body, { eyebrow: isDemo() ? 'Espacio de demostración' : 'Tu armario' });
 }
 function w_item(id) { return ws().items.find((i) => i.id === id); }
 function renderItemView(m) {
@@ -450,10 +485,12 @@ const ACT = {
     const m = UI.modal; const w = ws(); const d = Object.assign({}, m.draft);
     if (d.category === '__custom') d.category = norm(d.customCategory || '') || 'otra';
     if (!CATEGORIES[d.category] && d.customCategory) d.category = norm(d.customCategory);
-    if (!String(d.name || '').trim()) { toast('Escribe un nombre para la prenda.'); return; }
-    d.name = d.name.trim(); d.color = (d.color || '').trim() || 'sin color';
+    d.color = (d.color || '').trim() || 'sin color';
+    if (!String(d.name || '').trim()) { if (m.mode === 'edit') { toast('Escribe un nombre para la prenda.'); return; } d.name = suggestedName(d); }
+    d.name = d.name.trim();
     d.tags = String(d.tagsText || '').split(',').map((t) => t.trim()).filter(Boolean);
     d.subtype = (d.subtype || '').trim() || deriveSubtype(d.name, d.category);
+    if (m.mode !== 'edit' && !m.formalitySet) { d.formality = FORMALITY[d.subtype] || d.formality; d.warmth = WARMTH[d.subtype] || d.warmth; }
     ['warmth', 'formality', 'comfort'].forEach((k) => { d[k] = Number(d[k]) || 2; });
     d.price = d.price === '' || d.price === null || d.price === undefined ? null : Number(d.price);
     if (/sugerido/.test(d.attributeSource || '')) d.attributeSource = 'confirmado por la persona (con sugerencia de IA)';
@@ -465,11 +502,13 @@ const ACT = {
     else item = addItem(w, Object.assign(d, { ownerId: w.activeProfileId }), TODAY);
     if (item && m.photo) { PHOTOS[S.space + ':' + item.id] = m.photo; persistPhoto(S.space + ':' + item.id, m.photo); }
     const queue = m.queue || [];
-    if (queue.length) {
+    if (!queue.length && el.dataset.again) { UI.modal = { type: 'item', mode: 'add', draft: Object.assign(blankItemDraft(), { category: d.category }) }; }
+    else if (queue.length) {
       const next = queue.shift();
       UI.modal = { type: 'item', mode: 'add', draft: blankItemDraft(), queue }; attachPhoto(UI.modal, next);
-    } else UI.modal = null;
-    toast(m.mode === 'edit' ? 'Ficha actualizada.' : 'Guardada en tu armario' + (m.photo ? (IS_PWA ? ' con su foto.' : ' (la foto vive solo en esta sesión).') : '.'));
+    } else if (!el.dataset.again) UI.modal = null;
+    if (m.mode !== 'edit') celebrate(null);
+    toast(m.mode === 'edit' ? 'Ficha actualizada.' : '«' + d.name + '» guardada' + (m.photo ? (IS_PWA ? ' con su foto.' : ' (la foto vive solo en esta sesión).') : '.'));
     commit();
   }); },
   cropPhoto: () => {
@@ -650,6 +689,7 @@ function applyBind(el, isChange) {
   if (scope === 'mf' && ['warmth', 'formality', 'comfort'].includes(path)) val = Number(val);
   setPath(obj, path, val);
   if (scope === 'mf' && path === 'category' && val !== '__custom') obj.subtype = '';
+  if (scope === 'mf' && path === 'formality' && UI.modal) UI.modal.formalitySet = true;
   if (scope === 'prof') { commit({ render: isChange && el.type !== 'text' && el.tagName !== 'TEXTAREA' }); return; }
   if (isChange && (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'date' || el.type === 'number')) render();
   else if (!isChange && el.dataset.live) render();
@@ -682,5 +722,3 @@ document.addEventListener('keydown', (e) => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.tagName === 'LABEL' && e.target.htmlFor) { e.preventDefault(); const inp = document.getElementById(e.target.htmlFor); if (inp) inp.click(); }
 });
 document.addEventListener('visibilitychange', () => { const t = todayLima(); if (t !== TODAY) { TODAY = t; render(); } });
-render();
-initCapabilities();

@@ -302,9 +302,9 @@ function renderProfile() {
 function renderDataTab() {
   const t = saveStateText(); const p = prof();
   const photoCount = Object.keys(PHOTOS).length;
-  return '<div class="grid two"><div class="card stack"><span class="eyebrow">Conservación de datos</span><div class="note ' + (CAP.storage === 'saved' ? 'ok' : 'info') + '"><b>' + esc(t.strong) + '.</b> ' + esc(t.rest) + '</div>' +
+  return renderAccountCard() + '<div class="grid two"><div class="card stack"><span class="eyebrow">Conservación de datos</span><div class="note ' + (CAP.storage === 'saved' ? 'ok' : 'info') + '"><b>' + esc(t.strong) + '.</b> ' + esc(t.rest) + '</div>' +
     (IS_PWA ? '<p class="small">Tus fotos se guardan en este teléfono (' + photoCount + ' ahora' + (CAP.usage && CAP.usage.usage ? ', unos ' + Math.max(1, Math.round(CAP.usage.usage / 1048576)) + ' MB en total' : '') + '). Nada se sube a internet. Si pierdes o cambias el teléfono, o borras los datos del navegador, solo los recuperas con un respaldo.</p>' +
-      '<div class="card soft stack tight"><b>Respaldo completo</b><span class="small">Un archivo con tus prendas, historial y fotos. Guárdalo en Archivos, Drive o tu correo, y restáuralo aquí abajo con “Elegir archivo”.</span><div class="row"><button class="btn sm primary" data-act="fullBackup">Crear respaldo completo</button></div></div>' + renderInstallCard(true) +
+      '<div class="card soft stack tight"><b>Respaldo completo</b><span class="small">Un archivo con tus prendas, historial y fotos. Guárdalo en Archivos, Drive o tu correo, y restáuralo aquí abajo con “Elegir archivo”. El archivo no está cifrado: guárdalo en un lugar privado.</span><div class="row"><button class="btn sm primary" data-act="fullBackup">Crear respaldo completo</button></div></div>' + renderInstallCard(true) +
       '<span class="tiny muted">Versión de la app: ' + esc(APP_VERSION) + (CAP.persisted ? ' · almacenamiento persistente concedido' : '') + '</span>'
       : '<p class="small">Las fotos se muestran solo durante esta sesión y no se guardan ni se exportan' + (photoCount ? ' (tienes ' + photoCount + ' en esta sesión)' : '') + '. Las ilustraciones de la demo se reconstruyen a partir de sus atributos.</p>') +
     '<div class="row"><button class="btn sm" data-act="exportJSON">' + (IS_PWA ? 'Exportar solo texto' : 'Exportar JSON') + '</button></div>' +

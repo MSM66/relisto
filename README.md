@@ -4,8 +4,13 @@
 Descubre qué ponerte con lo que ya tienes y compra con intención.
 
 App web instalable (PWA). Se publica con GitHub Pages desde la carpeta `docs/`.
-Tus prendas, historial y fotos se guardan **solo en tu teléfono** (IndexedDB):
-este repositorio contiene únicamente el código y datos de demostración ficticios.
+Cada persona crea su cuenta **en su propio teléfono** con su DNI (o carné de extranjería)
+y una contraseña. Su armario y sus fotos se guardan cifrados (AES-GCM; clave envuelta con
+PBKDF2-SHA-256 y con un código de recuperación) en el almacenamiento del navegador (IndexedDB).
+Nada se envía a un servidor y el documento no se valida con RENIEC. Este repositorio contiene
+únicamente el código y datos de demostración ficticios.
+
+Para compartir RELISTO, envía el enlace del sitio: cada persona la instala y crea su cuenta.
 
 ## Estructura
 

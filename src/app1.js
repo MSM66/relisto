@@ -40,9 +40,12 @@ async function doSave() {
   if (CAP.saving) { CAP.pendingSave = true; return; }
   CAP.saving = true;
   try {
-    const payload = JSON.stringify({ app: 'RELISTO', version: SCHEMA_VERSION, space: S.space, spaces: { demo: S.demo, personal: S.personal }, ui: { view: UI.view } });
-    if (IS_PWA) { await LOCAL.set('state', payload); CAP.storage = 'local'; }
-    else { await CAP.doc.set({ payload, savedAt: new Date().toISOString() }); CAP.storage = 'saved'; }
+    if (IS_PWA) {
+      await LOCAL.set('state', JSON.stringify({ app: 'RELISTO', version: SCHEMA_VERSION, space: S.space, spaces: { demo: S.demo, personal: LEGACY.personal || null }, ui: { view: UI.view } }));
+      if (AUTH.acct && AUTH.key && S.personal) await LOCAL.set('acct-data:' + AUTH.acct.id, await encryptJSON(AUTH.key, S.personal));
+      CAP.storage = 'local';
+    }
+    else { const payload = JSON.stringify({ app: 'RELISTO', version: SCHEMA_VERSION, space: S.space, spaces: { demo: S.demo, personal: S.personal }, ui: { view: UI.view } }); await CAP.doc.set({ payload, savedAt: new Date().toISOString() }); CAP.storage = 'saved'; }
     CAP.lastError = '';
   } catch (e) {
     CAP.storage = 'error'; CAP.lastError = (e && e.code) || 'error';
@@ -127,6 +130,10 @@ const IC = {
   info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/></svg>',
   mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11.5" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>',
   bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12.5H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>',
+  dots: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>',
+  share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
+  eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
   hanger: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 17a5 5 0 1 1 5 5c-2.7 0-5 2-5 4.5v1.5"/><path d="M32 28 9 44c-2.4 1.7-1.2 5 1.7 5h42.6c2.9 0 4.1-3.3 1.7-5z"/></svg>'
 };
 const LOGO = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M33.5 13.5A15 15 0 1 0 35 20" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round"/><path d="M35 9.5v5.2h-5.2" fill="none" stroke="#D9B76F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="20.3" y="27.2" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="21" fill="currentColor">R</text></svg>';
@@ -174,6 +181,7 @@ function scopeObj(scope) {
   if (scope === 'draft') return currentDraft();
   if (scope === 'mf') return UI.modal && UI.modal.draft;
   if (scope === 'ui') return UI;
+  if (scope === 'auth') return UI.auth;
   if (scope === 'filters') return currentFilters();
   return null;
 }

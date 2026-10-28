@@ -24,6 +24,16 @@ const LOCAL = {
   get(k) { return this.tx('kv', 'readonly', (s, box) => { const r = s.get(k); r.onsuccess = () => { box.out = r.result; }; }); },
   set(k, v) { return this.tx('kv', 'readwrite', (s) => { s.put(v, k); }); },
   async photoPut(k, blob) { const buf = await blob.arrayBuffer(); return this.tx('photos', 'readwrite', (s) => { s.put({ type: blob.type || 'image/jpeg', buf }, k); }); },
+  photoPutRaw(k, val) { return this.tx('photos', 'readwrite', (s) => { s.put(val, k); }); },
+  del(k) { return this.tx('kv', 'readwrite', (s) => { s.delete(k); }); },
+  photoRange(prefix) {
+    return this.tx('photos', 'readonly', (s, box) => {
+      box.out = [];
+      const r = s.openCursor(IDBKeyRange.bound(prefix, prefix + '\uffff'));
+      r.onsuccess = () => { const c = r.result; if (c) { box.out.push({ key: c.key, val: c.value }); c.continue(); } };
+    });
+  },
+  photoDelRange(prefix) { return this.tx('photos', 'readwrite', (s) => { s.delete(IDBKeyRange.bound(prefix, prefix + '\uffff')); }); },
   photoDel(k) { return this.tx('photos', 'readwrite', (s) => { s.delete(k); }); },
   photoAll() {
     return this.tx('photos', 'readonly', (s, box) => {
@@ -62,12 +72,35 @@ function attachPhoto(modal, file) {
   });
   return ph;
 }
-function persistPhoto(key, ph) {
+/** Guarda una foto: las del armario personal van cifradas con la clave de la cuenta; las de la demo, tal cual. */
+async function persistPhoto(key, ph) {
   if (!IS_PWA || !ph || !ph.file) return;
-  LOCAL.photoPut(key, ph.file).catch(() => toast('No se pudo guardar la foto en el teléfono: puede que falte espacio.'));
+  const [sp, id] = key.split(':');
+  try {
+    if (sp === 'personal') {
+      if (!AUTH.acct || !AUTH.key) return;
+      const rec = await encryptBuf(AUTH.key, await ph.file.arrayBuffer());
+      await LOCAL.photoPutRaw('u:' + AUTH.acct.id + ':' + id, { enc: true, type: ph.file.type || 'image/jpeg', iv: rec.iv, ct: rec.ct });
+    } else await LOCAL.photoPut(key, ph.file);
+  } catch (e) { toast('No se pudo guardar la foto en el teléfono: puede que falte espacio.'); }
 }
+function forgetPhotos(prefix) { Object.keys(PHOTOS).forEach((k) => { if (k.startsWith(prefix)) { try { URL.revokeObjectURL(PHOTOS[k].url); } catch (e) { /* */ } delete PHOTOS[k]; } }); }
 function dropPhotosPrefix(prefix) {
-  Object.keys(PHOTOS).forEach((k) => { if (k.startsWith(prefix)) { delete PHOTOS[k]; if (IS_PWA) LOCAL.photoDel(k).catch(() => {}); } });
+  if (IS_PWA) {
+    if (prefix === 'personal:') { if (AUTH.acct) LOCAL.photoDelRange('u:' + AUTH.acct.id + ':').catch(() => {}); }
+    else Object.keys(PHOTOS).forEach((k) => { if (k.startsWith(prefix)) LOCAL.photoDel(k).catch(() => {}); });
+  }
+  forgetPhotos(prefix);
+}
+async function loadAccountPhotos(acctId, key) {
+  const rows = await LOCAL.photoRange('u:' + acctId + ':');
+  for (const { key: k, val } of rows) {
+    try {
+      const buf = val.enc ? await decryptBuf(key, val) : val.buf;
+      const blob = new Blob([buf], { type: val.type || 'image/jpeg' });
+      PHOTOS['personal:' + k.split(':')[2]] = { url: URL.createObjectURL(blob), file: blob, originalUrl: null, cropped: false };
+    } catch (e) { /* foto ilegible: se ignora */ }
+  }
 }
 function blobToDataURL(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(blob); }); }
 async function dataURLToBlob(d) { const r = await fetch(d); return r.blob(); }
@@ -76,24 +109,31 @@ async function dataURLToBlob(d) { const r = await fetch(d); return r.blob(); }
 async function initLocal() {
   try {
     const raw = await LOCAL.get('state');
-    const photos = await LOCAL.photoAll();
-    photos.forEach(({ key, val }) => {
+    AUTH.accounts = (await LOCAL.get('accounts')) || [];
+    const welcomed = await LOCAL.get('welcomed');
+    (await LOCAL.photoRange('demo:')).forEach(({ key, val }) => {
       if (!val || !val.buf) return;
       const blob = new Blob([val.buf], { type: val.type || 'image/jpeg' });
       PHOTOS[key] = { url: URL.createObjectURL(blob), file: blob, originalUrl: null, cropped: false };
     });
-    let restored = false;
-    if (raw && !CAP.dirty) {
-      let parsed = null; try { parsed = JSON.parse(raw); } catch (e) { parsed = null; }
-      if (parsed && validateImport(parsed).ok) {
-        S.demo = parsed.spaces.demo || S.demo; S.personal = parsed.spaces.personal || null;
-        S.space = parsed.space === 'personal' && S.personal ? 'personal' : 'demo';
-        UI.view = (parsed.ui && parsed.ui.view) || UI.view; UI.sceneHint = false; restored = true;
-      }
+    let parsed = null;
+    if (raw && !CAP.dirty) { try { parsed = JSON.parse(raw); } catch (e) { parsed = null; } if (parsed && !validateImport(parsed).ok) parsed = null; }
+    if (parsed) {
+      S.demo = parsed.spaces.demo || S.demo;
+      if (parsed.spaces.personal && parsed.spaces.personal.items) LEGACY.personal = parsed.spaces.personal; // armario de la versión sin cuentas
+      UI.view = (parsed.ui && parsed.ui.view) || UI.view; UI.sceneHint = false;
     }
+    S.personal = null; S.space = 'demo';
+    if (LEGACY.personal) LEGACY.photoCount = (await LOCAL.photoRange('personal:')).length;
     CAP.storage = 'local';
-    if (!restored) await doSave();
+    const restored = await restoreSession();
+    if (!restored) {
+      if (AUTH.accounts.length) UI.auth = { screen: 'login', acctId: AUTH.accounts.length === 1 ? AUTH.accounts[0].id : null };
+      else if (!welcomed || LEGACY.personal) UI.auth = { screen: 'welcome' };
+    } else if (parsed && parsed.space === 'demo') S.space = 'demo';
+    if (!raw) await doSave();
     render();
+    if (!UI.auth) maybeAutoTour();
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist().then((p) => { CAP.persisted = p; }).catch(() => {});
     if (navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then((e) => { CAP.usage = e; }).catch(() => {});
   } catch (e) {
@@ -104,7 +144,7 @@ async function initLocal() {
 /* ---------- Respaldo completo (datos + fotos) ---------- */
 async function makeFullBackup() {
   const out = exportState(S, 0);
-  out.note = 'Respaldo completo de RELISTO: datos y fotos de este teléfono.';
+  out.note = 'Respaldo completo de RELISTO: datos y fotos de este teléfono. No está cifrado: guárdalo en un lugar privado.';
   out.photos = {};
   for (const [k, ph] of Object.entries(PHOTOS)) { if (ph && ph.file) out.photos[k] = await blobToDataURL(ph.file); }
   out.photosOmitted = 0;
@@ -141,7 +181,7 @@ async function restorePhotos(obj) {
     const sp = k.split(':')[0]; if (!obj.spaces[sp]) continue;
     const blob = await dataURLToBlob(d);
     PHOTOS[k] = { url: URL.createObjectURL(blob), file: blob, originalUrl: null, cropped: false };
-    if (IS_PWA) await LOCAL.photoPut(k, blob).catch(() => {});
+    await persistPhoto(k, PHOTOS[k]);
     n++;
   }
   return n;
@@ -183,9 +223,9 @@ function renderPWABanners() {
 }
 function renderInstallCard(force) {
   if (!IS_PWA || isStandalone() || (PWA_UI.installDismissed && !force)) return '';
-  const how = PWA_UI.deferred ? '<button class="btn sm primary" data-act="pwaInstall">Instalar RELISTO</button>'
-    : isIOS() ? '<span class="small">En Safari, toca <b>Compartir</b> (el cuadrado con la flecha) y luego <b>Agregar a pantalla de inicio</b>. Abre RELISTO siempre desde ese ícono.</span>'
-      : '<span class="small">En Chrome, abre el menú <b>⋮</b> y elige <b>Instalar aplicación</b> o <b>Agregar a la pantalla principal</b>.</span>';
-  return '<div class="card explore stack tight"><div class="row between"><b>Instala RELISTO en tu celular</b>' + (force ? '' : '<button class="btn sm ghost" data-act="pwaDismiss" aria-label="Ocultar">' + IC.x + '</button>') + '</div>' +
-    '<span class="small">Queda con su propio ícono, a pantalla completa y funciona sin conexión.</span>' + how + '</div>';
+  const steps = isIOS() ? '<span class="small">En Safari, toca <b>Compartir</b> (el cuadrado con la flecha) y luego <b>Agregar a pantalla de inicio</b>. Abre RELISTO siempre desde ese ícono.</span>'
+    : '<span class="small">En Chrome, abre el menú <b>⋮</b> y elige <b>Instalar aplicación</b> o <b>Agregar a la pantalla principal</b>.</span>';
+  const btn = PWA_UI.deferred ? '<button class="btn sm primary" data-act="pwaInstall">Instalar</button>' : (PWA_UI.showHow || force ? '' : '<button class="btn sm" data-act="pwaHow">Ver cómo</button>');
+  return '<div class="install-bar"><div class="row between" style="flex-wrap:nowrap;gap:10px"><span class="stack tight" style="min-width:0"><b class="small">Instala RELISTO</b><span class="tiny">Ícono propio, pantalla completa y sin conexión.</span></span><span class="row" style="flex-wrap:nowrap;gap:4px">' + btn +
+    (force ? '' : '<button class="btn sm ghost" data-act="pwaDismiss" aria-label="Ocultar">' + IC.x + '</button>') + '</span></div>' + ((PWA_UI.showHow || force) && !PWA_UI.deferred ? steps : '') + '</div>';
 }
