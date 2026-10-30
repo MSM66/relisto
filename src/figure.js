@@ -10,7 +10,7 @@ function darker(hex, a) { return shade(hex.startsWith('#') ? hex : '#888888', -(
 let FIG_UID = 0;
 function figureSVG(p, items, opts) {
   opts = opts || {};
-  const uid = 'f' + (++FIG_UID);
+  const uid = 'f' + (++FIG_UID); const back = opts.view === 'back';
   const b = BUILDS[p && p.build] || BUILDS.media;
   const cx = 100; const skin = skinHex(p || {}); const skinD = darker(skin, 0.18);
   const hair = hairHex(p || {}); const style = (p && p.avatar && p.avatar.hairStyle) || (p && p.hair ? 'medio' : 'corto');
@@ -33,8 +33,8 @@ function figureSVG(p, items, opts) {
   const lerp = (a, c, t) => [a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t];
   const line = (a, c, w, col, extra) => '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + c[0].toFixed(1) + '" y2="' + c[1].toFixed(1) + '" stroke="' + col + '" stroke-width="' + w + '" stroke-linecap="round"' + (extra || '') + '/>';
   // Cabello de atrás
-  if (style === 'largo') out.push('<path d="M' + (cx - headRx - 4) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 10) + ' 110 ' + (cx - b.sh + 6) + ' 132 L' + (cx + b.sh - 6) + ' 132 Q' + (cx + headRx + 10) + ' 110 ' + (cx + headRx + 4) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
-  if (style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 6) + ' 80 ' + (cx - headRx + 2) + ' 86 L' + (cx + headRx - 2) + ' 86 Q' + (cx + headRx + 6) + ' 80 ' + (cx + headRx + 3) + ' ' + (Y.head - 2) + ' Z" fill="' + hair + '"/>');
+  if (!back && style === 'largo') out.push('<path d="M' + (cx - headRx - 4) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 10) + ' 110 ' + (cx - b.sh + 6) + ' 132 L' + (cx + b.sh - 6) + ' 132 Q' + (cx + headRx + 10) + ' 110 ' + (cx + headRx + 4) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
+  if (!back && style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 6) + ' 80 ' + (cx - headRx + 2) + ' 86 L' + (cx + headRx - 2) + ' 86 Q' + (cx + headRx + 6) + ' 80 ' + (cx + headRx + 3) + ' ' + (Y.head - 2) + ' Z" fill="' + hair + '"/>');
   // Piernas y brazos (piel)
   const legL = 'M' + (cx - b.hi + 1) + ' ' + (Y.hip - 4) + ' L' + (cx - 21) + ' ' + Y.ankle + ' L' + (cx - 9) + ' ' + Y.ankle + ' L' + (cx - 2) + ' ' + Y.crotch + ' Z';
   const legR = 'M' + (cx + b.hi - 1) + ' ' + (Y.hip - 4) + ' L' + (cx + 21) + ' ' + Y.ankle + ' L' + (cx + 9) + ' ' + Y.ankle + ' L' + (cx + 2) + ' ' + Y.crotch + ' Z';
@@ -63,7 +63,11 @@ function figureSVG(p, items, opts) {
     const ox = (cx - b.hi) + ((cx - 22) - (cx - b.hi)) * t - relaxed; const ix = (cx - 2) + ((cx - 8) - (cx - 2)) * t + relaxed * 0.4;
     const d = 'M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' Q' + (cx + b.hi + 2) + ' 200 ' + (cx + b.hi + 1) + ' ' + Y.hip + ' L' + (2 * cx - ox) + ' ' + hemY + ' L' + (2 * cx - ix) + ' ' + hemY + ' L' + (cx + 1) + ' ' + Y.crotch + ' L' + (cx - 1) + ' ' + Y.crotch + ' L' + ix + ' ' + hemY + ' L' + ox + ' ' + hemY + ' L' + (cx - b.hi - 1) + ' ' + Y.hip + ' Q' + (cx - b.hi - 2) + ' 200 ' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' Z';
     out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
-    if (it.subtype === 'jean') out.push('<path d="M' + (cx - b.wa + 4) + ' ' + (Y.waist + 6) + ' Q' + (cx - 12) + ' ' + (Y.waist + 18) + ' ' + (cx - 4) + ' ' + (Y.waist + 6) + ' M' + (cx + b.wa - 4) + ' ' + (Y.waist + 6) + ' Q' + (cx + 12) + ' ' + (Y.waist + 18) + ' ' + (cx + 4) + ' ' + (Y.waist + 6) + '" fill="none" stroke="' + shade(garmentHex(it), 0.35) + '" stroke-width="1" stroke-dasharray="2 2"/>');
+    if (back && ['jean', 'chino', 'pantalón', 'cargo', 'pantalón de vestir', 'short'].includes(it.subtype)) {
+      const pc = darker(garmentHex(it), 0.22);
+      out.push('<path d="M' + (cx - 21) + ' ' + (Y.waist + 10) + ' h14 v13 q-7 4 -14 0 Z M' + (cx + 7) + ' ' + (Y.waist + 10) + ' h14 v13 q-7 4 -14 0 Z" fill="none" stroke="' + pc + '" stroke-width="1.1"' + (it.subtype === 'jean' ? ' stroke-dasharray="2 1.6"' : '') + '/><line x1="' + cx + '" y1="' + (Y.waist - 3) + '" x2="' + cx + '" y2="' + Y.crotch + '" stroke="' + pc + '" stroke-width="1"/>');
+    }
+    if (!back && it.subtype === 'jean') out.push('<path d="M' + (cx - b.wa + 4) + ' ' + (Y.waist + 6) + ' Q' + (cx - 12) + ' ' + (Y.waist + 18) + ' ' + (cx - 4) + ' ' + (Y.waist + 6) + ' M' + (cx + b.wa - 4) + ' ' + (Y.waist + 6) + ' Q' + (cx + 12) + ' ' + (Y.waist + 18) + ' ' + (cx + 4) + ' ' + (Y.waist + 6) + '" fill="none" stroke="' + shade(garmentHex(it), 0.35) + '" stroke-width="1" stroke-dasharray="2 2"/>');
     if (it.subtype === 'pantalón de vestir' || it.subtype === 'pantalón') out.push('<path d="M' + (cx - 16) + ' ' + (Y.hip) + ' L' + ((ox + ix) / 2) + ' ' + hemY + ' M' + (cx + 16) + ' ' + Y.hip + ' L' + (2 * cx - (ox + ix) / 2) + ' ' + hemY + '" stroke="' + darker(garmentHex(it), 0.2) + '" stroke-width="0.8"/>');
   };
   if (full && full.subtype === 'enterizo') drawBottom(Object.assign({}, full, { subtype: 'pantalón' }));
@@ -75,6 +79,15 @@ function figureSVG(p, items, opts) {
     const body = (top) => 'M' + (fx - 8) + ' ' + top + ' L' + (fx + 8) + ' ' + top + ' Q' + (fx + 10 + o) + ' ' + (ay + 7) + ' ' + (fx + 11 + o) + ' ' + (ay + 11) + ' Q' + (fx + 11 + o) + ' ' + (ay + 15) + ' ' + (fx + 5 + o) + ' ' + (ay + 15) + ' L' + (fx - 5 + o) + ' ' + (ay + 15) + ' Q' + (fx - 11 + o) + ' ' + (ay + 15) + ' ' + (fx - 11 + o) + ' ' + (ay + 11) + ' Q' + (fx - 10 + o) + ' ' + (ay + 7) + ' ' + (fx - 8) + ' ' + top + ' Z';
     const sole = (h, col) => '<path d="M' + (fx - 11.5 + o) + ' ' + (ay + 13) + ' Q' + (fx - 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx - 5 + o) + ' ' + (ay + 15 + h) + ' L' + (fx + 5 + o) + ' ' + (ay + 15 + h) + ' Q' + (fx + 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx + 11.5 + o) + ' ' + (ay + 13) + ' Z" fill="' + col + '"/>';
     const sub = it.subtype;
+    if (back && sub !== 'sandalias') {
+      const isSn = sub === 'zapatillas'; const top = sub === 'botines' ? ay - 22 : ay - 3;
+      let r = (sub === 'botines' ? '<rect x="' + (fx - 9) + '" y="' + top + '" width="18" height="' + (ay - top + 2) + '" rx="3" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' : '') +
+        '<path d="M' + (fx - 8) + ' ' + Math.max(top, ay - 3) + ' L' + (fx + 8) + ' ' + Math.max(top, ay - 3) + ' Q' + (fx + 10) + ' ' + (ay + 8) + ' ' + (fx + 9) + ' ' + (ay + 13) + ' L' + (fx - 9) + ' ' + (ay + 13) + ' Q' + (fx - 10) + ' ' + (ay + 8) + ' ' + (fx - 8) + ' ' + Math.max(top, ay - 3) + ' Z" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' +
+        '<rect x="' + (fx - 9.5) + '" y="' + (ay + 12) + '" width="19" height="' + (isSn ? 4.5 : 3.5) + '" rx="1.6" fill="' + (isSn ? '#F4F2EC' : darker(c, 0.5)) + '"/>';
+      if (isSn) r += '<rect x="' + (fx - 2.5) + '" y="' + (ay - 6) + '" width="5" height="7" rx="1.5" fill="' + (hexLum(c) > 0.7 ? '#CFCABD' : shade(c, 0.4)) + '"/>';
+      else if (sub !== 'botines') r += '<path d="M' + (fx - 6) + ' ' + (ay + 4) + ' Q' + fx + ' ' + (ay + 7) + ' ' + (fx + 6) + ' ' + (ay + 4) + '" fill="none" stroke="' + dk + '" stroke-width="1"/>';
+      return r;
+    }
     if (sub === 'sandalias') {
       return '<path d="M' + (fx - 7) + ' ' + (ay + 2) + ' Q' + (fx - 9 + o) + ' ' + (ay + 12) + ' ' + (fx - 5 + o) + ' ' + (ay + 15) + ' L' + (fx + 5 + o) + ' ' + (ay + 15) + ' Q' + (fx + 9 + o) + ' ' + (ay + 12) + ' ' + (fx + 7) + ' ' + (ay + 2) + ' Z" fill="' + skin + '"/>' +
         '<path d="M' + (fx - 9 + o) + ' ' + (ay + 7) + ' L' + (fx + 9 + o) + ' ' + (ay + 7) + ' M' + (fx - 8 + o) + ' ' + (ay + 12) + ' L' + (fx + 8 + o) + ' ' + (ay + 12) + '" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/>' + sole(2, dk);
@@ -110,7 +123,10 @@ function figureSVG(p, items, opts) {
     }
     out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
     const neckKind = (it.neck) || (it.subtype === 'blusa' ? 'barco' : it.subtype === 'top' ? 'barco' : 'redondo');
-    if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) {
+    if (back) {
+      if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) out.push('<path d="M' + (cx - 13) + ' ' + (Y.sh - 9) + ' Q' + cx + ' ' + (Y.sh - 13) + ' ' + (cx + 13) + ' ' + (Y.sh - 9) + ' L' + (cx + 12) + ' ' + (Y.sh - 3) + ' Q' + cx + ' ' + (Y.sh - 6) + ' ' + (cx - 12) + ' ' + (Y.sh - 3) + ' Z" fill="' + col + '" ' + s + '/>' + (it.subtype === 'camisa' ? '<path d="M' + (cx - b.sh + 6) + ' ' + (Y.sh + 14) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + b.sh - 6) + ' ' + (Y.sh + 14) + '" fill="none" stroke="' + darker(base, 0.25) + '" stroke-width="0.9"/>' : ''));
+      else out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 8) + ' Q' + cx + ' ' + (Y.sh - 4) + ' ' + (cx + 10) + ' ' + (Y.sh - 8) + '" fill="' + skin + '" stroke="' + darker(base, 0.35) + '" stroke-width="1.4"/>');
+    } else if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) {
       out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' L' + cx + ' ' + (Y.sh + 8) + ' L' + (cx + 10) + ' ' + (Y.sh - 7) + ' L' + (cx + 4) + ' ' + (Y.sh - 9) + ' L' + cx + ' ' + (Y.sh - 2) + ' L' + (cx - 4) + ' ' + (Y.sh - 9) + ' Z" fill="' + col + '" ' + s + '/>');
       const bottomBtn = it.subtype === 'polo' ? Y.sh + 26 : hemY - 6;
       out.push('<line x1="' + cx + '" y1="' + (Y.sh + 8) + '" x2="' + cx + '" y2="' + bottomBtn + '" stroke="' + darker(base, 0.3) + '" stroke-width="1"/>');
@@ -133,36 +149,50 @@ function figureSVG(p, items, opts) {
     const base = garmentHex(layer); const col = pattern(layer, base); const s = st(base);
     const hem = layer.subtype === 'abrigo' ? 300 : layer.subtype === 'casaca' ? 230 : 238;
     if (layer.subtype !== 'chaleco') [armL, armR].forEach((a) => { const end = lerp(a[0], a[1], 0.98); out.push(line(a[0], end, b.limb * 1.6 + 10, darker(base, 0.35)) + line(a[0], end, b.limb * 1.6 + 8, col)); });
-    [-1, 1].forEach((sd) => {
+    if (back) {
+      out.push('<path d="M' + (cx - b.sh - 3) + ' ' + (Y.sh - 1) + ' Q' + (cx - b.sh - 4) + ' 130 ' + (cx - b.wa - 4) + ' ' + Y.waist + ' L' + (cx - b.hi - 6) + ' ' + hem + ' L' + (cx + b.hi + 6) + ' ' + hem + ' L' + (cx + b.wa + 4) + ' ' + Y.waist + ' Q' + (cx + b.sh + 4) + ' 130 ' + (cx + b.sh + 3) + ' ' + (Y.sh - 1) + ' Q' + cx + ' ' + (Y.sh - 14) + ' ' + (cx - b.sh - 3) + ' ' + (Y.sh - 1) + ' Z" fill="' + col + '" ' + s + '/>');
+      out.push('<path d="M' + (cx - 14) + ' ' + (Y.sh - 9) + ' Q' + cx + ' ' + (Y.sh - 15) + ' ' + (cx + 14) + ' ' + (Y.sh - 9) + ' L' + (cx + 13) + ' ' + (Y.sh - 2) + ' Q' + cx + ' ' + (Y.sh - 7) + ' ' + (cx - 13) + ' ' + (Y.sh - 2) + ' Z" fill="' + darker(base, 0.12) + '" ' + s + '/>');
+      out.push('<line x1="' + cx + '" y1="' + (Y.sh - 2) + '" x2="' + cx + '" y2="' + hem + '" stroke="' + darker(base, 0.3) + '" stroke-width="1"/>');
+      if (['blazer', 'abrigo'].includes(layer.subtype)) out.push('<path d="M' + cx + ' ' + (hem - 26) + ' L' + (cx + 4) + ' ' + hem + '" stroke="' + darker(base, 0.4) + '" stroke-width="1.2"/>');
+    } else [-1, 1].forEach((sd) => {
       const sh = cx + sd * (b.sh + 3); const hx = cx + sd * (b.hi + 6);
       out.push('<path d="M' + sh + ' ' + (Y.sh - 1) + ' Q' + (cx + sd * (b.sh + 4)) + ' 130 ' + (cx + sd * (b.wa + 4)) + ' ' + Y.waist + ' L' + hx + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + ' L' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' Z" fill="' + col + '" ' + s + '/>');
       if (['blazer', 'abrigo'].includes(layer.subtype)) out.push('<path d="M' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' L' + (cx + sd * 21) + ' ' + (Y.sh + 26) + ' L' + (cx + sd * 12) + ' ' + (Y.sh + 30) + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + '" fill="' + darker(base, 0.12) + '" ' + s + '/>');
     });
-    if (layer.subtype === 'blazer') out.push('<circle cx="' + (cx + 6) + '" cy="' + (Y.sh + 82) + '" r="2" fill="' + darker(base, 0.45) + '"/>');
+    if (!back && layer.subtype === 'blazer') out.push('<circle cx="' + (cx + 6) + '" cy="' + (Y.sh + 82) + '" r="2" fill="' + darker(base, 0.45) + '"/>');
   }
   // Bolso o mochila
   const bag = role('accessory').find((i) => i.category === 'bolso');
   if (bag) {
     const c = garmentHex(bag);
-    if (bag.subtype === 'mochila') out.push(line([cx - b.sh + 12, Y.sh - 4], [cx - b.wa + 6, 176], 5, c) + line([cx + b.sh - 12, Y.sh - 4], [cx + b.wa - 6, 176], 5, c));
+    if (bag.subtype === 'mochila' && back) out.push('<path d="M' + (cx - 8) + ' ' + (Y.sh + 2) + ' Q' + cx + ' ' + (Y.sh - 10) + ' ' + (cx + 8) + ' ' + (Y.sh + 2) + '" fill="none" stroke="' + darker(c, 0.2) + '" stroke-width="3"/><rect x="' + (cx - b.wa - 2) + '" y="' + (Y.sh + 2) + '" width="' + (2 * b.wa + 4) + '" height="' + (Y.waist - Y.sh - 4) + '" rx="14" fill="' + c + '" ' + st(c) + '/><rect x="' + (cx - b.wa + 6) + '" y="' + (Y.waist - 46) + '" width="' + (2 * b.wa - 12) + '" height="30" rx="8" fill="' + darker(c, 0.12) + '" ' + st(c) + '/><line x1="' + (cx - b.wa + 8) + '" y1="' + (Y.waist - 38) + '" x2="' + (cx + b.wa - 8) + '" y2="' + (Y.waist - 38) + '" stroke="' + darker(c, 0.45) + '" stroke-width="1.2"/>');
+    else if (bag.subtype === 'mochila') out.push(line([cx - b.sh + 12, Y.sh - 4], [cx - b.wa + 6, 176], 5, c) + line([cx + b.sh - 12, Y.sh - 4], [cx + b.wa - 6, 176], 5, c));
     else out.push(line([cx + b.sh - 10, Y.sh - 4], [cx - b.hi - 4, 206], 3, darker(c, 0.2)) + '<rect x="' + (cx - b.hi - 22) + '" y="198" width="30" height="24" rx="5" fill="' + c + '" ' + st(c) + '/>');
   }
   // Accesorios
   acc.forEach((i) => {
     const c = garmentHex(i);
     if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5.5) + '" y="' + (armL[1][1] - 9) + '" width="11" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
-    if (i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
-    if (i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
-    if (i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
+    if (!back && i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
+    if (!back && i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
+    if (!back && i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
   });
   // Manos (encima de las mangas)
   out.push('<ellipse cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/><ellipse cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/>');
   // Cabello de adelante
   const capTop = Y.head - headRy - 4;
   const cap = 'M' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 3) + ' ' + capTop + ' ' + cx + ' ' + capTop + ' Q' + (cx + headRx + 3) + ' ' + capTop + ' ' + (cx + headRx + 2) + ' ' + (Y.head - 2) + ' Q' + (cx + headRx - 4) + ' ' + (Y.head - 14) + ' ' + (cx + 6) + ' ' + (Y.head - 16) + ' Q' + (cx - 10) + ' ' + (Y.head - 18) + ' ' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Z';
-  if (style === 'rapado') out.push('<path d="' + cap + '" fill="' + hair + '" opacity=".45"/>');
+  if (back) {
+    const full = '<ellipse cx="' + cx + '" cy="' + (Y.head - 2) + '" rx="' + (headRx + 2) + '" ry="' + (headRy + 2) + '" fill="' + hair + '"' + (style === 'rapado' ? ' opacity=".45"' : '') + '/>';
+    if (style === 'largo') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 6) + ' Q' + (cx - headRx - 9) + ' 112 ' + (cx - b.sh + 8) + ' 150 Q' + cx + ' 160 ' + (cx + b.sh - 8) + ' 150 Q' + (cx + headRx + 9) + ' 112 ' + (cx + headRx + 3) + ' ' + (Y.head - 6) + ' Z" fill="' + hair + '"/>');
+    if (style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 5) + ' 82 ' + (cx - headRx + 3) + ' 90 Q' + cx + ' 96 ' + (cx + headRx - 3) + ' 90 Q' + (cx + headRx + 5) + ' 82 ' + (cx + headRx + 3) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
+    out.push(full);
+    if (style === 'rizado') for (let a = 0; a < 360; a += 30) { const r = a * Math.PI / 180; out.push('<circle cx="' + (cx + Math.cos(r) * (headRx + 1)).toFixed(1) + '" cy="' + (Y.head - 2 + Math.sin(r) * (headRy + 1)).toFixed(1) + '" r="7" fill="' + hair + '"/>'); }
+    if (style === 'recogido') out.push('<circle cx="' + cx + '" cy="' + (Y.head - 6) + '" r="10" fill="' + darker(hair, 0.15) + '"/>');
+  } else if (style === 'rapado') out.push('<path d="' + cap + '" fill="' + hair + '" opacity=".45"/>');
   else if (style === 'rizado') { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); for (let a = -150; a <= -30; a += 20) { const r = a * Math.PI / 180; out.push('<circle cx="' + (cx + Math.cos(r) * (headRx + 2)).toFixed(1) + '" cy="' + (Y.head - 6 + Math.sin(r) * (headRy + 1)).toFixed(1) + '" r="7" fill="' + hair + '"/>'); } }
   else { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); if (style === 'recogido') out.push('<circle cx="' + cx + '" cy="' + (capTop - 5) + '" r="9" fill="' + hair + '"/>'); }
   if (acc.some((i) => i.subtype === 'sombrero')) { const h = acc.find((i) => i.subtype === 'sombrero'); const c = garmentHex(h); out.push('<ellipse cx="' + cx + '" cy="' + (capTop + 8) + '" rx="' + (headRx + 16) + '" ry="6" fill="' + c + '" ' + st(c) + '/><path d="M' + (cx - headRx + 2) + ' ' + (capTop + 8) + ' Q' + cx + ' ' + (capTop - 26) + ' ' + (cx + headRx - 2) + ' ' + (capTop + 8) + ' Z" fill="' + c + '" ' + st(c) + '/>'); }
-  return '<svg viewBox="0 0 200 420" class="figure" role="img" aria-label="' + esc(opts.label || 'Figura ilustrativa con el outfit') + '"><ellipse cx="100" cy="404" rx="54" ry="7" fill="currentColor" opacity=".08"/>' + out.join('') + '</svg>';
+  const body = back ? '<g transform="translate(200 0) scale(-1 1)">' + out.join('') + '</g>' : out.join('');
+  return '<svg viewBox="0 0 200 420" class="figure" role="img" aria-label="' + esc(opts.label || (back ? 'Figura ilustrativa vista de espalda' : 'Figura ilustrativa con el outfit')) + '"><ellipse cx="100" cy="404" rx="54" ry="7" fill="currentColor" opacity=".08"/>' + body + '</svg>';
 }

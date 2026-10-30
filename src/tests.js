@@ -199,5 +199,10 @@ function runSelfTests(today) {
     const full = figureSVG(w.profiles[0], g(['A01', 'A05', 'A12'])); const miss = figureSVG(w.profiles[0], g(['A01', 'A05']));
     return { ok: /<svg/.test(full) && (full.match(/stroke-width="1.2"/g) || []).length >= 2 && /stroke-dasharray="4 4"/.test(miss) && !/stroke-dasharray="4 4"/.test(full) };
   });
+  check('Figura de espalda: sin cuello ni botones delanteros y con mochila visible', () => {
+    const T = freshState(today); const w = T.demo; const g = (ids) => ids.map((id) => w.items.find((i) => i.id === id));
+    const items = g(['A03', 'A07', 'A10', 'A08', 'A15']); const fr = figureSVG(w.profiles[0], items); const bk = figureSVG(w.profiles[0], items, { view: 'back' });
+    return { ok: /scale\(-1 1\)/.test(bk) && !/scale\(-1 1\)/.test(fr) && /rx="14"/.test(bk) && !/rx="14"/.test(fr), detail: 'frente y espalda distintos' };
+  });
   return out;
 }

@@ -519,6 +519,49 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .cal .day .minis .mini { width: 30px; margin-right: -8px; }
 .plan-opt .minis .mini { width: 38px; }
 @media (max-width: 959px) { .cal { grid-template-columns: 1fr; } }
+
+/* ===================== RELISTO 3.2 ===================== */
+.topbar { min-width: 0; }
+.topbar .logo { min-width: 0; flex: none; }
+.who-chip { min-width: 0; max-width: calc(100vw - 150px); flex: 0 1 auto; }
+@media (max-width: 400px) { .topbar .logo b { display: none; } .who-chip { max-width: calc(100vw - 112px); } }
+
+.modal { grid-template-columns: minmax(0, 1fr); }
+.modal > *, .modal .stack > *, .look > *, .grid.two > * { min-width: 0; }
+
+.look-fig { height: auto; display: grid; gap: 8px; place-items: stretch; }
+.turn { position: relative; width: 100%; height: min(52vh, 440px); display: block; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; border-radius: 18px; }
+.turn.dragging { cursor: grabbing; }
+.turn:focus-visible { outline: 3px solid var(--detail); outline-offset: 2px; }
+.turn-stage { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.turn-face { position: absolute; inset: 0; }
+.turn-face > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.turn-ctl { position: relative; z-index: 1; }
+.turn-badge { position: absolute; right: 8px; top: 8px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--surface); color: var(--ink-2); border: 1px solid var(--line); }
+.look-chip { position: absolute; left: 18px; top: 18px; }
+.turn-hint { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--surface); padding: 4px 12px; border-radius: 999px; box-shadow: var(--shadow); white-space: nowrap; animation: hint-nudge 1.8s ease-in-out infinite; }
+@keyframes hint-nudge { 0%, 100% { transform: translateX(-50%); } 50% { transform: translateX(calc(-50% + 8px)); } }
+.turn-ctl { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.swap-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--line); }
+.swap-head .minis .mini { width: 46px; }
+.swap-head .mini.sel .thumb { outline: 3px solid var(--accent); outline-offset: 1px; }
+.swap-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.swap-tabs::-webkit-scrollbar { display: none; }
+.swap-tabs .chip { flex: none; min-height: 38px; padding-inline: 14px; }
+.swap-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); text-align: left; color: inherit; font: inherit; cursor: pointer; min-height: 76px; }
+button.swap-row:hover { border-color: var(--line-strong); }
+.swap-row.cur { background: var(--ok-soft); border-color: transparent; cursor: default; }
+.swap-row.off { opacity: .62; cursor: not-allowed; }
+.swap-th { width: 60px; height: 60px; flex: none; display: block; }
+.swap-th .thumb { width: 60px; height: 60px; aspect-ratio: auto; border-radius: 12px; }
+.swap-th .thumb > svg { width: 84%; height: 84%; }
+.swap-th .thumb img { width: 60px; height: 60px; object-fit: cover; }
+.swap-info { flex: 1; min-width: 0; display: grid; gap: 3px; justify-items: start; }
+.swap-info .badge { white-space: normal; line-height: 1.3; }
+.swap-head { flex-wrap: wrap; }
+.swap-info b { font-size: 14.5px; line-height: 1.25; overflow-wrap: anywhere; }
+.swap-go { flex: none; font-weight: 800; color: var(--on-soft); font-size: 13px; padding: 8px 12px; border-radius: 999px; background: var(--primary-soft); }
+.swap-row.off .swap-go { background: transparent; color: var(--ink-3); }
 </style>
 </head>
 <body>
@@ -527,7 +570,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 <script>
 "use strict";
 const IS_PWA = true;
-const APP_VERSION = "20261028.1652";
+const APP_VERSION = "20261030.1646";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -1801,6 +1844,11 @@ function runSelfTests(today) {
     const full = figureSVG(w.profiles[0], g(['A01', 'A05', 'A12'])); const miss = figureSVG(w.profiles[0], g(['A01', 'A05']));
     return { ok: /<svg/.test(full) && (full.match(/stroke-width="1.2"/g) || []).length >= 2 && /stroke-dasharray="4 4"/.test(miss) && !/stroke-dasharray="4 4"/.test(full) };
   });
+  check('Figura de espalda: sin cuello ni botones delanteros y con mochila visible', () => {
+    const T = freshState(today); const w = T.demo; const g = (ids) => ids.map((id) => w.items.find((i) => i.id === id));
+    const items = g(['A03', 'A07', 'A10', 'A08', 'A15']); const fr = figureSVG(w.profiles[0], items); const bk = figureSVG(w.profiles[0], items, { view: 'back' });
+    return { ok: /scale\(-1 1\)/.test(bk) && !/scale\(-1 1\)/.test(fr) && /rx="14"/.test(bk) && !/rx="14"/.test(fr), detail: 'frente y espalda distintos' };
+  });
   return out;
 }
 /* =====================================================================
@@ -2045,7 +2093,7 @@ function darker(hex, a) { return shade(hex.startsWith('#') ? hex : '#888888', -(
 let FIG_UID = 0;
 function figureSVG(p, items, opts) {
   opts = opts || {};
-  const uid = 'f' + (++FIG_UID);
+  const uid = 'f' + (++FIG_UID); const back = opts.view === 'back';
   const b = BUILDS[p && p.build] || BUILDS.media;
   const cx = 100; const skin = skinHex(p || {}); const skinD = darker(skin, 0.18);
   const hair = hairHex(p || {}); const style = (p && p.avatar && p.avatar.hairStyle) || (p && p.hair ? 'medio' : 'corto');
@@ -2068,8 +2116,8 @@ function figureSVG(p, items, opts) {
   const lerp = (a, c, t) => [a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t];
   const line = (a, c, w, col, extra) => '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + c[0].toFixed(1) + '" y2="' + c[1].toFixed(1) + '" stroke="' + col + '" stroke-width="' + w + '" stroke-linecap="round"' + (extra || '') + '/>';
   // Cabello de atrás
-  if (style === 'largo') out.push('<path d="M' + (cx - headRx - 4) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 10) + ' 110 ' + (cx - b.sh + 6) + ' 132 L' + (cx + b.sh - 6) + ' 132 Q' + (cx + headRx + 10) + ' 110 ' + (cx + headRx + 4) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
-  if (style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 6) + ' 80 ' + (cx - headRx + 2) + ' 86 L' + (cx + headRx - 2) + ' 86 Q' + (cx + headRx + 6) + ' 80 ' + (cx + headRx + 3) + ' ' + (Y.head - 2) + ' Z" fill="' + hair + '"/>');
+  if (!back && style === 'largo') out.push('<path d="M' + (cx - headRx - 4) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 10) + ' 110 ' + (cx - b.sh + 6) + ' 132 L' + (cx + b.sh - 6) + ' 132 Q' + (cx + headRx + 10) + ' 110 ' + (cx + headRx + 4) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
+  if (!back && style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 6) + ' 80 ' + (cx - headRx + 2) + ' 86 L' + (cx + headRx - 2) + ' 86 Q' + (cx + headRx + 6) + ' 80 ' + (cx + headRx + 3) + ' ' + (Y.head - 2) + ' Z" fill="' + hair + '"/>');
   // Piernas y brazos (piel)
   const legL = 'M' + (cx - b.hi + 1) + ' ' + (Y.hip - 4) + ' L' + (cx - 21) + ' ' + Y.ankle + ' L' + (cx - 9) + ' ' + Y.ankle + ' L' + (cx - 2) + ' ' + Y.crotch + ' Z';
   const legR = 'M' + (cx + b.hi - 1) + ' ' + (Y.hip - 4) + ' L' + (cx + 21) + ' ' + Y.ankle + ' L' + (cx + 9) + ' ' + Y.ankle + ' L' + (cx + 2) + ' ' + Y.crotch + ' Z';
@@ -2098,7 +2146,11 @@ function figureSVG(p, items, opts) {
     const ox = (cx - b.hi) + ((cx - 22) - (cx - b.hi)) * t - relaxed; const ix = (cx - 2) + ((cx - 8) - (cx - 2)) * t + relaxed * 0.4;
     const d = 'M' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' L' + (cx + b.wa + 2) + ' ' + (Y.waist - 4) + ' Q' + (cx + b.hi + 2) + ' 200 ' + (cx + b.hi + 1) + ' ' + Y.hip + ' L' + (2 * cx - ox) + ' ' + hemY + ' L' + (2 * cx - ix) + ' ' + hemY + ' L' + (cx + 1) + ' ' + Y.crotch + ' L' + (cx - 1) + ' ' + Y.crotch + ' L' + ix + ' ' + hemY + ' L' + ox + ' ' + hemY + ' L' + (cx - b.hi - 1) + ' ' + Y.hip + ' Q' + (cx - b.hi - 2) + ' 200 ' + (cx - b.wa - 2) + ' ' + (Y.waist - 4) + ' Z';
     out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
-    if (it.subtype === 'jean') out.push('<path d="M' + (cx - b.wa + 4) + ' ' + (Y.waist + 6) + ' Q' + (cx - 12) + ' ' + (Y.waist + 18) + ' ' + (cx - 4) + ' ' + (Y.waist + 6) + ' M' + (cx + b.wa - 4) + ' ' + (Y.waist + 6) + ' Q' + (cx + 12) + ' ' + (Y.waist + 18) + ' ' + (cx + 4) + ' ' + (Y.waist + 6) + '" fill="none" stroke="' + shade(garmentHex(it), 0.35) + '" stroke-width="1" stroke-dasharray="2 2"/>');
+    if (back && ['jean', 'chino', 'pantalón', 'cargo', 'pantalón de vestir', 'short'].includes(it.subtype)) {
+      const pc = darker(garmentHex(it), 0.22);
+      out.push('<path d="M' + (cx - 21) + ' ' + (Y.waist + 10) + ' h14 v13 q-7 4 -14 0 Z M' + (cx + 7) + ' ' + (Y.waist + 10) + ' h14 v13 q-7 4 -14 0 Z" fill="none" stroke="' + pc + '" stroke-width="1.1"' + (it.subtype === 'jean' ? ' stroke-dasharray="2 1.6"' : '') + '/><line x1="' + cx + '" y1="' + (Y.waist - 3) + '" x2="' + cx + '" y2="' + Y.crotch + '" stroke="' + pc + '" stroke-width="1"/>');
+    }
+    if (!back && it.subtype === 'jean') out.push('<path d="M' + (cx - b.wa + 4) + ' ' + (Y.waist + 6) + ' Q' + (cx - 12) + ' ' + (Y.waist + 18) + ' ' + (cx - 4) + ' ' + (Y.waist + 6) + ' M' + (cx + b.wa - 4) + ' ' + (Y.waist + 6) + ' Q' + (cx + 12) + ' ' + (Y.waist + 18) + ' ' + (cx + 4) + ' ' + (Y.waist + 6) + '" fill="none" stroke="' + shade(garmentHex(it), 0.35) + '" stroke-width="1" stroke-dasharray="2 2"/>');
     if (it.subtype === 'pantalón de vestir' || it.subtype === 'pantalón') out.push('<path d="M' + (cx - 16) + ' ' + (Y.hip) + ' L' + ((ox + ix) / 2) + ' ' + hemY + ' M' + (cx + 16) + ' ' + Y.hip + ' L' + (2 * cx - (ox + ix) / 2) + ' ' + hemY + '" stroke="' + darker(garmentHex(it), 0.2) + '" stroke-width="0.8"/>');
   };
   if (full && full.subtype === 'enterizo') drawBottom(Object.assign({}, full, { subtype: 'pantalón' }));
@@ -2110,6 +2162,15 @@ function figureSVG(p, items, opts) {
     const body = (top) => 'M' + (fx - 8) + ' ' + top + ' L' + (fx + 8) + ' ' + top + ' Q' + (fx + 10 + o) + ' ' + (ay + 7) + ' ' + (fx + 11 + o) + ' ' + (ay + 11) + ' Q' + (fx + 11 + o) + ' ' + (ay + 15) + ' ' + (fx + 5 + o) + ' ' + (ay + 15) + ' L' + (fx - 5 + o) + ' ' + (ay + 15) + ' Q' + (fx - 11 + o) + ' ' + (ay + 15) + ' ' + (fx - 11 + o) + ' ' + (ay + 11) + ' Q' + (fx - 10 + o) + ' ' + (ay + 7) + ' ' + (fx - 8) + ' ' + top + ' Z';
     const sole = (h, col) => '<path d="M' + (fx - 11.5 + o) + ' ' + (ay + 13) + ' Q' + (fx - 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx - 5 + o) + ' ' + (ay + 15 + h) + ' L' + (fx + 5 + o) + ' ' + (ay + 15 + h) + ' Q' + (fx + 12 + o) + ' ' + (ay + 15 + h) + ' ' + (fx + 11.5 + o) + ' ' + (ay + 13) + ' Z" fill="' + col + '"/>';
     const sub = it.subtype;
+    if (back && sub !== 'sandalias') {
+      const isSn = sub === 'zapatillas'; const top = sub === 'botines' ? ay - 22 : ay - 3;
+      let r = (sub === 'botines' ? '<rect x="' + (fx - 9) + '" y="' + top + '" width="18" height="' + (ay - top + 2) + '" rx="3" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' : '') +
+        '<path d="M' + (fx - 8) + ' ' + Math.max(top, ay - 3) + ' L' + (fx + 8) + ' ' + Math.max(top, ay - 3) + ' Q' + (fx + 10) + ' ' + (ay + 8) + ' ' + (fx + 9) + ' ' + (ay + 13) + ' L' + (fx - 9) + ' ' + (ay + 13) + ' Q' + (fx - 10) + ' ' + (ay + 8) + ' ' + (fx - 8) + ' ' + Math.max(top, ay - 3) + ' Z" fill="' + c + '" stroke="' + dk + '" stroke-width="1.2"/>' +
+        '<rect x="' + (fx - 9.5) + '" y="' + (ay + 12) + '" width="19" height="' + (isSn ? 4.5 : 3.5) + '" rx="1.6" fill="' + (isSn ? '#F4F2EC' : darker(c, 0.5)) + '"/>';
+      if (isSn) r += '<rect x="' + (fx - 2.5) + '" y="' + (ay - 6) + '" width="5" height="7" rx="1.5" fill="' + (hexLum(c) > 0.7 ? '#CFCABD' : shade(c, 0.4)) + '"/>';
+      else if (sub !== 'botines') r += '<path d="M' + (fx - 6) + ' ' + (ay + 4) + ' Q' + fx + ' ' + (ay + 7) + ' ' + (fx + 6) + ' ' + (ay + 4) + '" fill="none" stroke="' + dk + '" stroke-width="1"/>';
+      return r;
+    }
     if (sub === 'sandalias') {
       return '<path d="M' + (fx - 7) + ' ' + (ay + 2) + ' Q' + (fx - 9 + o) + ' ' + (ay + 12) + ' ' + (fx - 5 + o) + ' ' + (ay + 15) + ' L' + (fx + 5 + o) + ' ' + (ay + 15) + ' Q' + (fx + 9 + o) + ' ' + (ay + 12) + ' ' + (fx + 7) + ' ' + (ay + 2) + ' Z" fill="' + skin + '"/>' +
         '<path d="M' + (fx - 9 + o) + ' ' + (ay + 7) + ' L' + (fx + 9 + o) + ' ' + (ay + 7) + ' M' + (fx - 8 + o) + ' ' + (ay + 12) + ' L' + (fx + 8 + o) + ' ' + (ay + 12) + '" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/>' + sole(2, dk);
@@ -2145,7 +2206,10 @@ function figureSVG(p, items, opts) {
     }
     out.push('<path d="' + d + '" fill="' + col + '" ' + s + '/>');
     const neckKind = (it.neck) || (it.subtype === 'blusa' ? 'barco' : it.subtype === 'top' ? 'barco' : 'redondo');
-    if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) {
+    if (back) {
+      if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) out.push('<path d="M' + (cx - 13) + ' ' + (Y.sh - 9) + ' Q' + cx + ' ' + (Y.sh - 13) + ' ' + (cx + 13) + ' ' + (Y.sh - 9) + ' L' + (cx + 12) + ' ' + (Y.sh - 3) + ' Q' + cx + ' ' + (Y.sh - 6) + ' ' + (cx - 12) + ' ' + (Y.sh - 3) + ' Z" fill="' + col + '" ' + s + '/>' + (it.subtype === 'camisa' ? '<path d="M' + (cx - b.sh + 6) + ' ' + (Y.sh + 14) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + b.sh - 6) + ' ' + (Y.sh + 14) + '" fill="none" stroke="' + darker(base, 0.25) + '" stroke-width="0.9"/>' : ''));
+      else out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 8) + ' Q' + cx + ' ' + (Y.sh - 4) + ' ' + (cx + 10) + ' ' + (Y.sh - 8) + '" fill="' + skin + '" stroke="' + darker(base, 0.35) + '" stroke-width="1.4"/>');
+    } else if (['camisa', 'polo', 'sobrecamisa'].includes(it.subtype)) {
       out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' L' + cx + ' ' + (Y.sh + 8) + ' L' + (cx + 10) + ' ' + (Y.sh - 7) + ' L' + (cx + 4) + ' ' + (Y.sh - 9) + ' L' + cx + ' ' + (Y.sh - 2) + ' L' + (cx - 4) + ' ' + (Y.sh - 9) + ' Z" fill="' + col + '" ' + s + '/>');
       const bottomBtn = it.subtype === 'polo' ? Y.sh + 26 : hemY - 6;
       out.push('<line x1="' + cx + '" y1="' + (Y.sh + 8) + '" x2="' + cx + '" y2="' + bottomBtn + '" stroke="' + darker(base, 0.3) + '" stroke-width="1"/>');
@@ -2168,38 +2232,52 @@ function figureSVG(p, items, opts) {
     const base = garmentHex(layer); const col = pattern(layer, base); const s = st(base);
     const hem = layer.subtype === 'abrigo' ? 300 : layer.subtype === 'casaca' ? 230 : 238;
     if (layer.subtype !== 'chaleco') [armL, armR].forEach((a) => { const end = lerp(a[0], a[1], 0.98); out.push(line(a[0], end, b.limb * 1.6 + 10, darker(base, 0.35)) + line(a[0], end, b.limb * 1.6 + 8, col)); });
-    [-1, 1].forEach((sd) => {
+    if (back) {
+      out.push('<path d="M' + (cx - b.sh - 3) + ' ' + (Y.sh - 1) + ' Q' + (cx - b.sh - 4) + ' 130 ' + (cx - b.wa - 4) + ' ' + Y.waist + ' L' + (cx - b.hi - 6) + ' ' + hem + ' L' + (cx + b.hi + 6) + ' ' + hem + ' L' + (cx + b.wa + 4) + ' ' + Y.waist + ' Q' + (cx + b.sh + 4) + ' 130 ' + (cx + b.sh + 3) + ' ' + (Y.sh - 1) + ' Q' + cx + ' ' + (Y.sh - 14) + ' ' + (cx - b.sh - 3) + ' ' + (Y.sh - 1) + ' Z" fill="' + col + '" ' + s + '/>');
+      out.push('<path d="M' + (cx - 14) + ' ' + (Y.sh - 9) + ' Q' + cx + ' ' + (Y.sh - 15) + ' ' + (cx + 14) + ' ' + (Y.sh - 9) + ' L' + (cx + 13) + ' ' + (Y.sh - 2) + ' Q' + cx + ' ' + (Y.sh - 7) + ' ' + (cx - 13) + ' ' + (Y.sh - 2) + ' Z" fill="' + darker(base, 0.12) + '" ' + s + '/>');
+      out.push('<line x1="' + cx + '" y1="' + (Y.sh - 2) + '" x2="' + cx + '" y2="' + hem + '" stroke="' + darker(base, 0.3) + '" stroke-width="1"/>');
+      if (['blazer', 'abrigo'].includes(layer.subtype)) out.push('<path d="M' + cx + ' ' + (hem - 26) + ' L' + (cx + 4) + ' ' + hem + '" stroke="' + darker(base, 0.4) + '" stroke-width="1.2"/>');
+    } else [-1, 1].forEach((sd) => {
       const sh = cx + sd * (b.sh + 3); const hx = cx + sd * (b.hi + 6);
       out.push('<path d="M' + sh + ' ' + (Y.sh - 1) + ' Q' + (cx + sd * (b.sh + 4)) + ' 130 ' + (cx + sd * (b.wa + 4)) + ' ' + Y.waist + ' L' + hx + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + hem + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + ' L' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' Z" fill="' + col + '" ' + s + '/>');
       if (['blazer', 'abrigo'].includes(layer.subtype)) out.push('<path d="M' + (cx + sd * 13) + ' ' + (Y.sh - 7) + ' L' + (cx + sd * 21) + ' ' + (Y.sh + 26) + ' L' + (cx + sd * 12) + ' ' + (Y.sh + 30) + ' L' + (cx + sd * 4) + ' ' + (Y.sh + 62) + '" fill="' + darker(base, 0.12) + '" ' + s + '/>');
     });
-    if (layer.subtype === 'blazer') out.push('<circle cx="' + (cx + 6) + '" cy="' + (Y.sh + 82) + '" r="2" fill="' + darker(base, 0.45) + '"/>');
+    if (!back && layer.subtype === 'blazer') out.push('<circle cx="' + (cx + 6) + '" cy="' + (Y.sh + 82) + '" r="2" fill="' + darker(base, 0.45) + '"/>');
   }
   // Bolso o mochila
   const bag = role('accessory').find((i) => i.category === 'bolso');
   if (bag) {
     const c = garmentHex(bag);
-    if (bag.subtype === 'mochila') out.push(line([cx - b.sh + 12, Y.sh - 4], [cx - b.wa + 6, 176], 5, c) + line([cx + b.sh - 12, Y.sh - 4], [cx + b.wa - 6, 176], 5, c));
+    if (bag.subtype === 'mochila' && back) out.push('<path d="M' + (cx - 8) + ' ' + (Y.sh + 2) + ' Q' + cx + ' ' + (Y.sh - 10) + ' ' + (cx + 8) + ' ' + (Y.sh + 2) + '" fill="none" stroke="' + darker(c, 0.2) + '" stroke-width="3"/><rect x="' + (cx - b.wa - 2) + '" y="' + (Y.sh + 2) + '" width="' + (2 * b.wa + 4) + '" height="' + (Y.waist - Y.sh - 4) + '" rx="14" fill="' + c + '" ' + st(c) + '/><rect x="' + (cx - b.wa + 6) + '" y="' + (Y.waist - 46) + '" width="' + (2 * b.wa - 12) + '" height="30" rx="8" fill="' + darker(c, 0.12) + '" ' + st(c) + '/><line x1="' + (cx - b.wa + 8) + '" y1="' + (Y.waist - 38) + '" x2="' + (cx + b.wa - 8) + '" y2="' + (Y.waist - 38) + '" stroke="' + darker(c, 0.45) + '" stroke-width="1.2"/>');
+    else if (bag.subtype === 'mochila') out.push(line([cx - b.sh + 12, Y.sh - 4], [cx - b.wa + 6, 176], 5, c) + line([cx + b.sh - 12, Y.sh - 4], [cx + b.wa - 6, 176], 5, c));
     else out.push(line([cx + b.sh - 10, Y.sh - 4], [cx - b.hi - 4, 206], 3, darker(c, 0.2)) + '<rect x="' + (cx - b.hi - 22) + '" y="198" width="30" height="24" rx="5" fill="' + c + '" ' + st(c) + '/>');
   }
   // Accesorios
   acc.forEach((i) => {
     const c = garmentHex(i);
     if (i.subtype === 'reloj') out.push('<rect x="' + (armL[1][0] - 5.5) + '" y="' + (armL[1][1] - 9) + '" width="11" height="7" rx="2" fill="' + c + '" stroke="' + darker(c, 0.4) + '"/>');
-    if (i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
-    if (i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
-    if (i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
+    if (!back && i.subtype === 'collar' && !(layer && ['abrigo'].includes(layer.subtype))) out.push('<path d="M' + (cx - 10) + ' ' + (Y.sh - 7) + ' Q' + cx + ' ' + (Y.sh + 20) + ' ' + (cx + 10) + ' ' + (Y.sh - 7) + '" fill="none" stroke="' + c + '" stroke-width="1.8"/><circle cx="' + cx + '" cy="' + (Y.sh + 13) + '" r="3" fill="' + c + '"/>');
+    if (!back && i.subtype === 'lentes') out.push('<g fill="none" stroke="#222" stroke-width="1.8"><circle cx="' + (cx - 8) + '" cy="' + (Y.head + 2) + '" r="6"/><circle cx="' + (cx + 8) + '" cy="' + (Y.head + 2) + '" r="6"/><line x1="' + (cx - 2) + '" y1="' + (Y.head + 2) + '" x2="' + (cx + 2) + '" y2="' + (Y.head + 2) + '"/></g>');
+    if (!back && i.subtype === 'pañuelo') out.push('<path d="M' + (cx - 12) + ' ' + (Y.sh - 6) + ' L' + (cx + 12) + ' ' + (Y.sh - 6) + ' L' + cx + ' ' + (Y.sh + 14) + ' Z" fill="' + c + '" ' + st(c) + '/>');
   });
   // Manos (encima de las mangas)
   out.push('<ellipse cx="' + armL[1][0] + '" cy="' + (armL[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/><ellipse cx="' + armR[1][0] + '" cy="' + (armR[1][1] + 7) + '" rx="' + (b.limb * 0.72) + '" ry="' + (b.limb * 0.95) + '" fill="' + skin + '"/>');
   // Cabello de adelante
   const capTop = Y.head - headRy - 4;
   const cap = 'M' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Q' + (cx - headRx - 3) + ' ' + capTop + ' ' + cx + ' ' + capTop + ' Q' + (cx + headRx + 3) + ' ' + capTop + ' ' + (cx + headRx + 2) + ' ' + (Y.head - 2) + ' Q' + (cx + headRx - 4) + ' ' + (Y.head - 14) + ' ' + (cx + 6) + ' ' + (Y.head - 16) + ' Q' + (cx - 10) + ' ' + (Y.head - 18) + ' ' + (cx - headRx - 2) + ' ' + (Y.head - 2) + ' Z';
-  if (style === 'rapado') out.push('<path d="' + cap + '" fill="' + hair + '" opacity=".45"/>');
+  if (back) {
+    const full = '<ellipse cx="' + cx + '" cy="' + (Y.head - 2) + '" rx="' + (headRx + 2) + '" ry="' + (headRy + 2) + '" fill="' + hair + '"' + (style === 'rapado' ? ' opacity=".45"' : '') + '/>';
+    if (style === 'largo') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 6) + ' Q' + (cx - headRx - 9) + ' 112 ' + (cx - b.sh + 8) + ' 150 Q' + cx + ' 160 ' + (cx + b.sh - 8) + ' 150 Q' + (cx + headRx + 9) + ' 112 ' + (cx + headRx + 3) + ' ' + (Y.head - 6) + ' Z" fill="' + hair + '"/>');
+    if (style === 'medio') out.push('<path d="M' + (cx - headRx - 3) + ' ' + (Y.head - 4) + ' Q' + (cx - headRx - 5) + ' 82 ' + (cx - headRx + 3) + ' 90 Q' + cx + ' 96 ' + (cx + headRx - 3) + ' 90 Q' + (cx + headRx + 5) + ' 82 ' + (cx + headRx + 3) + ' ' + (Y.head - 4) + ' Z" fill="' + hair + '"/>');
+    out.push(full);
+    if (style === 'rizado') for (let a = 0; a < 360; a += 30) { const r = a * Math.PI / 180; out.push('<circle cx="' + (cx + Math.cos(r) * (headRx + 1)).toFixed(1) + '" cy="' + (Y.head - 2 + Math.sin(r) * (headRy + 1)).toFixed(1) + '" r="7" fill="' + hair + '"/>'); }
+    if (style === 'recogido') out.push('<circle cx="' + cx + '" cy="' + (Y.head - 6) + '" r="10" fill="' + darker(hair, 0.15) + '"/>');
+  } else if (style === 'rapado') out.push('<path d="' + cap + '" fill="' + hair + '" opacity=".45"/>');
   else if (style === 'rizado') { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); for (let a = -150; a <= -30; a += 20) { const r = a * Math.PI / 180; out.push('<circle cx="' + (cx + Math.cos(r) * (headRx + 2)).toFixed(1) + '" cy="' + (Y.head - 6 + Math.sin(r) * (headRy + 1)).toFixed(1) + '" r="7" fill="' + hair + '"/>'); } }
   else { out.push('<path d="' + cap + '" fill="' + hair + '"/>'); if (style === 'recogido') out.push('<circle cx="' + cx + '" cy="' + (capTop - 5) + '" r="9" fill="' + hair + '"/>'); }
   if (acc.some((i) => i.subtype === 'sombrero')) { const h = acc.find((i) => i.subtype === 'sombrero'); const c = garmentHex(h); out.push('<ellipse cx="' + cx + '" cy="' + (capTop + 8) + '" rx="' + (headRx + 16) + '" ry="6" fill="' + c + '" ' + st(c) + '/><path d="M' + (cx - headRx + 2) + ' ' + (capTop + 8) + ' Q' + cx + ' ' + (capTop - 26) + ' ' + (cx + headRx - 2) + ' ' + (capTop + 8) + ' Z" fill="' + c + '" ' + st(c) + '/>'); }
-  return '<svg viewBox="0 0 200 420" class="figure" role="img" aria-label="' + esc(opts.label || 'Figura ilustrativa con el outfit') + '"><ellipse cx="100" cy="404" rx="54" ry="7" fill="currentColor" opacity=".08"/>' + out.join('') + '</svg>';
+  const body = back ? '<g transform="translate(200 0) scale(-1 1)">' + out.join('') + '</g>' : out.join('');
+  return '<svg viewBox="0 0 200 420" class="figure" role="img" aria-label="' + esc(opts.label || (back ? 'Figura ilustrativa vista de espalda' : 'Figura ilustrativa con el outfit')) + '"><ellipse cx="100" cy="404" rx="54" ry="7" fill="currentColor" opacity=".08"/>' + body + '</svg>';
 }
 /* =====================================================================
    PLATAFORMA LOCAL (app instalable): IndexedDB para datos y fotos,
@@ -5068,6 +5146,151 @@ ACT.choose = (el, e) => {
   _choose7(el, e);
   if (prev.length) toast('Cambiaste tu elección de hoy. Cuando lo uses, confirma con “Sí, lo usé”.');
 };
+/* =====================================================================
+   RELISTO 3.2: giro 360° de la figura y hoja "Cambiar una prenda"
+   pensada para celular.
+   ===================================================================== */
+
+/* ---------- Giro 360° ---------- */
+function turntableHTML(p, items, label) {
+  return '<div class="turn" data-turn aria-label="Figura con giro 360°. Desliza para girarla.">' +
+    '<div class="turn-stage"><div class="turn-face front">' + figureSVG(p, items, { label: label || 'Figura de frente' }) + '</div>' +
+    '<div class="turn-face back" hidden>' + figureSVG(p, items, { view: 'back', label: 'Figura de espalda' }) + '</div></div>' +
+    '<span class="turn-badge" aria-live="polite">Frente</span><span class="turn-hint" aria-hidden="true">↔ Desliza para girar</span></div>' +
+    '<div class="turn-ctl"><button type="button" class="btn sm primary" data-act="turnSpin">' + IC.circular + 'Girar 360°</button><button type="button" class="btn sm" data-act="turnTo" data-a="0">Frente</button><button type="button" class="btn sm" data-act="turnTo" data-a="180">Espalda</button></div>';
+}
+const TURN = { angle: 0, raf: null };
+function applyTurn(root, deg) {
+  const stage = root.querySelector('.turn-stage'); if (!stage) return;
+  const r = deg * Math.PI / 180; const c = Math.cos(r);
+  const sx = Math.max(0.12, Math.abs(c));
+  const front = c >= 0;
+  stage.style.transform = 'scaleX(' + sx.toFixed(3) + ')';
+  stage.style.filter = 'brightness(' + (0.92 + 0.08 * Math.abs(c)).toFixed(3) + ')';
+  const f = root.querySelector('.turn-face.front'); const bk = root.querySelector('.turn-face.back');
+  if (f && bk) { f.hidden = !front; bk.hidden = front; }
+  const badge = root.querySelector('.turn-badge'); if (badge) { const lbl = Math.abs(c) < 0.35 ? 'Perfil' : front ? 'Frente' : 'Espalda'; if (badge.textContent !== lbl) badge.textContent = lbl; }
+}
+function reducedMotion() { const p = prof(); return !!((p && p.reduceMotion) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)); }
+function wireTurntables() {
+  document.querySelectorAll('[data-turn]').forEach((root) => {
+    if (root.dataset.wired) return; root.dataset.wired = '1';
+    applyTurn(root, TURN.angle);
+    let drag = null;
+    root.addEventListener('pointerdown', (e) => { cancelAnimationFrame(TURN.raf); drag = { x: e.clientX, a: TURN.angle, moved: false }; try { root.setPointerCapture(e.pointerId); } catch (er) { /* */ } root.classList.add('dragging'); });
+    root.addEventListener('pointermove', (e) => { if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 3) drag.moved = true; TURN.angle = drag.a + dx * 1.4; applyTurn(root, TURN.angle); });
+    const end = () => { if (!drag) return; drag = null; root.classList.remove('dragging'); const hint = root.querySelector('.turn-hint'); if (hint) hint.remove(); UI.turnUsed = true; };
+    root.addEventListener('pointerup', end); root.addEventListener('pointercancel', end);
+    root.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); TURN.angle += e.key === 'ArrowRight' ? 30 : -30; applyTurn(root, TURN.angle); } });
+    root.tabIndex = 0;
+    if (UI.turnUsed) { const hint = root.querySelector('.turn-hint'); if (hint) hint.remove(); }
+  });
+}
+function spinTo(target, ms) {
+  const root = document.querySelector('[data-turn]'); if (!root) return;
+  cancelAnimationFrame(TURN.raf);
+  if (reducedMotion()) { TURN.angle = target; applyTurn(root, TURN.angle); return; }
+  const from = TURN.angle; const t0 = performance.now(); const dur = ms || 2200;
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / dur); TURN.angle = from + (target - from) * ease(t);
+    const r = document.querySelector('[data-turn]'); if (r) applyTurn(r, TURN.angle);
+    if (t < 1) TURN.raf = requestAnimationFrame(step); else TURN.angle = ((TURN.angle % 360) + 360) % 360;
+  };
+  TURN.raf = requestAnimationFrame(step);
+}
+
+/* ---------- "Ver outfit completo" con giro ---------- */
+const _renderLook8 = renderLook;
+renderLook = function (m) { // eslint-disable-line no-func-assign
+  const html = _renderLook8(m);
+  const items = lookItems(m); const p = prof();
+  const start = html.indexOf('<div class="look-fig">'); const endMark = '<span class="chip">Vista ilustrativa</span></div>';
+  const end = html.indexOf(endMark, start);
+  if (start < 0 || end < 0) return html;
+  return html.slice(0, start) + '<div class="look-fig">' + turntableHTML(p, items, 'Figura ilustrada con ' + items.map((i) => i.name).join(', ')) + '<span class="chip look-chip">Vista ilustrativa</span></div>' + html.slice(end + endMark.length);
+};
+
+/* ---------- "Cambiar una prenda" para celular ---------- */
+function swapSlots(c, d, items) {
+  const full = items.find((i) => roleOf(i) === 'full');
+  const slots = [];
+  if (full) slots.push({ id: 'full', label: 'Vestido o enterizo', role: 'full', hardSlot: 'superior' });
+  else { slots.push({ id: 'superior', label: 'Superior', role: 'top', hardSlot: 'superior' }); slots.push({ id: 'inferior', label: 'Inferior', role: 'bottom', hardSlot: 'inferior' }); }
+  slots.push({ id: 'calzado', label: 'Calzado', role: 'shoes', hardSlot: 'calzado' });
+  if (d.requiredSlots.includes('capa')) slots.push({ id: 'capa', label: 'Capa', role: 'layer', hardSlot: 'capa' });
+  slots.push({ id: 'extras', label: 'Extras' });
+  return slots;
+}
+function swapRow(a, act, from, d, note) {
+  const ok = isUsable(a);
+  const hint = !ok ? availBadge(a.availability) : (roleOf(a) !== 'accessory' && !formalityOk(a, d) ? '<span class="badge warn">menos formal para ' + esc(d.dressCode) + '</span>' : (note || ''));
+  return '<button type="button" class="swap-row' + (ok ? '' : ' off') + '" data-act="' + act + '" data-from="' + (from || '') + '" data-to="' + a.id + '"' + (ok ? '' : ' aria-disabled="true"') + '>' +
+    '<span class="swap-th">' + thumb(a, { noTag: true, noFlip: true }) + '</span>' +
+    '<span class="swap-info"><b>' + esc(a.name) + '</b><span class="tiny muted"><span class="code">' + esc(a.code || '') + '</span> ' + esc(a.color) + '</span>' + hint + '</span>' +
+    '<span class="swap-go" aria-hidden="true">' + (ok ? (act === 'addPiece' ? 'Añadir' : 'Usar') : '—') + '</span></button>';
+}
+renderSwap = function (m) { // eslint-disable-line no-func-assign
+  const w = ws(); const d = currentDraft(); const c = findCandidate(m.key);
+  if (!c) return modalWrap('Cambiar una prenda', '<p>La propuesta ya no está en pantalla. Vuelve a “Arma mi día”.</p>');
+  const items = c.itemIds.map((id) => w.items.find((i) => i.id === id)).filter(Boolean);
+  const owned = ownedItems(w, d.ownerId).filter((i) => !isGone(i));
+  const slots = swapSlots(c, d, items);
+  const slot = slots.find((s) => s.id === m.slot) || slots[0]; m.slot = slot.id;
+  const comp = completeness(w, c.itemIds, d, c.template);
+  const head = '<div class="swap-head"><span class="minis">' + items.filter((i) => roleOf(i) !== 'accessory').map((i) => '<span class="mini' + (slot.role && roleOf(i) === slot.role ? ' sel' : '') + '">' + thumb(i, { noTag: true, noFlip: true }) + '</span>').join('') + '</span>' +
+    '<span class="pct' + (comp.percent < 100 ? ' partial' : '') + '"><b class="num">' + comp.percent + '% completo</b></span></div>';
+  const tabs = '<div class="swap-tabs" role="tablist">' + slots.map((s) => '<button type="button" role="tab" class="chip btnchip" data-act="swapSlot" data-slot="' + s.id + '" aria-selected="' + (s.id === slot.id) + '" aria-pressed="' + (s.id === slot.id) + '">' + esc(s.label) + '</button>').join('') + '</div>';
+  let body = '';
+  if (slot.id === 'extras') {
+    const optional = items.filter((i) => roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa')));
+    const addable = owned.filter((i) => (roleOf(i) === 'accessory' || (roleOf(i) === 'layer' && !d.requiredSlots.includes('capa'))) && !c.itemIds.includes(i.id));
+    body = '<p class="tiny muted">Accesorios, bolsos y capas opcionales: no cambian la completitud.</p>' +
+      (optional.length ? '<div class="stack tight"><span class="eyebrow">En este outfit</span>' + optional.map((i) => '<div class="swap-row cur"><span class="swap-th">' + thumb(i, { noTag: true, noFlip: true }) + '</span><span class="swap-info"><b>' + esc(i.name) + '</b><span class="tiny muted"><span class="code">' + esc(i.code || '') + '</span></span></span><button type="button" class="btn sm ghost" data-act="removePiece" data-item="' + i.id + '">Quitar</button></div>').join('') + '</div>' : '') +
+      '<div class="stack tight"><span class="eyebrow">Puedes añadir</span>' + (addable.length ? addable.map((a) => swapRow(a, 'addPiece', '', d)).join('') : '<span class="small muted">No tienes más accesorios registrados.</span>') + '</div>';
+  } else {
+    const cur = items.find((i) => roleOf(i) === slot.role);
+    const alts = owned.filter((i) => roleOf(i) === slot.role && (!cur || i.id !== cur.id) && !c.itemIds.includes(i.id) && meetsHard(i, (d.hard || {})[slot.hardSlot]));
+    alts.sort((a, b2) => (isUsable(b2) - isUsable(a)) || (formalityOk(b2, d) - formalityOk(a, d)) || a.name.localeCompare(b2.name, 'es'));
+    body = '<div class="stack tight"><span class="eyebrow">Ahora</span>' + (cur ? '<div class="swap-row cur"><span class="swap-th">' + thumb(cur, { noTag: true, noFlip: true }) + '</span><span class="swap-info"><b>' + esc(cur.name) + '</b><span class="tiny muted"><span class="code">' + esc(cur.code || '') + '</span> ' + esc(cur.color) + '</span></span><span class="badge ok">En uso</span></div>' : '<div class="note bad">Falta ' + esc(slot.label.toLowerCase()) + ' en este outfit.</div>') + '</div>' +
+      '<div class="stack tight"><span class="eyebrow">' + (alts.length ? 'Cámbialo por' : 'Alternativas') + '</span>' + (alts.length ? alts.map((a) => swapRow(a, cur ? 'swapTo' : 'addPiece', cur ? cur.id : '', d)).join('') : '<span class="small muted">No tienes otras prendas compatibles de este tipo. Puedes agregar una desde tu armario.</span>') + '</div>';
+  }
+  const foot = '<div class="sheet-foot row"><button type="button" class="btn primary grow-btn" data-act="closeModal">' + IC.check + 'Listo</button><button type="button" class="btn" data-act="lookOpen" data-key="' + esc(c.key) + '">' + IC.figure + 'Verlo puesto</button></div>';
+  return modalWrap('Cambiar una prenda', head + tabs + body + foot, { eyebrow: c.name });
+};
+
+/* ---------- Registrar uso rápido en filas ---------- */
+const _renderModal8 = renderModal;
+renderModal = function () { // eslint-disable-line no-func-assign
+  const m = UI.modal;
+  if (m.type === 'quickWear') {
+    const items = ownedItems(ws(), ws().activeProfileId).filter(isUsable);
+    return modalWrap('Registrar uso rápido', '<p class="small muted">Para una prenda que usaste sin un outfit guardado. Cuenta como uso confirmado hoy.</p><div class="stack tight">' +
+      items.map((i) => '<button type="button" class="swap-row" data-act="quickWearItem" data-item="' + i.id + '"><span class="swap-th">' + thumb(i, { noTag: true, noFlip: true }) + '</span><span class="swap-info"><b>' + esc(i.name) + '</b><span class="tiny muted"><span class="code">' + esc(i.code || '') + '</span> ' + esc(i.color) + '</span></span><span class="swap-go" aria-hidden="true">Usé hoy</span></button>').join('') + '</div>');
+  }
+  return _renderModal8();
+};
+
+Object.assign(ACT, {
+  turnSpin: () => spinTo(Math.round(TURN.angle / 360) * 360 + 360, 2400),
+  turnTo: (el) => { const target = Number(el.dataset.a); const base = Math.floor(TURN.angle / 360) * 360; let t = base + target; if (Math.abs(t - TURN.angle) > 180) t += t < TURN.angle ? 360 : -360; spinTo(t, 900); },
+  swapSlot: (el) => { UI.modal.slot = el.dataset.slot; render(); const md = document.querySelector('.modal'); if (md) md.scrollTop = 0; }
+});
+// La hoja "Cambiar una prenda" se abre desde el outfit o desde su vista completa.
+const _swapOpen = ACT.swap;
+ACT.swap = (el, e) => { openModal({ type: 'swap', key: el.dataset.key, slot: null }); };
+const _openLook8 = ACT.lookOpen;
+ACT.lookOpen = (el, e) => { TURN.angle = 0; _openLook8(el, e); };
+// Tras cada render: activar giro y marcar las filas no disponibles.
+const _render8 = render;
+render = function () { // eslint-disable-line no-func-assign
+  _render8();
+  wireTurntables();
+};
+document.addEventListener('click', (e) => {
+  const off = e.target.closest('.swap-row[aria-disabled="true"]');
+  if (off) { e.stopImmediatePropagation(); toast('Esa prenda no está disponible ahora: ' + (w_item(off.dataset.to) || {}).availability + '.'); }
+}, true);
 /* ============================ INICIO ============================ */
 render();
 initCapabilities();

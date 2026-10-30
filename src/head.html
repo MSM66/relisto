@@ -505,4 +505,47 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .cal .day .minis .mini { width: 30px; margin-right: -8px; }
 .plan-opt .minis .mini { width: 38px; }
 @media (max-width: 959px) { .cal { grid-template-columns: 1fr; } }
+
+/* ===================== RELISTO 3.2 ===================== */
+.topbar { min-width: 0; }
+.topbar .logo { min-width: 0; flex: none; }
+.who-chip { min-width: 0; max-width: calc(100vw - 150px); flex: 0 1 auto; }
+@media (max-width: 400px) { .topbar .logo b { display: none; } .who-chip { max-width: calc(100vw - 112px); } }
+
+.modal { grid-template-columns: minmax(0, 1fr); }
+.modal > *, .modal .stack > *, .look > *, .grid.two > * { min-width: 0; }
+
+.look-fig { height: auto; display: grid; gap: 8px; place-items: stretch; }
+.turn { position: relative; width: 100%; height: min(52vh, 440px); display: block; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; border-radius: 18px; }
+.turn.dragging { cursor: grabbing; }
+.turn:focus-visible { outline: 3px solid var(--detail); outline-offset: 2px; }
+.turn-stage { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.turn-face { position: absolute; inset: 0; }
+.turn-face > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.turn-ctl { position: relative; z-index: 1; }
+.turn-badge { position: absolute; right: 8px; top: 8px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--surface); color: var(--ink-2); border: 1px solid var(--line); }
+.look-chip { position: absolute; left: 18px; top: 18px; }
+.turn-hint { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; color: var(--ink-2); background: var(--surface); padding: 4px 12px; border-radius: 999px; box-shadow: var(--shadow); white-space: nowrap; animation: hint-nudge 1.8s ease-in-out infinite; }
+@keyframes hint-nudge { 0%, 100% { transform: translateX(-50%); } 50% { transform: translateX(calc(-50% + 8px)); } }
+.turn-ctl { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.swap-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--line); }
+.swap-head .minis .mini { width: 46px; }
+.swap-head .mini.sel .thumb { outline: 3px solid var(--accent); outline-offset: 1px; }
+.swap-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.swap-tabs::-webkit-scrollbar { display: none; }
+.swap-tabs .chip { flex: none; min-height: 38px; padding-inline: 14px; }
+.swap-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); text-align: left; color: inherit; font: inherit; cursor: pointer; min-height: 76px; }
+button.swap-row:hover { border-color: var(--line-strong); }
+.swap-row.cur { background: var(--ok-soft); border-color: transparent; cursor: default; }
+.swap-row.off { opacity: .62; cursor: not-allowed; }
+.swap-th { width: 60px; height: 60px; flex: none; display: block; }
+.swap-th .thumb { width: 60px; height: 60px; aspect-ratio: auto; border-radius: 12px; }
+.swap-th .thumb > svg { width: 84%; height: 84%; }
+.swap-th .thumb img { width: 60px; height: 60px; object-fit: cover; }
+.swap-info { flex: 1; min-width: 0; display: grid; gap: 3px; justify-items: start; }
+.swap-info .badge { white-space: normal; line-height: 1.3; }
+.swap-head { flex-wrap: wrap; }
+.swap-info b { font-size: 14.5px; line-height: 1.25; overflow-wrap: anywhere; }
+.swap-go { flex: none; font-weight: 800; color: var(--on-soft); font-size: 13px; padding: 8px 12px; border-radius: 999px; background: var(--primary-soft); }
+.swap-row.off .swap-go { background: transparent; color: var(--ink-3); }
 </style>

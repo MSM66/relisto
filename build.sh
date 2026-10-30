@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 cd "$(dirname "$0")"
-JS="src/seed.js src/rules.js src/illus.js src/ops.js src/tests.js src/qr.js src/visage.js src/figure.js src/local.js src/auth.js src/app1.js src/app2.js src/app3.js src/app4.js src/app5.js src/app6.js src/app7.js src/boot.js"
+JS="src/seed.js src/rules.js src/illus.js src/ops.js src/tests.js src/qr.js src/visage.js src/figure.js src/local.js src/auth.js src/app1.js src/app2.js src/app3.js src/app4.js src/app5.js src/app6.js src/app7.js src/app8.js src/boot.js"
 VERSION="$(date -u +%Y%m%d.%H%M)"
 # 1) Artefacto de Claude
 {
