@@ -204,5 +204,25 @@ function runSelfTests(today) {
     const items = g(['A03', 'A07', 'A10', 'A08', 'A15']); const fr = figureSVG(w.profiles[0], items); const bk = figureSVG(w.profiles[0], items, { view: 'back' });
     return { ok: /scale\(-1 1\)/.test(bk) && !/scale\(-1 1\)/.test(fr) && /rx="14"/.test(bk) && !/rx="14"/.test(fr), detail: 'frente y espalda distintos' };
   });
+  check('Panorama: cada prenda activa cae en un solo grupo y cuadra con Circular', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate;
+    const res = ['alex', 'valeria', 'noa'].map((o) => { const h = closetHealth(w, o, ref, 365); const sum = Object.values(h.segs).reduce((a, s) => a + s.count, 0); const ids = Object.values(h.segs).flatMap((s) => s.items.map((x) => x.item.id)); const d = dormantItems(w, o, 365, ref);
+      return sum === h.total && new Set(ids).size === ids.length && h.total === ownedItems(w, o).filter((i) => !isGone(i)).length && h.segs.redescubrir.count === d.review.length && h.segs.motivo.count === d.excluded.length; });
+    const h = closetHealth(w, 'alex', ref, 365);
+    return { ok: res.every(Boolean) && h.segs.ajuste.count >= 1, detail: HEALTH_SEGS.map((s) => s.short + ' ' + h.segs[s.id].count).join(' · ') };
+  });
+  check('Panorama: “no me queda” y exclusiones mueven la prenda de grupo', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate;
+    const it = w.items.find((i) => i.ownerId === 'alex' && healthSegment(w, i, ref, 365) === 'rotacion');
+    it.fitIssue = true; const a = healthSegment(w, it, ref, 365);
+    const old = w.items.find((i) => healthSegment(w, i, ref, 365) === 'redescubrir'); old.exclusions.sentimental = true; const b = healthSegment(w, old, ref, 365);
+    const nu = addItem(w, { ownerId: 'alex', name: 'Prueba', category: 'superior', subtype: 'camiseta', color: 'negro' }, ref); const c = healthSegment(w, nu, ref, 365);
+    return { ok: a === 'ajuste' && b === 'motivo' && c === 'nuevas', detail: [a, b, c].join(', ') };
+  });
+  check('Outfits por semana: suma solo “Sí, lo usé” dentro de las 8 semanas', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const wk = weeklyWear(w, 'alex', ref, 8);
+    const exp = w.wearLogs.filter((l) => l.ownerId === 'alex' && l.status === 'usado' && l.date > addDays(ref, -56) && l.date <= ref).length;
+    return { ok: wk.length === 8 && wk[7].end === ref && wk.reduce((a, x) => a + x.n, 0) === exp, detail: wk.map((x) => x.n).join(' ') };
+  });
   return out;
 }

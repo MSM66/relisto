@@ -657,6 +657,53 @@ function habits(ws, ownerId, today, periodDays) {
   };
 }
 
+/* ---------- Salud del armario (segmentos excluyentes) ---------- */
+const HEALTH_WINDOW = 30;
+const HEALTH_SEGS = [
+  { id: 'nuevas', label: 'Nuevas', short: 'Nuevas' },
+  { id: 'rotacion', label: 'En rotación', short: 'Rotación' },
+  { id: 'ocasionales', label: 'Ocasionales', short: 'Ocasionales' },
+  { id: 'redescubrir', label: 'Por redescubrir', short: 'Redescubrir' },
+  { id: 'ajuste', label: 'Necesitan ajuste', short: 'Ajuste' },
+  { id: 'motivo', label: 'Guardadas con motivo', short: 'Con motivo' }
+];
+/* Cada prenda activa cae en un solo segmento. El desuso se evalúa primero
+   para que “Por redescubrir” + “Guardadas con motivo” coincida con Circular. */
+function healthSegment(ws, item, today, threshold) {
+  if (isGone(item)) return null;
+  const d = daysSinceUse(ws, item, today);
+  if (d.days >= threshold) return Object.values(item.exclusions || {}).some(Boolean) ? 'motivo' : 'redescubrir';
+  if (item.availability === 'en reparación' || item.fitIssue) return 'ajuste';
+  const recent = Math.min(HEALTH_WINDOW, threshold);
+  if (d.days <= recent) return d.basis === 'incorporación' ? 'nuevas' : 'rotacion';
+  return 'ocasionales';
+}
+function closetHealth(ws, ownerId, today, threshold) {
+  const segs = {}; HEALTH_SEGS.forEach((s) => { segs[s.id] = { id: s.id, items: [], value: 0, priced: 0 }; });
+  let total = 0; let value = 0; let priced = 0; let priceUses = 0; let pricedValueUsed = 0; let gone = 0;
+  ownedItems(ws, ownerId).forEach((i) => {
+    const k = healthSegment(ws, i, today, threshold);
+    if (!k) { gone++; return; }
+    const st = itemStats(ws, i); const d = daysSinceUse(ws, i, today);
+    segs[k].items.push({ item: i, uses: st.wearCount, days: d.days, basis: d.basis });
+    total++;
+    if (i.price) { segs[k].value += i.price; segs[k].priced++; value += i.price; priced++; if (st.wearCount) { priceUses += st.wearCount; pricedValueUsed += i.price; } }
+  });
+  Object.values(segs).forEach((s) => { s.count = s.items.length; s.pct = total ? Math.round((100 * s.count) / total) : 0; s.items.sort((a, b) => b.days - a.days); });
+  const top = Object.values(segs).flatMap((s) => s.items).filter((x) => x.uses > 0).sort((a, b) => b.uses - a.uses || a.days - b.days).slice(0, 3);
+  return { segs, total, value, priced, gone, avgCpu: priceUses ? pricedValueUsed / priceUses : null, top, threshold };
+}
+/* Outfits confirmados (“Sí, lo usé”) por semana, de la más antigua a la actual. */
+function weeklyWear(ws, ownerId, today, weeks) {
+  const out = [];
+  for (let k = weeks - 1; k >= 0; k--) {
+    const end = addDays(today, -7 * k); const start = addDays(end, -6);
+    const n = ws.wearLogs.filter((l) => l.ownerId === ownerId && l.status === 'usado' && l.date >= start && l.date <= end).length;
+    out.push({ start, end, n });
+  }
+  return out;
+}
+
 /* ---------- Texto libre → campos de contexto ---------- */
 function parseContextText(text, base) {
   const t = norm(text); const out = {}; const found = [];
