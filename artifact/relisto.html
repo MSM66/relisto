@@ -591,13 +591,44 @@ button.swap-row:hover { border-color: var(--line-strong); }
 .kpis.k2 .kpi b { font-size: 24px; }
 .seg-filter { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:8px 12px; border-radius:var(--r-md); background:var(--surface-2); border:1px solid var(--line); margin-bottom:10px; }
 @media (forced-colors: active) { .hseg, .sw, .wbar { forced-color-adjust:none; border:1px solid CanvasText; } }
+/* ---- 3.4 Vitrina ---- */
+.seg2.three, .stack > .seg2[aria-label="Vitrina"] { grid-template-columns: repeat(3, 1fr); }
+.nbadge { display:inline-grid; place-items:center; min-width:19px; height:19px; padding:0 5px; border-radius:999px; background:var(--accent); color:#fff; font-size:11px; font-weight:800; vertical-align:1px; }
+.has-dot { position:relative; }
+.has-dot::after { content:""; position:absolute; top:6px; right:calc(50% - 18px); width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 2px var(--nav); }
+.sidenav .has-dot::after { right:14px; top:50%; transform:translateY(-50%); box-shadow:none; }
+.has-dot:not(.bottomnav *):not(.sidenav *)::after { display:none; }
+.mk-filters { display:grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap:10px; }
+.mk-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
+@media (min-width:700px) { .mk-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); } }
+.mk-card { display:flex; flex-direction:column; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; min-width:0; }
+.mk-open { border:0; padding:0; background:none; cursor:pointer; display:block; width:100%; }
+.mk-open .thumb { border-radius:0; width:100%; }
+.mk-body { display:grid; gap:4px; padding:10px; min-width:0; }
+.mk-body .chip { justify-self:start; white-space:normal; }
+.mk-top { display:flex; flex-wrap:wrap; align-items:baseline; column-gap:6px; }
+.mk-price { white-space:nowrap; font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
+.mk-price.big { font-size:28px; }
+.mk-name { font-size:13.5px; font-weight:700; line-height:1.25; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.tiny-chip { font-size:11px; padding:2px 8px; }
+.stars { color:#B7791F; font-size:13px; letter-spacing:.5px; white-space:nowrap; }
+.stars .off { color:var(--line-strong); }
+.stars b { color:var(--ink); font-size:12.5px; letter-spacing:0; }
+.mk-offer { display:grid; gap:8px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
+.mk-review { display:grid; gap:2px; padding:8px 10px; border-left:3px solid var(--line-strong); background:var(--surface-2); border-radius:0 10px 10px 0; }
+.star-pick { gap:4px; }
+.star-btn { width:44px; height:44px; border-radius:12px; border:1px solid var(--line); background:var(--surface); font-size:24px; line-height:1; color:var(--line-strong); cursor:pointer; }
+.star-btn.on { color:#B7791F; border-color:#E8C77A; background:#FDF6E3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .star-btn.on { background:#3A2F18; border-color:#7A5F22; color:#E7C27A; } :root:not([data-theme="light"]) .stars { color:#E7C27A; } }
+:root[data-theme="dark"] .star-btn.on { background:#3A2F18; border-color:#7A5F22; color:#E7C27A; }
+:root[data-theme="dark"] .stars { color:#E7C27A; }
 </style>
 <div id="app"></div>
 <div id="modal-root"></div>
 <script>
 "use strict";
 const IS_PWA = false;
-const APP_VERSION = "20261104.1921";
+const APP_VERSION = "20261104.1956";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -1718,6 +1749,226 @@ function exportState(S, photosOmitted) {
   return { app: 'RELISTO', version: SCHEMA_VERSION, exportedAt: new Date().toISOString(), note: 'Solo datos de texto. Las fotos no se incluyen: vuelve a adjuntarlas.', photosOmitted: photosOmitted || 0, spaces: { demo: S.demo, personal: S.personal } };
 }
 /* =====================================================================
+   VITRINA (mercado entre personas): reglas puras.
+   Publicar con precio propio, comprar o recibir ofertas, contraofertar,
+   cerrar el acuerdo, confirmar la entrega y opinar (solo compras reales).
+   RELISTO no procesa pagos ni calcula precios de delivery.
+   ===================================================================== */
+/* Centro aproximado de cada distrito (lat, lng). Solo para ordenar por cercanía. */
+const DISTRICT_LL = {
+  'Barranco': [-12.149, -77.021], 'Jesús María': [-12.076, -77.049], 'La Molina': [-12.083, -76.935], 'Lince': [-12.084, -77.034],
+  'Magdalena del Mar': [-12.091, -77.071], 'Miraflores': [-12.121, -77.030], 'Pueblo Libre': [-12.075, -77.064], 'San Borja': [-12.103, -76.999],
+  'San Isidro': [-12.097, -77.037], 'San Miguel': [-12.077, -77.091], 'Santiago de Surco': [-12.146, -76.991], 'Surquillo': [-12.113, -77.016],
+  'Cercado de Lima': [-12.046, -77.043], 'Breña': [-12.060, -77.051], 'La Victoria': [-12.069, -77.020], 'Rímac': [-12.030, -77.030],
+  'San Luis': [-12.075, -76.995], 'Chorrillos': [-12.169, -77.024], 'San Juan de Miraflores': [-12.157, -76.973], 'Villa El Salvador': [-12.213, -76.937],
+  'Ate': [-12.026, -76.920], 'Santa Anita': [-12.043, -76.971], 'San Juan de Lurigancho': [-11.983, -77.001], 'Los Olivos': [-11.970, -77.072],
+  'San Martín de Porres': [-12.000, -77.060], 'Comas': [-11.935, -77.044], 'Callao': [-12.056, -77.118]
+};
+const MK_DISTRICTS = Object.keys(DISTRICT_LL).sort((a, b) => a.localeCompare(b, 'es'));
+const MK_CONDITIONS = ['nueva con etiqueta', 'como nueva', 'buen estado', 'con detalles'];
+const MK_DELIVERY = { recojo: 'Recojo en punto acordado', delivery: 'Delivery (lo paga quien compra)' };
+const MK_REVIEW_TAGS = ['Como se describió', 'Puntual', 'Buena comunicación', 'Bien cuidada'];
+const MK_OPEN = ['pendiente', 'contraoferta'];
+
+function distKm(a, b) {
+  const A = DISTRICT_LL[a]; const B = DISTRICT_LL[b];
+  if (!A || !B) return null;
+  if (a === b) return 0;
+  const R = 6371; const r = (d) => (d * Math.PI) / 180;
+  const dLat = r(B[0] - A[0]); const dLng = r(B[1] - A[1]);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(A[0])) * Math.cos(r(B[0])) * Math.sin(dLng / 2) ** 2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(h)) * 10) / 10;
+}
+function nearLabel(from, to) {
+  if (!from || !to) return to || 'Distrito sin indicar';
+  const d = distKm(from, to);
+  if (d === 0) return to + ' · tu distrito';
+  return d === null ? to : to + ' · ≈ ' + (d < 1 ? '1' : Math.round(d)) + ' km';
+}
+
+function mkNew() { return { listings: [], offers: [], reviews: [], seq: { l: 1, o: 1, r: 1 } }; }
+function mkId(M, k, p) { M.seq = M.seq || {}; const n = M.seq[k] || 1; M.seq[k] = n + 1; return p + String(n).padStart(3, '0') + '-' + Math.random().toString(36).slice(2, 6); }
+const mkErr = (msg) => ({ error: msg });
+const mkListing = (M, id) => M.listings.find((l) => l.id === id);
+const mkOfferById = (M, id) => M.offers.find((o) => o.id === id);
+function mkSnapshot(item) {
+  const s = {};
+  ['name', 'category', 'subtype', 'color', 'photoHex', 'size', 'sizeSystem', 'cut', 'material', 'pattern', 'weave', 'formality', 'warmth', 'code'].forEach((k) => { if (item[k] !== undefined) s[k] = item[k]; });
+  return s;
+}
+function mkActiveForItem(M, sellerId, itemId) { return M.listings.find((l) => l.sellerId === sellerId && l.itemId === itemId && ['publicada', 'reservada'].includes(l.status)); }
+
+function mkPublish(M, d, today) {
+  const price = Math.round(Number(d.price));
+  if (!d.item) return mkErr('Elige una prenda.');
+  if (!(price >= 1 && price <= 100000)) return mkErr('Pon un precio de venta entre S/ 1 y S/ 100 000.');
+  if (!DISTRICT_LL[d.district]) return mkErr('Indica tu distrito para que vean qué tan cerca estás.');
+  if (!d.delivery || !d.delivery.length) return mkErr('Elige al menos una forma de entrega.');
+  if (mkActiveForItem(M, d.seller.id, d.item.id)) return mkErr('Esta prenda ya está en la vitrina.');
+  const l = {
+    id: mkId(M, 'l', 'L'), sellerId: d.seller.id, sellerName: d.seller.name, itemId: d.item.id, snap: mkSnapshot(d.item),
+    price, acceptOffers: d.acceptOffers !== false, condition: MK_CONDITIONS.includes(d.condition) ? d.condition : 'buen estado',
+    district: d.district, delivery: d.delivery.filter((x) => MK_DELIVERY[x]), note: String(d.note || '').slice(0, 280), contact: String(d.contact || '').slice(0, 80),
+    status: 'publicada', createdAt: today, updatedAt: today, origin: d.origin || 'real', hasPhoto: !!d.hasPhoto
+  };
+  M.listings.unshift(l);
+  return { listing: l };
+}
+function mkSetPrice(M, listingId, sellerId, price, today) {
+  const l = mkListing(M, listingId); price = Math.round(Number(price));
+  if (!l || l.sellerId !== sellerId) return mkErr('No es tu publicación.');
+  if (l.status !== 'publicada') return mkErr('Solo puedes cambiar el precio mientras está publicada.');
+  if (!(price >= 1 && price <= 100000)) return mkErr('Precio no válido.');
+  l.price = price; l.updatedAt = today; return { listing: l };
+}
+function mkWithdraw(M, listingId, sellerId, today) {
+  const l = mkListing(M, listingId);
+  if (!l || l.sellerId !== sellerId) return mkErr('No es tu publicación.');
+  if (l.status !== 'publicada') return mkErr('Solo se retira una publicación sin acuerdo en curso.');
+  l.status = 'retirada'; l.updatedAt = today;
+  M.offers.filter((o) => o.listingId === l.id && (MK_OPEN.includes(o.status) || o.status === 'en espera')).forEach((o) => { o.status = 'no concretada'; o.updatedAt = today; });
+  return { listing: l };
+}
+function mkOffer(M, d, today) {
+  const l = mkListing(M, d.listingId);
+  if (!l || l.status !== 'publicada') return mkErr('Esta prenda ya no está disponible.');
+  if (l.sellerId === d.buyer.id) return mkErr('Es tu propia publicación.');
+  let amount = Math.round(Number(d.amount));
+  if (!(amount >= 1)) return mkErr('Escribe un monto válido.');
+  if (amount >= l.price) amount = l.price;
+  if (amount < l.price && !l.acceptOffers) return mkErr('Quien vende no acepta ofertas: el precio es S/ ' + l.price + '.');
+  if (amount < Math.ceil(l.price * 0.3)) return mkErr('La oferta es muy baja para esta prenda. Prueba con un monto más cercano al precio.');
+  M.offers.filter((o) => o.listingId === l.id && o.buyerId === d.buyer.id && MK_OPEN.includes(o.status)).forEach((o) => { o.status = 'retirada'; o.updatedAt = today; });
+  const o = {
+    id: mkId(M, 'o', 'O'), listingId: l.id, sellerId: l.sellerId, buyerId: d.buyer.id, buyerName: d.buyer.name, buyerDistrict: d.buyer.district || '',
+    amount, kind: amount === l.price ? 'compra' : 'oferta', counter: null, message: String(d.message || '').slice(0, 200), contact: String(d.contact || '').slice(0, 80),
+    status: 'pendiente', deal: null, createdAt: today, updatedAt: today, origin: d.origin || 'real'
+  };
+  M.offers.unshift(o);
+  return { offer: o };
+}
+function mkAccept(M, o, today) {
+  const l = mkListing(M, o.listingId);
+  o.status = 'aceptada'; o.deal = 'acordado'; o.updatedAt = today;
+  if (o.counter) o.amount = o.counter;
+  l.status = 'reservada'; l.dealOfferId = o.id; l.updatedAt = today;
+  M.offers.filter((x) => x.listingId === l.id && x.id !== o.id && MK_OPEN.includes(x.status)).forEach((x) => { x.status = 'en espera'; x.updatedAt = today; });
+}
+function mkRespond(M, offerId, sellerId, action, counter, today) {
+  const o = mkOfferById(M, offerId); const l = o && mkListing(M, o.listingId);
+  if (!o || !l || l.sellerId !== sellerId) return mkErr('No es una oferta de tus publicaciones.');
+  if (o.status !== 'pendiente' || l.status !== 'publicada') return mkErr('Esta oferta ya no está pendiente.');
+  if (action === 'aceptar') { mkAccept(M, o, today); return { offer: o }; }
+  if (action === 'rechazar') { o.status = 'rechazada'; o.updatedAt = today; return { offer: o }; }
+  if (action === 'contraofertar') {
+    const c = Math.round(Number(counter));
+    if (!(c > o.amount && c <= l.price)) return mkErr('La contraoferta debe estar entre S/ ' + (o.amount + 1) + ' y S/ ' + l.price + '.');
+    o.status = 'contraoferta'; o.counter = c; o.updatedAt = today; return { offer: o };
+  }
+  return mkErr('Acción desconocida.');
+}
+function mkBuyerRespond(M, offerId, buyerId, action, today) {
+  const o = mkOfferById(M, offerId); const l = o && mkListing(M, o.listingId);
+  if (!o || o.buyerId !== buyerId) return mkErr('No es tu oferta.');
+  if (action === 'retirar' && MK_OPEN.concat('en espera').includes(o.status)) { o.status = 'retirada'; o.updatedAt = today; return { offer: o }; }
+  if (o.status !== 'contraoferta' || l.status !== 'publicada') return mkErr('No hay contraoferta pendiente.');
+  if (action === 'aceptar') { mkAccept(M, o, today); return { offer: o }; }
+  if (action === 'rechazar') { o.status = 'rechazada'; o.updatedAt = today; return { offer: o }; }
+  return mkErr('Acción desconocida.');
+}
+function mkDealStep(M, offerId, actorId, step, today) {
+  const o = mkOfferById(M, offerId); const l = o && mkListing(M, o.listingId);
+  if (!o || o.status !== 'aceptada' || !l) return mkErr('No hay un acuerdo en curso.');
+  const seller = l.sellerId === actorId; const buyer = o.buyerId === actorId;
+  if (!seller && !buyer) return mkErr('No participas en este acuerdo.');
+  if (step === 'entregar' && seller && o.deal === 'acordado') { o.deal = 'entregada'; o.updatedAt = today; return { offer: o }; }
+  if (step === 'recibir' && buyer && ['acordado', 'entregada'].includes(o.deal)) {
+    o.deal = 'recibida'; o.updatedAt = today; o.receivedAt = today;
+    l.status = 'vendida'; l.soldAt = today; l.soldPrice = o.amount; l.buyerId = o.buyerId; l.buyerName = o.buyerName; l.updatedAt = today;
+    M.offers.filter((x) => x.listingId === l.id && x.status === 'en espera').forEach((x) => { x.status = 'no concretada'; x.updatedAt = today; });
+    return { offer: o, listing: l };
+  }
+  if (step === 'cancelar' && o.deal !== 'recibida') {
+    o.status = 'cancelada'; o.deal = null; o.cancelledBy = seller ? 'vende' : 'compra'; o.updatedAt = today;
+    l.status = 'publicada'; l.dealOfferId = null; l.updatedAt = today;
+    M.offers.filter((x) => x.listingId === l.id && x.status === 'en espera').forEach((x) => { x.status = 'pendiente'; x.updatedAt = today; });
+    return { offer: o };
+  }
+  return mkErr('Ese paso no corresponde ahora.');
+}
+function mkReview(M, d, today) {
+  const o = mkOfferById(M, d.offerId);
+  if (!o || o.buyerId !== d.fromId || o.deal !== 'recibida') return mkErr('Solo opina quien recibió la prenda.');
+  if (M.reviews.some((r) => r.offerId === o.id)) return mkErr('Ya dejaste tu opinión.');
+  const stars = Math.round(Number(d.stars));
+  if (!(stars >= 1 && stars <= 5)) return mkErr('Elige de 1 a 5 estrellas.');
+  const r = { id: mkId(M, 'r', 'R'), offerId: o.id, listingId: o.listingId, fromId: o.buyerId, fromName: o.buyerName, toId: o.sellerId, stars,
+    tags: (d.tags || []).filter((t) => MK_REVIEW_TAGS.includes(t)), comment: String(d.comment || '').slice(0, 280), createdAt: today, origin: d.origin || 'real', verified: true };
+  M.reviews.unshift(r);
+  return { review: r };
+}
+function mkReputation(M, userId) {
+  const rs = M.reviews.filter((r) => r.toId === userId);
+  const sales = M.listings.filter((l) => l.sellerId === userId && l.status === 'vendida').length;
+  return { count: rs.length, avg: rs.length ? Math.round((rs.reduce((a, r) => a + r.stars, 0) / rs.length) * 10) / 10 : null, sales, reviews: rs };
+}
+/* Lo que espera una acción tuya (para el punto de aviso). */
+function mkInbox(M, userId) {
+  const mineL = new Set(M.listings.filter((l) => l.sellerId === userId).map((l) => l.id));
+  const sell = M.offers.filter((o) => mineL.has(o.listingId) && (o.status === 'pendiente' || (o.status === 'aceptada' && o.deal === 'acordado'))).length;
+  const buy = M.offers.filter((o) => o.buyerId === userId && (o.status === 'contraoferta' || (o.status === 'aceptada' && ['acordado', 'entregada'].includes(o.deal)) || (o.deal === 'recibida' && !M.reviews.some((r) => r.offerId === o.id)))).length;
+  return { sell, buy, total: sell + buy };
+}
+/* Explorar: publicaciones de otras personas con cercanía y aporte a tu armario. */
+function mkBrowse(M, ws, ownerId, me, f) {
+  f = f || {};
+  const rows = M.listings.filter((l) => l.status === 'publicada' && l.sellerId !== me.id).map((l) => {
+    const cand = Object.assign({ id: 'MKC-' + l.id, ownerId, availability: 'disponible', hypothetical: true, warmth: 1, formality: 2, cut: 'regular', material: 'material no confirmado' }, l.snap);
+    const v = purchaseValue(ws, ownerId, cand);
+    const gap = (ws.missing || []).find((m) => m.ownerId === ownerId && m.status === 'abierta' && m.subtype && norm(m.subtype) === norm(l.snap.subtype));
+    return { listing: l, km: distKm(me.district, l.district), added: v.added.length, similar: v.similar.length, gap: gap || null, rep: mkReputation(M, l.sellerId) };
+  }).filter((r) => {
+    if (f.cat && f.cat !== 'todas' && r.listing.snap.category !== f.cat) return false;
+    if (f.near && (r.km === null || r.km > 6)) return false;
+    if (f.maxPrice && r.listing.price > f.maxPrice) return false;
+    return true;
+  });
+  const near = (r) => (r.km === null ? 99 : r.km);
+  if (f.sort === 'cerca') rows.sort((a, b) => near(a) - near(b) || a.listing.price - b.listing.price);
+  else if (f.sort === 'precio') rows.sort((a, b) => a.listing.price - b.listing.price);
+  else rows.sort((a, b) => (b.gap ? 8 : 0) + b.added - near(b) / 3 - ((a.gap ? 8 : 0) + a.added - near(a) / 3));
+  return rows;
+}
+
+/* Vitrina de ejemplo (todo ficticio, etiquetado como Simulado). */
+function seedDemoMarket(ws, today) {
+  const M = mkNew(); const it = (id) => ws.items.find((i) => i.id === id);
+  const S = (id, name) => ({ id: 'demo:' + id, name });
+  const pub = (sid, sname, itemId, price, cond, district, delivery, note, acceptOffers, days) => {
+    const r = mkPublish(M, { seller: S(sid, sname), item: it(itemId), price, condition: cond, district, delivery, note, acceptOffers, origin: 'demo' }, addDays(today, -days));
+    return r.listing;
+  };
+  pub('noa', 'Noa', 'N06', 95, 'como nueva', 'San Borja', ['recojo', 'delivery'], 'La usé poco; me queda grande de hombros.', true, 3);
+  pub('valeria', 'Valeria', 'V07', 140, 'buen estado', 'Barranco', ['recojo'], 'Forro en perfecto estado.', true, 5);
+  pub('noa', 'Noa', 'N03', 70, 'buen estado', 'Santiago de Surco', ['recojo', 'delivery'], '', true, 8);
+  pub('valeria', 'Valeria', 'V09', 120, 'como nueva', 'Miraflores', ['recojo', 'delivery'], 'Precio fijo.', false, 2);
+  const mine = pub('alex', 'Alex', 'A18', 80, 'buen estado', 'Miraflores', ['recojo'], 'Suéter de punto, sin bolitas.', true, 1);
+  mkOffer(M, { listingId: mine.id, buyer: { id: 'demo:noa', name: 'Noa', district: 'San Borja' }, amount: 65, message: '¿Lo dejarías en 65? Puedo recogerlo el sábado.', origin: 'demo' }, today);
+  // Ventas pasadas con opiniones verificadas (ficticias).
+  const past = [['valeria', 'Valeria', { name: 'Casaca de jean', category: 'capa', subtype: 'casaca', color: 'azul', size: 'M' }, 90, 'noa', 'Noa', 5, ['Como se describió', 'Puntual'], 'Llegó tal cual las fotos.', 20],
+    ['valeria', 'Valeria', { name: 'Sandalias doradas', category: 'calzado', subtype: 'sandalias', color: 'dorado', size: 'EU 38' }, 60, 'alex', 'Alex', 4, ['Buena comunicación'], 'Todo bien, coordinamos rápido.', 34],
+    ['noa', 'Noa', { name: 'Polo gris', category: 'superior', subtype: 'polo', color: 'gris', size: 'L' }, 35, 'valeria', 'Valeria', 5, ['Bien cuidada', 'Puntual'], '', 15]];
+  past.forEach(([sid, sn, snap, price, bid, bn, stars, tags, comment, days]) => {
+    const d0 = addDays(today, -days);
+    const l = mkPublish(M, { seller: S(sid, sn), item: Object.assign({ id: 'OLD-' + snap.name }, snap), price, district: sid === 'noa' ? 'San Borja' : 'Barranco', delivery: ['recojo'], origin: 'demo' }, d0).listing;
+    const o = mkOffer(M, { listingId: l.id, buyer: { id: 'demo:' + bid, name: bn }, amount: price, origin: 'demo' }, d0).offer;
+    mkRespond(M, o.id, l.sellerId, 'aceptar', null, d0); mkDealStep(M, o.id, 'demo:' + bid, 'recibir', addDays(d0, 2));
+    mkReview(M, { offerId: o.id, fromId: 'demo:' + bid, stars, tags, comment, origin: 'demo' }, addDays(d0, 2));
+    o.addedItemId = 'historial';
+  });
+  return M;
+}
+/* =====================================================================
    COMPROBACIONES AUTOMÁTICAS: se ejecutan sobre una copia nueva de la
    semilla (no tocan tus datos). Cubren conteos, IDs, completitud,
    máximo seis, idempotencia, ofertas, pedidos, desuso y separación.
@@ -1942,6 +2193,39 @@ function runSelfTests(today) {
     const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const wk = weeklyWear(w, 'alex', ref, 8);
     const exp = w.wearLogs.filter((l) => l.ownerId === 'alex' && l.status === 'usado' && l.date > addDays(ref, -56) && l.date <= ref).length;
     return { ok: wk.length === 8 && wk[7].end === ref && wk.reduce((a, x) => a + x.n, 0) === exp, detail: wk.map((x) => x.n).join(' ') };
+  });
+  check('Vitrina: publicar, ofertar, contraofertar, acordar y vender', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const M = mkNew();
+    const it = w.items.find((i) => i.id === 'A18'); const sel = { id: 'u1', name: 'Ana' }; const buy = { id: 'u2', name: 'Beto', district: 'Surquillo' };
+    const l = mkPublish(M, { seller: sel, item: it, price: 80, district: 'Miraflores', delivery: ['recojo'] }, ref).listing;
+    const dup = mkPublish(M, { seller: sel, item: it, price: 70, district: 'Miraflores', delivery: ['recojo'] }, ref);
+    const own = mkOffer(M, { listingId: l.id, buyer: sel, amount: 60 }, ref); const low = mkOffer(M, { listingId: l.id, buyer: buy, amount: 5 }, ref);
+    const o = mkOffer(M, { listingId: l.id, buyer: buy, amount: 60 }, ref).offer;
+    const o2 = mkOffer(M, { listingId: l.id, buyer: { id: 'u3', name: 'Cata' }, amount: 70 }, ref).offer;
+    const badC = mkRespond(M, o.id, 'u1', 'contraofertar', 90, ref); mkRespond(M, o.id, 'u1', 'contraofertar', 72, ref);
+    mkBuyerRespond(M, o.id, 'u2', 'aceptar', ref);
+    const wait = o2.status; const fake = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 5 }, ref);
+    mkDealStep(M, o.id, 'u1', 'entregar', ref); mkDealStep(M, o.id, 'u2', 'recibir', ref);
+    const rv = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 4, tags: ['Puntual', 'inventada'] }, ref); const twice = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 5 }, ref);
+    const rep = mkReputation(M, 'u1');
+    const ok = !!dup.error && !!own.error && !!low.error && !!badC.error && o.amount === 72 && wait === 'en espera' && !!fake.error && l.status === 'vendida' && l.soldPrice === 72 && o2.status === 'no concretada' && rv.review && rv.review.tags.length === 1 && !!twice.error && rep.avg === 4 && rep.sales === 1;
+    return { ok, detail: 'vendida a S/ ' + l.soldPrice + ' · ★' + rep.avg };
+  });
+  check('Vitrina: cancelar un acuerdo reabre la publicación y las ofertas en espera', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const M = mkNew();
+    const l = mkPublish(M, { seller: { id: 'a', name: 'A' }, item: w.items[0], price: 50, district: 'Lince', delivery: ['delivery'], acceptOffers: false }, ref).listing;
+    const lowFixed = mkOffer(M, { listingId: l.id, buyer: { id: 'b', name: 'B' }, amount: 40 }, ref);
+    const o = mkOffer(M, { listingId: l.id, buyer: { id: 'b', name: 'B' }, amount: 50 }, ref).offer; const o2 = mkOffer(M, { listingId: l.id, buyer: { id: 'c', name: 'C' }, amount: 50 }, ref).offer;
+    mkRespond(M, o.id, 'a', 'aceptar', null, ref); const mid = o2.status; mkDealStep(M, o.id, 'b', 'cancelar', ref);
+    return { ok: !!lowFixed.error && o.kind === 'compra' && mid === 'en espera' && l.status === 'publicada' && o2.status === 'pendiente' && mkInbox(M, 'a').sell === 1, detail: l.status };
+  });
+  check('Vitrina: cercanía por distrito y vitrina de ejemplo coherente', () => {
+    const T = freshState(today); const w = T.demo; const M = seedDemoMarket(w, w.referenceDate);
+    const near = distKm('Miraflores', 'Surquillo'); const far = distKm('Miraflores', 'Comas');
+    const rows = mkBrowse(M, w, 'alex', { id: 'demo:alex', district: 'Miraflores' }, { sort: 'cerca' });
+    const val = mkReputation(M, 'demo:valeria');
+    return { ok: near > 0 && near < 4 && far > 15 && distKm('Lince', 'Lince') === 0 && rows.length === 4 && rows.every((r) => r.listing.sellerId !== 'demo:alex') && rows[0].km <= rows[3].km && val.count === 2 && mkInbox(M, 'demo:alex').sell === 1,
+      detail: 'Miraflores–Surquillo ≈' + near + ' km · Valeria ★' + val.avg };
   });
   return out;
 }
@@ -5514,6 +5798,359 @@ renderItemView = function (m) { // eslint-disable-line no-func-assign
   const fit = '<div class="row"><button type="button" class="chip btnchip" data-act="toggleFit" data-item="' + i.id + '" aria-pressed="' + !!i.fitIssue + '">' + (i.fitIssue ? IC.check : '') + 'No me queda bien: necesita ajuste</button></div>';
   return html.replace('<div class="row"><button class="btn sm primary" data-act="useItem"', fit + '<div class="row"><button class="btn sm primary" data-act="useItem"');
 };
+/* =====================================================================
+   VITRINA “QUE LO SEPAN”: publicar, explorar cerca, ofertar, acordar,
+   confirmar la entrega y opinar. En la demo todo es Simulado; en la app
+   instalada la vitrina se comparte entre las cuentas de este celular.
+   ===================================================================== */
+UI.circ.tab = UI.circ.tab || 'revisar';
+UI.mk = { sub: 'explorar', cat: 'todas', near: false, sort: 'parati', amt: {}, counter: {}, rev: {}, priceEdit: {} };
+let MKDEV = mkNew();
+const MKPH = {};
+
+function mkStore() {
+  const w = ws();
+  if (isDemo()) { if (!w.market) { w.market = seedDemoMarket(w, w.referenceDate || TODAY); scheduleSave(); } return w.market; }
+  if (IS_PWA) return MKDEV;
+  if (!w.market) w.market = mkNew();
+  return w.market;
+}
+function mkSave() {
+  if (IS_PWA && !isDemo()) { LOCAL.set('market', MKDEV).catch(() => toast('No se pudo guardar la vitrina en el teléfono.')); render(); }
+  else commit();
+}
+function mkMe() {
+  const p = prof() || {}; const d = (p.districts || []).find((x) => DISTRICT_LL[x]) || UI.mk.district || '';
+  if (isDemo()) return { id: 'demo:' + p.id, name: p.name, district: UI.mk.district || d };
+  if (IS_PWA && AUTH.acct) return { id: AUTH.acct.id, name: AUTH.acct.name || p.name || 'Tú', district: UI.mk.district || d };
+  return { id: 'yo', name: p.name || 'Tú', district: UI.mk.district || d };
+}
+const mkPseudo = (l) => Object.assign({ id: 'MK-' + l.id, mkPhoto: l.id, availability: 'disponible', ownerId: 'mk' }, l.snap);
+const _photoFor10 = photoFor;
+photoFor = function (item) { // eslint-disable-line no-func-assign
+  if (item && item.mkPhoto) return MKPH[item.mkPhoto] || null;
+  return _photoFor10(item);
+};
+async function mkLoadDevice() {
+  try {
+    const m = await LOCAL.get('market'); if (m && Array.isArray(m.listings)) MKDEV = m;
+    const rows = await LOCAL.photoRange('mk:');
+    rows.forEach(({ key, val }) => { if (!val || !val.buf) return; const blob = new Blob([val.buf], { type: val.type || 'image/jpeg' }); MKPH[key.slice(3)] = { url: URL.createObjectURL(blob), file: blob, originalUrl: null, cropped: false }; });
+  } catch (e) { /* sin vitrina guardada */ }
+}
+if (IS_PWA) mkLoadDevice().then(() => { try { render(); } catch (e) { /* aún iniciando */ } });
+
+/* Cuando una venta se concreta, la prenda pasa a “vendida” en el armario de quien vendió. */
+function mkSync() {
+  const M = mkStore(); const me = mkMe(); const w = ws(); let changed = false;
+  M.listings.filter((l) => (l.sellerId === me.id || (isDemo() && String(l.sellerId).startsWith('demo:'))) && l.status === 'vendida' && !l.sellerSynced).forEach((l) => {
+    l.sellerSynced = true; changed = true;
+    const it = w.items.find((i) => i.id === l.itemId && (!isDemo() || 'demo:' + i.ownerId === l.sellerId));
+    if (it && !isGone(it)) {
+      it.availability = 'vendida'; it.updatedAt = TODAY;
+      w.circular.push({ id: 'CV' + l.id, ownerId: it.ownerId, itemId: it.id, kind: 'venta', status: 'vendida', destination: 'Vitrina RELISTO · ' + (l.buyerName || 'comprador') + ' · ' + fmtPEN(l.soldPrice), createdAt: TODAY, origin: isDemo() ? 'demo' : 'real' });
+    }
+  });
+  if (changed) { scheduleSave(); if (IS_PWA && !isDemo()) LOCAL.set('market', MKDEV).catch(() => {}); }
+}
+
+/* ---------- Piezas visuales ---------- */
+function starsHTML(avg, count) {
+  if (!count) return '<span class="tiny muted">Sin opiniones aún</span>';
+  const full = Math.round(avg);
+  return '<span class="stars" aria-label="' + avg + ' de 5 estrellas, ' + plural(count, 'opinión', 'opiniones') + '"><span aria-hidden="true">' + '★'.repeat(full) + '<span class="off">' + '★'.repeat(5 - full) + '</span></span> <b class="num">' + String(avg).replace('.', ',') + '</b> <span class="tiny muted">(' + count + ')</span></span>';
+}
+function mkCard(r, me) {
+  const l = r.listing;
+  return '<article class="mk-card"><button type="button" class="mk-open" data-act="mkOpen" data-id="' + l.id + '" aria-label="Ver ' + esc(l.snap.name) + ', ' + fmtPEN(l.price) + '">' + thumb(mkPseudo(l), { noTag: true, noFlip: true }) + '</button>' +
+    '<div class="mk-body"><div class="mk-top"><b class="mk-price num">' + fmtPEN(l.price) + '</b>' + (l.acceptOffers ? '<span class="tiny muted">acepta ofertas</span>' : '') + '</div>' +
+    '<span class="mk-name">' + esc(l.snap.name) + '</span><span class="tiny muted">' + esc(nearLabel(me.district, l.district)) + (l.snap.size ? ' · talla ' + esc(l.snap.size) : '') + '</span>' +
+    (r.gap ? '<span class="chip ok tiny-chip">Cubre un faltante de tu plan</span>' : r.added ? '<span class="chip explore tiny-chip">+' + r.added + ' outfits con tu armario</span>' : '') +
+    '<span class="tiny">' + esc(l.sellerName) + ' · ' + starsHTML(r.rep.avg, r.rep.count) + '</span></div></article>';
+}
+function mkStatusBadge(s) {
+  const map = { publicada: ['ok', 'Publicada'], reservada: ['warn', 'Acuerdo en curso'], vendida: ['info', 'Vendida'], retirada: ['neutral', 'Retirada'],
+    pendiente: ['warn', 'Esperando respuesta'], contraoferta: ['warn', 'Contraoferta'], aceptada: ['ok', 'Aceptada'], rechazada: ['neutral', 'No aceptada'], retirada_o: ['neutral', 'Retirada'],
+    'en espera': ['neutral', 'En espera'], 'no concretada': ['neutral', 'No concretada'], cancelada: ['neutral', 'Acuerdo cancelado'] };
+  const [c, t] = map[s] || ['neutral', s];
+  return '<span class="badge ' + c + '">' + esc(t) + '</span>';
+}
+const DEAL_STEPS = [['acordado', 'Acordado'], ['entregada', 'Entregada'], ['recibida', 'Recibida']];
+function dealSteps(o) {
+  const k = DEAL_STEPS.findIndex(([id]) => id === o.deal);
+  return '<div class="steps">' + DEAL_STEPS.map(([, t], i) => '<span class="' + (i < k ? 'done' : i === k ? 'now' : '') + '">' + (i + 1) + '. ' + t + '</span>').join('') + '</div>';
+}
+const SAFETY = '<p class="tiny muted">RELISTO no procesa pagos. Coordinen en un lugar público o con delivery, revisen la prenda antes de pagar y no adelanten dinero a quien no conocen.</p>';
+
+/* ---------- Vitrina ---------- */
+function renderVitrina() {
+  const M = mkStore(); const me = mkMe(); const w = ws(); const p = prof();
+  const inbox = mkInbox(M, me.id); const s = UI.mk.sub;
+  const sub = '<div class="seg2" role="group" aria-label="Vitrina">' + [['explorar', 'Explorar', 0], ['vendo', 'Vendo', inbox.sell], ['compro', 'Compro', inbox.buy]].map(([id, t, n]) =>
+    '<button type="button" data-act="mkSub" data-val="' + id + '" aria-pressed="' + (s === id) + '">' + t + (n ? ' <span class="nbadge num">' + n + '</span>' : '') + '</button>').join('') + '</div>';
+  const scope = isDemo() ? '<div class="note">' + '<span class="chip sim">Simulado</span> Vecinos y opiniones de ejemplo. Prueba vender tu suéter o comprar algo de Noa o Valeria.</div>'
+    : IS_PWA ? '<div class="note info">Por ahora la vitrina se comparte entre las cuentas de <b>este celular</b>. Para que la vean otros celulares hace falta conectar un servidor (siguiente paso).</div>'
+      : '<div class="note info">En esta vista de prueba solo ves tus publicaciones. Prueba la demo para ver la vitrina con vecinos simulados.</div>';
+  const head = '<div class="card soft stack tight"><div class="row between" style="flex-wrap:nowrap;gap:10px"><span class="stack tight" style="min-width:0"><b class="serif" style="font-size:22px">Que lo sepan</b><span class="small">Publica una prenda con tu precio. Te pueden comprar u ofertar, y quien compra te deja estrellas.</span></span>' +
+    '<button class="btn primary" data-act="mkPick">' + IC.plus + 'Publicar</button></div></div>';
+  let body = '';
+  if (s === 'explorar') {
+    const dsel = '<div class="field" style="margin:0"><label for="mk-dist">Estás en</label><select class="input" id="mk-dist" data-act-change="mkDist">' + opt('', me.district, 'Elige tu distrito') + MK_DISTRICTS.map((d) => opt(d, me.district)).join('') + '</select></div>';
+    const cats = ['todas'].concat(Object.keys(CATEGORIES));
+    const filters = '<div class="stack tight"><div class="mk-filters">' + dsel +
+      '<div class="field" style="margin:0"><label for="mk-sort">Ordenar</label><select class="input" id="mk-sort" data-act-change="mkSort">' + [['parati', 'Para ti'], ['cerca', 'Más cerca'], ['precio', 'Menor precio']].map(([v, t]) => opt(v, UI.mk.sort, t)).join('') + '</select></div></div>' +
+      '<div class="chip-scroll"><button class="chip btnchip" data-act="mkNear" aria-pressed="' + UI.mk.near + '">Cerca de mí (≤ 6 km)</button>' + cats.map((k) => '<button class="chip btnchip" data-act="mkCat" data-val="' + k + '" aria-pressed="' + (UI.mk.cat === k) + '">' + esc(k === 'todas' ? 'Todo' : CATEGORIES[k]) + '</button>').join('') + '</div></div>';
+    const rows = mkBrowse(M, w, p.id, me, { cat: UI.mk.cat, near: UI.mk.near && !!me.district, sort: UI.mk.sort });
+    body = filters + (rows.length ? '<div class="mk-grid">' + rows.map((r) => mkCard(r, me)).join('') + '</div>'
+      : '<div class="card">' + emptyState('Aún no hay prendas aquí', M.listings.some((l) => l.status === 'publicada' && l.sellerId !== me.id) ? 'Prueba quitar filtros o ampliar la distancia.' : 'Sé quien empieza: publica algo que ya no uses.', '<button class="btn primary" data-act="mkPick">Publicar una prenda</button>') + '</div>') +
+      '<p class="tiny muted">“+N outfits” cuenta combinaciones nuevas con las prendas que ya tienes. La distancia es aproximada entre distritos: el costo del delivery lo acuerdan entre ustedes.</p>';
+  } else if (s === 'vendo') body = renderVendo(M, me);
+  else body = renderCompro(M, me);
+  return '<div class="stack">' + head + scope + sub + body + '</div>';
+}
+function renderVendo(M, me) {
+  const rep = mkReputation(M, me.id);
+  const mine = M.listings.filter((l) => l.sellerId === me.id);
+  const repCard = '<div class="card row between"><span class="stack tight"><span class="eyebrow">Tu reputación</span>' + starsHTML(rep.avg, rep.count) + '</span><span class="small"><b class="num">' + rep.sales + '</b> ' + (rep.sales === 1 ? 'venta' : 'ventas') + '</span></div>';
+  if (!mine.length) return repCard + '<div class="card">' + emptyState('Aún no publicas nada', 'Elige una prenda que lleve tiempo sin uso y ponle precio. Seguirá en tu armario hasta que se venda.', '<button class="btn primary" data-act="mkPick">Elegir prenda</button>') + '</div>';
+  const order = { reservada: 0, publicada: 1, vendida: 2, retirada: 3 };
+  return repCard + '<div class="stack">' + mine.slice().sort((a, b) => order[a.status] - order[b.status] || b.updatedAt.localeCompare(a.updatedAt)).map((l) => {
+    const offers = M.offers.filter((o) => o.listingId === l.id);
+    const pend = offers.filter((o) => o.status === 'pendiente');
+    const deal = offers.find((o) => o.id === l.dealOfferId && o.status === 'aceptada');
+    const sold = l.status === 'vendida' ? offers.find((o) => o.deal === 'recibida') : null;
+    const review = sold && M.reviews.find((r) => r.offerId === sold.id);
+    let inner = '';
+    if (l.status === 'publicada') {
+      inner += pend.length ? pend.map((o) => '<div class="mk-offer"><div class="row between" style="flex-wrap:nowrap"><span class="stack tight" style="min-width:0"><b>' + esc(o.buyerName) + (o.origin === 'demo' ? ' <span class="chip sim">Simulado</span>' : '') + '</b><span class="tiny muted">' + (o.buyerDistrict ? esc(nearLabel(l.district, o.buyerDistrict)) + ' · ' : '') + fmtDate(o.createdAt) + '</span></span><span class="stack tight" style="text-align:right"><b class="num">' + fmtPEN(o.amount) + '</b><span class="tiny muted">' + (o.kind === 'compra' ? 'compra al precio' : Math.round((100 * o.amount) / l.price) + '% de tu precio') + '</span></span></div>' +
+        (o.message ? '<span class="small">“' + esc(o.message) + '”</span>' : '') +
+        '<div class="row"><button class="btn sm primary" data-act="mkRespond" data-id="' + o.id + '" data-a="aceptar">Aceptar ' + fmtPEN(o.amount) + '</button>' + (o.kind === 'oferta' ? '<button class="btn sm" data-act="mkCounterOpen" data-id="' + o.id + '">Contraofertar</button>' : '') + '<button class="btn sm ghost" data-act="mkRespond" data-id="' + o.id + '" data-a="rechazar">No, gracias</button></div>' +
+        (UI.mk.counter[o.id] !== undefined ? '<div class="row"><label class="sr-only" for="ct-' + o.id + '">Tu contraoferta en soles</label><input class="input num" id="ct-' + o.id + '" type="number" inputmode="numeric" min="' + (o.amount + 1) + '" max="' + l.price + '" style="width:110px" value="' + esc(UI.mk.counter[o.id]) + '" data-mk-counter="' + o.id + '"><button class="btn sm primary" data-act="mkRespond" data-id="' + o.id + '" data-a="contraofertar">Enviar contraoferta</button></div>' : '') + '</div>').join('')
+        : '<span class="small muted">Sin ofertas todavía.</span>';
+      inner += UI.mk.priceEdit[l.id] !== undefined ? '<div class="row"><label class="sr-only" for="pe-' + l.id + '">Nuevo precio</label><input class="input num" id="pe-' + l.id + '" type="number" inputmode="numeric" min="1" style="width:110px" value="' + esc(UI.mk.priceEdit[l.id]) + '" data-mk-price="' + l.id + '"><button class="btn sm primary" data-act="mkPriceSave" data-id="' + l.id + '">Guardar precio</button></div>'
+        : '<div class="row"><button class="btn sm ghost" data-act="mkPriceEdit" data-id="' + l.id + '">Cambiar precio</button><button class="btn sm ghost" data-act="mkWithdraw" data-id="' + l.id + '">Retirar de la vitrina</button></div>';
+    } else if (deal) {
+      inner = dealSteps(deal) + '<span class="small">Acordaste con <b>' + esc(deal.buyerName) + '</b> por <b class="num">' + fmtPEN(deal.amount) + '</b>.' + (deal.contact ? ' Coordina: <b>' + esc(deal.contact) + '</b>' : '') + '</span>' +
+        '<div class="row">' + (deal.deal === 'acordado' ? '<button class="btn sm primary" data-act="mkDeal" data-id="' + deal.id + '" data-s="entregar">Ya la entregué</button>' : '<span class="small muted">Esperando que ' + esc(deal.buyerName) + ' confirme que la recibió.</span>') + '<button class="btn sm ghost" data-act="mkDeal" data-id="' + deal.id + '" data-s="cancelar">Cancelar acuerdo</button></div>';
+    } else if (sold) {
+      inner = '<span class="small">Vendida a <b>' + esc(sold.buyerName) + '</b> por <b class="num">' + fmtPEN(l.soldPrice) + '</b> · ' + fmtDate(l.soldAt) + '</span>' + (review ? '<div class="mk-review">' + starsHTML(review.stars, 1) + (review.tags.length ? '<span class="tiny">' + esc(review.tags.join(' · ')) + '</span>' : '') + (review.comment ? '<span class="small">“' + esc(review.comment) + '”</span>' : '') + '</div>' : '<span class="tiny muted">Aún sin opinión de quien compró.</span>');
+    }
+    return '<article class="card stack tight"><div class="row" style="flex-wrap:nowrap;gap:12px;align-items:flex-start"><div style="width:64px;flex:none">' + thumb(mkPseudo(l), { noTag: true, noFlip: true }) + '</div><div class="stack tight" style="min-width:0;flex:1"><div class="row between" style="flex-wrap:nowrap;gap:6px"><b>' + esc(l.snap.name) + '</b>' + mkStatusBadge(l.status) + '</div>' +
+      '<span class="small"><b class="num">' + fmtPEN(l.price) + '</b> · ' + esc(l.condition) + ' · ' + esc(l.district) + '</span>' + (l.status === 'publicada' && pend.length ? '<span class="tiny"><b>' + plural(pend.length, 'oferta por responder', 'ofertas por responder') + '</b></span>' : '') + '</div></div>' + inner + '</article>';
+  }).join('') + '</div>' + SAFETY;
+}
+function renderCompro(M, me) {
+  const mine = M.offers.filter((o) => o.buyerId === me.id);
+  if (!mine.length) return '<div class="card">' + emptyState('Aún no ofertas', 'En Explorar, abre una prenda y cómprala al precio o haz una oferta.', '<button class="btn" data-act="mkSub" data-val="explorar">Explorar la vitrina</button>') + '</div>';
+  const rank = (o) => (o.status === 'contraoferta' || (o.status === 'aceptada' && o.deal !== 'recibida') ? 0 : o.deal === 'recibida' && !M.reviews.some((r) => r.offerId === o.id) ? 1 : o.status === 'pendiente' ? 2 : 3);
+  return '<div class="stack">' + mine.slice().sort((a, b) => rank(a) - rank(b) || b.updatedAt.localeCompare(a.updatedAt)).map((o) => {
+    const l = mkListing(M, o.listingId); if (!l) return '';
+    const review = M.reviews.find((r) => r.offerId === o.id);
+    let inner = '';
+    if (o.status === 'pendiente') inner = '<span class="small">Ofreciste <b class="num">' + fmtPEN(o.amount) + '</b>' + (o.kind === 'compra' ? ' (precio completo)' : ' de ' + fmtPEN(l.price)) + '. Esperando a ' + esc(l.sellerName) + '.</span><div class="row"><button class="btn sm ghost" data-act="mkBuyer" data-id="' + o.id + '" data-a="retirar">Retirar oferta</button></div>';
+    else if (o.status === 'contraoferta') inner = '<span class="small">' + esc(l.sellerName) + ' te propone <b class="num">' + fmtPEN(o.counter) + '</b> (ofreciste ' + fmtPEN(o.amount) + ').</span><div class="row"><button class="btn sm primary" data-act="mkBuyer" data-id="' + o.id + '" data-a="aceptar">Aceptar ' + fmtPEN(o.counter) + '</button><button class="btn sm ghost" data-act="mkBuyer" data-id="' + o.id + '" data-a="rechazar">No, gracias</button></div>';
+    else if (o.status === 'aceptada' && o.deal !== 'recibida') inner = dealSteps(o) + '<span class="small">¡Trato hecho por <b class="num">' + fmtPEN(o.amount) + '</b>! ' + (l.contact ? 'Coordina con ' + esc(l.sellerName) + ': <b>' + esc(l.contact) + '</b>.' : 'Coordina la entrega con ' + esc(l.sellerName) + ' en ' + esc(l.district) + '.') + '</span>' +
+      '<div class="row"><button class="btn sm primary" data-act="mkDeal" data-id="' + o.id + '" data-s="recibir">' + IC.check + 'La recibí</button><button class="btn sm ghost" data-act="mkDeal" data-id="' + o.id + '" data-s="cancelar">Cancelar acuerdo</button></div>' + SAFETY;
+    else if (o.deal === 'recibida') {
+      const r = UI.mk.rev[o.id] || { stars: 0, tags: [], comment: '' };
+      inner = (review ? '<div class="mk-review"><span class="tiny muted">Tu opinión</span>' + starsHTML(review.stars, 1) + (review.comment ? '<span class="small">“' + esc(review.comment) + '”</span>' : '') + '</div>'
+        : '<div class="stack tight mk-rate"><b class="small">¿Cómo te fue con ' + esc(l.sellerName) + '?</b><div class="row star-pick" role="group" aria-label="Estrellas">' + [1, 2, 3, 4, 5].map((n) => '<button type="button" class="star-btn' + (n <= r.stars ? ' on' : '') + '" data-act="mkStar" data-id="' + o.id + '" data-n="' + n + '" aria-label="' + n + ' de 5" aria-pressed="' + (n === r.stars) + '">★</button>').join('') + '</div>' +
+          '<div class="row">' + MK_REVIEW_TAGS.map((t) => '<button type="button" class="chip btnchip" data-act="mkTag" data-id="' + o.id + '" data-t="' + esc(t) + '" aria-pressed="' + r.tags.includes(t) + '">' + esc(t) + '</button>').join('') + '</div>' +
+          '<label class="sr-only" for="rc-' + o.id + '">Comentario</label><input class="input" id="rc-' + o.id + '" placeholder="Comentario (opcional)" maxlength="280" value="' + esc(r.comment) + '" data-mk-comment="' + o.id + '"><div class="row"><button class="btn sm primary" data-act="mkReview" data-id="' + o.id + '"' + (r.stars ? '' : ' disabled') + '>Enviar opinión</button></div></div>') +
+        (o.addedItemId === 'historial' ? '' : o.addedItemId ? '<span class="chip ok">Ya está en tu armario</span>' : '<div class="row"><button class="btn sm" data-act="mkAddCloset" data-id="' + o.id + '">' + IC.plus + 'Agregar a mi armario</button></div>');
+    } else inner = '<span class="small muted">' + (o.status === 'rechazada' ? 'No se concretó esta vez.' : o.status === 'en espera' ? 'Hay otro acuerdo en curso; si no se concreta, tu oferta vuelve a estar pendiente.' : 'Sin acción pendiente.') + '</span>';
+    return '<article class="card stack tight"><div class="row" style="flex-wrap:nowrap;gap:12px;align-items:flex-start"><button type="button" class="mk-open" style="width:64px;flex:none" data-act="mkOpen" data-id="' + l.id + '" aria-label="Ver ' + esc(l.snap.name) + '">' + thumb(mkPseudo(l), { noTag: true, noFlip: true }) + '</button><div class="stack tight" style="min-width:0;flex:1"><div class="row between" style="flex-wrap:nowrap;gap:6px"><b>' + esc(l.snap.name) + '</b>' + (o.deal === 'recibida' ? '<span class="badge ok">Recibida</span>' : mkStatusBadge(o.status)) + '</div>' +
+      '<span class="tiny muted">' + esc(l.sellerName) + ' · ' + esc(nearLabel(me.district, l.district)) + '</span></div></div>' + inner + '</article>';
+  }).join('') + '</div>';
+}
+
+/* ---------- Hojas (modales) ---------- */
+function mkEligible() {
+  const w = ws(); const p = prof(); const M = mkStore(); const me = mkMe(); const th = currentThreshold();
+  const rank = { redescubrir: 0, motivo: 1, ocasionales: 2, ajuste: 3, nuevas: 4, rotacion: 5 };
+  return ownedItems(w, p.id).filter((i) => !isGone(i) && !mkActiveForItem(M, me.id, i.id))
+    .map((i) => ({ i, seg: healthSegment(w, i, TODAY, th), d: daysSinceUse(w, i, TODAY).days })).sort((a, b) => rank[a.seg] - rank[b.seg] || b.d - a.d);
+}
+function renderMkPick() {
+  const list = mkEligible();
+  return modalWrap('¿Qué quieres que sepan?', '<p class="small muted">Arriba, las que llevan más tiempo sin uso. La prenda sigue en tu armario hasta que se venda.</p>' +
+    (list.length ? '<div class="stack tight">' + list.map(({ i, seg, d }) => '<button type="button" class="swap-row" data-act="mkPublishOpen" data-item="' + i.id + '"><span class="swap-th">' + thumb(i, { noTag: true, noFlip: true }) + '</span><span class="swap-info"><b>' + esc(i.name) + '</b><span class="tiny muted">' + esc(HEALTH_SEGS.find((s) => s.id === seg).label) + ' · ' + (d ? relDays(d) : 'hoy') + (i.price ? ' · pagaste ' + fmtPEN(i.price) : '') + '</span></span></button>').join('') + '</div>'
+      : emptyState('Nada para publicar', 'Todas tus prendas ya están en la vitrina o salieron del armario.', '')), { eyebrow: 'Vitrina' });
+}
+function renderMkPublish(m) {
+  const d = m.draft; const i = w_item(d.itemId); if (!i) return '';
+  const st = itemStats(ws(), i); const ph = photoFor(i);
+  const ctx = (i.price ? 'Pagaste ' + fmtPEN(i.price) + (i.origin === 'demo' ? ' (ficticio)' : '') + ' · ' : '') + plural(st.wearCount, 'uso registrado', 'usos registrados');
+  const delivery = Object.entries(MK_DELIVERY).map(([k, t]) => '<button type="button" class="chip btnchip" data-act="mkDraftDel" data-val="' + k + '" aria-pressed="' + d.delivery.includes(k) + '">' + esc(t) + '</button>').join('');
+  const myD = ((prof() || {}).districts || []).filter((x) => DISTRICT_LL[x]);
+  return modalWrap('Que lo sepan', '<div class="stack">' +
+    '<div class="row" style="flex-wrap:nowrap;gap:12px;align-items:center"><div style="width:84px;flex:none">' + thumb(i, { noTag: true, noFlip: true }) + '</div><div class="stack tight" style="min-width:0"><b>' + esc(i.name) + '</b><span class="tiny muted">' + esc(i.code || '') + (i.size ? ' · talla ' + esc(i.size) : '') + '</span><span class="tiny muted">' + esc(ctx) + '</span></div></div>' +
+    (ph ? '' : '<div class="note">Sin foto se muestra la ilustración. Una foto real ayuda a que vean la prenda como es: agrégala desde su ficha.</div>') +
+    '<div class="field"><label for="mk-price">Tu precio de venta (S/) *</label><input class="input num" id="mk-price" type="number" inputmode="numeric" min="1" max="100000" placeholder="Ej.: 60" value="' + esc(d.price ?? '') + '" data-mk-draft="price"></div>' +
+    '<label class="check"><input type="checkbox"' + (d.acceptOffers ? ' checked' : '') + bindAttr('mf', 'acceptOffers') + '> Acepto ofertas (puedo responder con una contraoferta)</label>' +
+    '<div class="field"><span class="lbl">Estado de la prenda</span><div class="row">' + MK_CONDITIONS.map((c) => '<button type="button" class="chip btnchip" data-act="mkDraftSet" data-k="condition" data-val="' + c + '" aria-pressed="' + (d.condition === c) + '">' + esc(c) + '</button>').join('') + '</div></div>' +
+    '<div class="field"><label for="mk-pd">Distrito de entrega *</label><select class="input" id="mk-pd"' + bindAttr('mf', 'district') + '>' + opt('', d.district, 'Elige tu distrito') + (myD.length ? '<optgroup label="Tus distritos">' + myD.map((x) => opt(x, d.district)).join('') + '</optgroup><optgroup label="Todos">' : '') + MK_DISTRICTS.map((x) => opt(x, d.district)).join('') + (myD.length ? '</optgroup>' : '') + '</select><span class="tiny muted">Solo se muestra el distrito, nunca tu dirección.</span></div>' +
+    '<div class="field"><span class="lbl">Entrega</span><div class="row">' + delivery + '</div></div>' +
+    '<details class="more"' + (d.note || d.contact ? ' open' : '') + '><summary>Detalles y contacto (opcional)</summary><div class="stack tight" style="margin-top:8px">' +
+    '<div class="field"><label for="mk-note">Nota para quien compra</label><input class="input" id="mk-note" maxlength="280" placeholder="Ej.: la usé dos veces, tiene un hilo suelto" value="' + esc(d.note || '') + '"' + bindAttr('mf', 'note') + '></div>' +
+    '<div class="field"><label for="mk-contact">Cómo coordinar</label><input class="input" id="mk-contact" maxlength="80" placeholder="WhatsApp, Instagram…" value="' + esc(d.contact || '') + '"' + bindAttr('mf', 'contact') + '><span class="tiny muted">Solo lo ve la persona con quien cierres el trato.</span></div></div></details>' +
+    (m.error ? '<div class="note bad">' + esc(m.error) + '</div>' : '') + SAFETY +
+    '<div class="sheet-foot row"><button class="btn primary" data-act="mkPublish">' + IC.spark + 'Publicar en la vitrina</button>' + (m.fromCircular ? '<button class="btn ghost" data-act="mkSellOutside" data-item="' + i.id + '">Prefiero venderla por mi cuenta</button>' : '<button class="btn ghost" data-act="closeModal">Ahora no</button>') + '</div></div>', { eyebrow: 'Vitrina · publicar' });
+}
+function renderMkListing(m) {
+  const M = mkStore(); const me = mkMe(); const l = mkListing(M, m.id); if (!l) return '';
+  const rep = mkReputation(M, l.sellerId); const mine = l.sellerId === me.id;
+  const r = mine ? null : mkBrowse({ listings: [l], offers: [], reviews: [] }, ws(), prof().id, me, {})[0];
+  const myOffer = M.offers.find((o) => o.listingId === l.id && o.buyerId === me.id && ['pendiente', 'contraoferta', 'aceptada', 'en espera'].includes(o.status));
+  const amt = UI.mk.amt[l.id] ?? '';
+  let actions = '';
+  if (mine) actions = '<div class="note info row between"><span>Es tu publicación.</span><button class="btn sm" data-act="mkGoVendo">Ver en Vendo</button></div>';
+  else if (l.status !== 'publicada') actions = '<div class="note">Esta prenda ya tiene un acuerdo en curso o se vendió.</div>';
+  else if (myOffer) actions = '<div class="note info row between"><span>Ya ofertaste ' + fmtPEN(myOffer.amount) + '. Estado: ' + esc(myOffer.status) + '.</span><button class="btn sm" data-act="mkGoCompro">Ver en Compro</button></div>';
+  else actions = '<div class="stack tight"><button class="btn primary" data-act="mkBuy" data-id="' + l.id + '">Comprar a ' + fmtPEN(l.price) + '</button>' +
+    (l.acceptOffers ? '<div class="row" style="flex-wrap:nowrap"><label class="sr-only" for="mk-amt">Tu oferta en soles</label><input class="input num" id="mk-amt" type="number" inputmode="numeric" min="1" max="' + (l.price - 1) + '" placeholder="Tu oferta (S/)" value="' + esc(amt) + '" data-mk-amt="' + l.id + '" style="flex:1;min-width:0"><button class="btn" data-act="mkMakeOffer" data-id="' + l.id + '">Ofertar</button></div>' : '<span class="tiny muted">Precio fijo: no acepta ofertas.</span>') +
+    '<details class="more"><summary>Mensaje y contacto (opcional)</summary><div class="stack tight" style="margin-top:8px"><input class="input" id="mk-msg" maxlength="200" placeholder="Ej.: ¿puedo recogerla el sábado?" value="' + esc(UI.mk.msg || '') + '" data-mk-msg="1"><input class="input" id="mk-ct" maxlength="80" placeholder="Cómo coordinar: WhatsApp, Instagram…" value="' + esc(UI.mk.contact || '') + '" data-mk-ct="1"><span class="tiny muted">Tu contacto solo se comparte si aceptan tu oferta.</span></div></details></div>';
+  const reviews = rep.reviews.slice(0, 3).map((x) => '<div class="mk-review">' + starsHTML(x.stars, 1) + '<span class="tiny muted">' + esc(x.fromName) + ' · compra verificada · ' + fmtDate(x.createdAt) + (x.origin === 'demo' ? ' · Simulado' : '') + '</span>' + (x.tags.length ? '<span class="tiny">' + esc(x.tags.join(' · ')) + '</span>' : '') + (x.comment ? '<span class="small">“' + esc(x.comment) + '”</span>' : '') + '</div>').join('');
+  const chips = [l.condition, l.snap.size ? 'talla ' + l.snap.size : null, l.snap.material && !/no confirmado/.test(l.snap.material) ? l.snap.material : null].filter(Boolean).map((t) => '<span class="chip">' + esc(t) + '</span>').join('');
+  return modalWrap(l.snap.name, '<div class="grid two"><div class="stack tight">' + thumb(mkPseudo(l), { cls: 'xl', noTag: !MKPH[l.id] }) + '</div><div class="stack">' +
+    '<div class="row between"><b class="mk-price big num">' + fmtPEN(l.price) + '</b>' + (l.acceptOffers ? '<span class="chip">Acepta ofertas</span>' : '<span class="chip">Precio fijo</span>') + '</div>' +
+    '<div class="row">' + chips + '</div>' +
+    '<span class="small">' + IC.pin.replace('<svg', '<svg style="width:15px;height:15px;vertical-align:-2px"') + ' ' + esc(nearLabel(me.district, l.district)) + ' · ' + esc(l.delivery.map((x) => MK_DELIVERY[x]).join(' o ')) + '</span>' +
+    (l.note ? '<span class="small">“' + esc(l.note) + '”</span>' : '') +
+    (r && (r.gap || r.added) ? '<div class="note ok">' + (r.gap ? 'Cubre un faltante de tu plan (' + esc(r.gap.subtype) + '). ' : '') + (r.added ? 'Con tu armario suma <b>' + plural(r.added, 'outfit nuevo', 'outfits nuevos') + '</b>.' : '') + (r.similar ? ' Ya tienes ' + plural(r.similar, 'prenda parecida', 'prendas parecidas') + '.' : '') + '</div>' : r && r.similar ? '<div class="note">Ya tienes ' + plural(r.similar, 'prenda parecida', 'prendas parecidas') + ': antes de comprar, mira si la necesitas.</div>' : '') +
+    actions + (m.error ? '<div class="note bad">' + esc(m.error) + '</div>' : '') +
+    '<div class="stack tight"><div class="row between"><span class="eyebrow">Vende ' + esc(l.sellerName) + (l.origin === 'demo' ? ' · Simulado' : '') + '</span>' + starsHTML(rep.avg, rep.count) + '</div><span class="tiny muted">' + plural(rep.sales, 'venta concretada', 'ventas concretadas') + '. Solo opina quien recibió una prenda.</span>' + reviews + '</div>' + SAFETY + '</div></div>', { eyebrow: 'Vitrina · publicado ' + fmtDate(l.createdAt) });
+}
+
+/* ---------- Circular con pestañas ---------- */
+const _renderCircular10 = renderCircular;
+renderCircular = function () { // eslint-disable-line no-func-assign
+  mkSync();
+  const n = mkInbox(mkStore(), mkMe().id).total;
+  const tabs = '<div class="tabs" role="tablist">' + [['revisar', 'Dale más vida'], ['vitrina', 'Vitrina']].map(([id, l]) => '<button role="tab" type="button" data-act="circTab" data-tab="' + id + '" aria-selected="' + (UI.circ.tab === id) + '">' + l + (id === 'vitrina' && n ? ' <span class="nbadge num">' + n + '</span>' : '') + '</button>').join('') + '</div>';
+  if (UI.circ.tab === 'vitrina') return sectionTitle('Vitrina', '', 'Circular') + tabs + renderVitrina();
+  const html = _renderCircular10();
+  const cut = html.indexOf('<div class="card soft stack tight">');
+  return html.slice(0, cut) + tabs + html.slice(cut);
+};
+const _renderModal10 = renderModal;
+renderModal = function () { // eslint-disable-line no-func-assign
+  const m = UI.modal;
+  if (m.type === 'mkPick') return renderMkPick();
+  if (m.type === 'mkPublish') return renderMkPublish(m);
+  if (m.type === 'mkListing') return renderMkListing(m);
+  return _renderModal10();
+};
+/* Punto de aviso en la navegación cuando algo espera tu respuesta. */
+const _render10 = render;
+const mkFreshUI = () => ({ sub: 'explorar', cat: 'todas', near: false, sort: 'parati', amt: {}, counter: {}, rev: {}, priceEdit: {} });
+render = function () { // eslint-disable-line no-func-assign
+  if (!(IS_PWA && UI.auth)) { let who = null; try { who = mkMe().id; } catch (e) { who = null; } if (who && UI.mk.who && UI.mk.who !== who) UI.mk = mkFreshUI(); if (who) UI.mk.who = who; }
+  _render10();
+  if (IS_PWA && UI.auth) return;
+  let n = 0; try { n = mkInbox(mkStore(), mkMe().id).total; } catch (e) { n = 0; }
+  document.querySelectorAll('[data-act="nav"][data-view="circular"]').forEach((b) => { b.classList.toggle('has-dot', n > 0); if (n) b.setAttribute('aria-label', 'Circular, ' + plural(n, 'aviso', 'avisos') + ' en la vitrina'); });
+};
+/* Ficha de la prenda: acceso directo. */
+const _renderItemView10 = renderItemView;
+renderItemView = function (m) { // eslint-disable-line no-func-assign
+  const html = _renderItemView10(m); const i = w_item(m.itemId); if (!i || isGone(i)) return html;
+  const l = mkActiveForItem(mkStore(), mkMe().id, i.id);
+  const b = l ? '<button class="btn sm" data-act="mkGoVendo">En la vitrina · ' + fmtPEN(l.price) + '</button>' : '<button class="btn sm" data-act="mkPublishOpen" data-item="' + i.id + '">' + IC.share + 'Que lo sepan</button>';
+  return html.replace('<div class="row"><button class="btn sm ghost" data-act="editItem"', '<div class="row">' + b + '</div><div class="row"><button class="btn sm ghost" data-act="editItem"');
+};
+/* Panorama: “Por redescubrir” también puede ir a la vitrina. */
+const _segCard10 = segCard;
+segCard = function (h, s, slot) { // eslint-disable-line no-func-assign
+  const html = _segCard10(h, s, slot);
+  if (s.id !== 'redescubrir' && s.id !== 'ocasionales') return html;
+  return html.replace('<button class="btn sm" data-act="healthFilter"', '<button class="btn sm" data-act="mkPick">Que lo sepan</button><button class="btn sm" data-act="healthFilter"');
+};
+
+/* ---------- Acciones ---------- */
+const mkToday = () => (isDemo() ? (ws().referenceDate || TODAY) : TODAY);
+function mkRun(r, ok) { if (r && r.error) { toast(r.error); return false; } if (ok) toast(ok); mkSave(); return true; }
+function mkDemoReply(M, o) {
+  if (!isDemo() || !o || !String(o.sellerId).startsWith('demo:') || o.sellerId === mkMe().id) return;
+  const l = mkListing(M, o.listingId);
+  if (o.amount >= Math.round(l.price * 0.9)) { mkRespond(M, o.id, l.sellerId, 'aceptar', null, mkToday()); o.simReply = true; toast(l.sellerName + ' aceptó tu oferta (respuesta simulada).'); }
+  else { const c = Math.round((o.amount + l.price) / 2); mkRespond(M, o.id, l.sellerId, 'contraofertar', c > o.amount ? c : l.price, mkToday()); o.simReply = true; toast(l.sellerName + ' te contraofertó (respuesta simulada).'); }
+}
+Object.assign(ACT, {
+  circTab: (el) => { UI.circ.tab = el.dataset.tab; render(); },
+  mkSub: (el) => { UI.mk.sub = el.dataset.val; UI.circ.tab = 'vitrina'; UI.view = 'circular'; UI.modal = null; render(); },
+  mkGoVendo: () => { UI.mk.sub = 'vendo'; UI.circ.tab = 'vitrina'; UI.view = 'circular'; UI.modal = null; render(); window.scrollTo(0, 0); },
+  mkGoCompro: () => { UI.mk.sub = 'compro'; UI.circ.tab = 'vitrina'; UI.view = 'circular'; UI.modal = null; render(); window.scrollTo(0, 0); },
+  mkCat: (el) => { UI.mk.cat = el.dataset.val; render(); },
+  mkNear: () => { if (!mkMe().district) { toast('Primero elige tu distrito.'); return; } UI.mk.near = !UI.mk.near; render(); },
+  mkPick: () => openModal({ type: 'mkPick' }),
+  mkOpen: (el) => { UI.mk.amt = {}; openModal({ type: 'mkListing', id: el.dataset.id }); },
+  mkPublishOpen: (el) => {
+    const p = prof() || {}; const d0 = (p.districts || []).find((x) => DISTRICT_LL[x]) || mkMe().district || '';
+    openModal({ type: 'mkPublish', fromCircular: !!el.dataset.circ, draft: { itemId: el.dataset.item, price: null, acceptOffers: true, condition: 'buen estado', district: d0, delivery: ['recojo'], note: '', contact: '' } });
+  },
+  mkDraftSet: (el) => { UI.modal.draft[el.dataset.k] = el.dataset.val; render(); },
+  mkDraftDel: (el) => { const d = UI.modal.draft; const k = el.dataset.val; d.delivery = d.delivery.includes(k) ? d.delivery.filter((x) => x !== k) : d.delivery.concat(k); render(); },
+  mkPublish: () => guard('mkp', () => {
+    const m = UI.modal; const d = m.draft; const M = mkStore(); const me = mkMe(); const item = w_item(d.itemId);
+    const r = mkPublish(M, Object.assign({}, d, { seller: me, item, origin: isDemo() ? 'demo' : 'real', hasPhoto: !!photoFor(item) }), mkToday());
+    if (r.error) { m.error = r.error; render(); return; }
+    const ph = photoFor(item);
+    if (ph && ph.file) { MKPH[r.listing.id] = { url: URL.createObjectURL(ph.file), file: ph.file, originalUrl: null, cropped: false }; if (IS_PWA && !isDemo()) LOCAL.photoPut('mk:' + r.listing.id, ph.file).catch(() => {}); }
+    else if (ph) MKPH[r.listing.id] = ph;
+    if (isDemo()) { // una vecina simulada se interesa
+      const buyer = ['noa', 'valeria'].find((id) => 'demo:' + id !== me.id); const bp = ws().profiles.find((x) => x.id === buyer);
+      mkOffer(M, { listingId: r.listing.id, buyer: { id: 'demo:' + buyer, name: bp.name, district: (bp.districts || [])[0] }, amount: r.listing.acceptOffers ? Math.max(1, Math.round(r.listing.price * 0.85)) : r.listing.price, message: '¡Me interesa! ¿Sigue disponible?', origin: 'demo' }, mkToday());
+    }
+    UI.modal = null; UI.view = 'circular'; UI.circ.tab = 'vitrina'; UI.mk.sub = 'vendo';
+    if (d.district) UI.mk.district = UI.mk.district || d.district;
+    celebrate('¡Que lo sepan!');
+    mkRun(r, isDemo() ? 'Publicada. Llegó una oferta simulada: revísala en Vendo.' : 'Publicada en la vitrina.');
+    window.scrollTo(0, 0);
+  }),
+  mkSellOutside: (el) => { UI.modal = null; _circIntent10({ dataset: { item: el.dataset.item, kind: 'venta' } }); },
+  mkBuy: (el) => guard('mkb', () => { const M = mkStore(); const l = mkListing(M, el.dataset.id); const r = mkOffer(M, { listingId: l.id, buyer: mkMe(), amount: l.price, message: UI.mk.msg, contact: UI.mk.contact, origin: isDemo() ? 'demo' : 'real' }, mkToday()); if (r.error) { UI.modal.error = r.error; render(); return; } mkDemoReply(M, r.offer); UI.mk.msg = ''; UI.modal = null; UI.mk.sub = 'compro'; mkRun(r, isDemo() ? null : 'Pedido enviado: ' + l.sellerName + ' debe confirmarlo.'); }),
+  mkMakeOffer: (el) => guard('mko', () => { const M = mkStore(); const id = el.dataset.id; const r = mkOffer(M, { listingId: id, buyer: mkMe(), amount: UI.mk.amt[id], message: UI.mk.msg, contact: UI.mk.contact, origin: isDemo() ? 'demo' : 'real' }, mkToday()); if (r.error) { UI.modal.error = r.error; render(); return; } mkDemoReply(M, r.offer); UI.mk.msg = ''; UI.modal = null; UI.mk.sub = 'compro'; mkRun(r, isDemo() ? null : 'Oferta enviada.'); }),
+  mkRespond: (el) => guard('mkr' + el.dataset.id, () => { const a = el.dataset.a; const r = mkRespond(mkStore(), el.dataset.id, mkMe().id, a, UI.mk.counter[el.dataset.id], mkToday()); if (!r.error) delete UI.mk.counter[el.dataset.id]; mkRun(r, a === 'aceptar' ? '¡Trato hecho! Coordina la entrega.' : a === 'contraofertar' ? 'Contraoferta enviada.' : 'Oferta rechazada con amabilidad.'); }),
+  mkCounterOpen: (el) => { const o = mkOfferById(mkStore(), el.dataset.id); const l = mkListing(mkStore(), o.listingId); UI.mk.counter[o.id] = Math.round((o.amount + l.price) / 2); render(); },
+  mkBuyer: (el) => guard('mkby' + el.dataset.id, () => { const a = el.dataset.a; mkRun(mkBuyerRespond(mkStore(), el.dataset.id, mkMe().id, a, mkToday()), a === 'aceptar' ? '¡Trato hecho! Coordina la entrega.' : a === 'retirar' ? 'Oferta retirada.' : 'Listo.'); }),
+  mkDeal: (el) => guard('mkd' + el.dataset.id, () => { const s = el.dataset.s; const r = mkDealStep(mkStore(), el.dataset.id, mkMe().id, s, mkToday()); mkSync(); if (!r.error && s === 'recibir') celebrate('¡Segunda vida!'); mkRun(r, s === 'recibir' ? 'Recibida. Cuéntanos cómo te fue y agrégala a tu armario.' : s === 'entregar' ? 'Marcada como entregada.' : 'Acuerdo cancelado. La prenda vuelve a la vitrina.'); }),
+  mkStar: (el) => { const id = el.dataset.id; const r = UI.mk.rev[id] || (UI.mk.rev[id] = { stars: 0, tags: [], comment: '' }); r.stars = Number(el.dataset.n); render(); },
+  mkTag: (el) => { const id = el.dataset.id; const r = UI.mk.rev[id] || (UI.mk.rev[id] = { stars: 0, tags: [], comment: '' }); const t = el.dataset.t; r.tags = r.tags.includes(t) ? r.tags.filter((x) => x !== t) : r.tags.concat(t); render(); },
+  mkReview: (el) => guard('mkrv' + el.dataset.id, () => { const id = el.dataset.id; const r = UI.mk.rev[id] || {}; const res = mkReview(mkStore(), { offerId: id, fromId: mkMe().id, stars: r.stars, tags: r.tags, comment: r.comment, origin: isDemo() ? 'demo' : 'real' }, mkToday()); if (!res.error) delete UI.mk.rev[id]; mkRun(res, '¡Gracias! Tu opinión ayuda a la comunidad.'); }),
+  mkAddCloset: (el) => guard('mka' + el.dataset.id, () => {
+    const M = mkStore(); const o = mkOfferById(M, el.dataset.id); const l = mkListing(M, o.listingId); const w = ws();
+    const data = Object.assign({}, l.snap, { ownerId: prof().id, price: o.amount, acquisition: 'segunda mano · Vitrina RELISTO', notes: 'Comprada a ' + l.sellerName + ' (' + l.district + ').' });
+    delete data.code;
+    const item = addItem(w, data, TODAY);
+    const ph = MKPH[l.id];
+    if (ph && ph.file) { PHOTOS[S.space + ':' + item.id] = { url: URL.createObjectURL(ph.file), file: ph.file, originalUrl: null, cropped: false }; persistPhoto(S.space + ':' + item.id, PHOTOS[S.space + ':' + item.id]); }
+    o.addedItemId = item.id;
+    if (IS_PWA && !isDemo()) LOCAL.set('market', MKDEV).catch(() => {});
+    toast(item.name + ' ya está en tu armario con el código ' + (item.code || '') + '.');
+    commit();
+  }),
+  mkPriceEdit: (el) => { const l = mkListing(mkStore(), el.dataset.id); UI.mk.priceEdit[l.id] = l.price; render(); },
+  mkPriceSave: (el) => { const id = el.dataset.id; const r = mkSetPrice(mkStore(), id, mkMe().id, UI.mk.priceEdit[id], mkToday()); if (!r.error) delete UI.mk.priceEdit[id]; mkRun(r, 'Precio actualizado.'); },
+  mkWithdraw: (el) => guard('mkw' + el.dataset.id, () => mkRun(mkWithdraw(mkStore(), el.dataset.id, mkMe().id, mkToday()), 'Retirada. Sigue en tu armario.'))
+});
+const _circIntent10 = ACT.circIntent;
+ACT.circIntent = (el) => { if (el.dataset.kind === 'venta' && !el.dataset.outside) { ACT.mkPublishOpen({ dataset: { item: el.dataset.item, circ: '1' } }); return; } _circIntent10(el); };
+Object.assign(CHG, {
+  mkDist: (el) => { UI.mk.district = el.value; render(); },
+  mkSort: (el) => { UI.mk.sort = el.value; render(); }
+});
+/* Campos libres de la vitrina (sin volver a dibujar en cada tecla). */
+document.addEventListener('input', (e) => {
+  const t = e.target; if (!t || !t.dataset) return;
+  if (t.dataset.mkAmt) UI.mk.amt[t.dataset.mkAmt] = t.value;
+  else if (t.dataset.mkCounter) UI.mk.counter[t.dataset.mkCounter] = t.value;
+  else if (t.dataset.mkPrice) UI.mk.priceEdit[t.dataset.mkPrice] = t.value;
+  else if (t.dataset.mkDraft && UI.modal && UI.modal.draft) UI.modal.draft[t.dataset.mkDraft] = t.value;
+  else if (t.dataset.mkMsg) UI.mk.msg = t.value;
+  else if (t.dataset.mkCt) UI.mk.contact = t.value;
+  else if (t.dataset.mkComment) { const id = t.dataset.mkComment; (UI.mk.rev[id] || (UI.mk.rev[id] = { stars: 0, tags: [], comment: '' })).comment = t.value; }
+});
 /* ============================ INICIO ============================ */
 render();
 initCapabilities();

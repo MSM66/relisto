@@ -224,5 +224,38 @@ function runSelfTests(today) {
     const exp = w.wearLogs.filter((l) => l.ownerId === 'alex' && l.status === 'usado' && l.date > addDays(ref, -56) && l.date <= ref).length;
     return { ok: wk.length === 8 && wk[7].end === ref && wk.reduce((a, x) => a + x.n, 0) === exp, detail: wk.map((x) => x.n).join(' ') };
   });
+  check('Vitrina: publicar, ofertar, contraofertar, acordar y vender', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const M = mkNew();
+    const it = w.items.find((i) => i.id === 'A18'); const sel = { id: 'u1', name: 'Ana' }; const buy = { id: 'u2', name: 'Beto', district: 'Surquillo' };
+    const l = mkPublish(M, { seller: sel, item: it, price: 80, district: 'Miraflores', delivery: ['recojo'] }, ref).listing;
+    const dup = mkPublish(M, { seller: sel, item: it, price: 70, district: 'Miraflores', delivery: ['recojo'] }, ref);
+    const own = mkOffer(M, { listingId: l.id, buyer: sel, amount: 60 }, ref); const low = mkOffer(M, { listingId: l.id, buyer: buy, amount: 5 }, ref);
+    const o = mkOffer(M, { listingId: l.id, buyer: buy, amount: 60 }, ref).offer;
+    const o2 = mkOffer(M, { listingId: l.id, buyer: { id: 'u3', name: 'Cata' }, amount: 70 }, ref).offer;
+    const badC = mkRespond(M, o.id, 'u1', 'contraofertar', 90, ref); mkRespond(M, o.id, 'u1', 'contraofertar', 72, ref);
+    mkBuyerRespond(M, o.id, 'u2', 'aceptar', ref);
+    const wait = o2.status; const fake = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 5 }, ref);
+    mkDealStep(M, o.id, 'u1', 'entregar', ref); mkDealStep(M, o.id, 'u2', 'recibir', ref);
+    const rv = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 4, tags: ['Puntual', 'inventada'] }, ref); const twice = mkReview(M, { offerId: o.id, fromId: 'u2', stars: 5 }, ref);
+    const rep = mkReputation(M, 'u1');
+    const ok = !!dup.error && !!own.error && !!low.error && !!badC.error && o.amount === 72 && wait === 'en espera' && !!fake.error && l.status === 'vendida' && l.soldPrice === 72 && o2.status === 'no concretada' && rv.review && rv.review.tags.length === 1 && !!twice.error && rep.avg === 4 && rep.sales === 1;
+    return { ok, detail: 'vendida a S/ ' + l.soldPrice + ' · ★' + rep.avg };
+  });
+  check('Vitrina: cancelar un acuerdo reabre la publicación y las ofertas en espera', () => {
+    const T = freshState(today); const w = T.demo; const ref = w.referenceDate; const M = mkNew();
+    const l = mkPublish(M, { seller: { id: 'a', name: 'A' }, item: w.items[0], price: 50, district: 'Lince', delivery: ['delivery'], acceptOffers: false }, ref).listing;
+    const lowFixed = mkOffer(M, { listingId: l.id, buyer: { id: 'b', name: 'B' }, amount: 40 }, ref);
+    const o = mkOffer(M, { listingId: l.id, buyer: { id: 'b', name: 'B' }, amount: 50 }, ref).offer; const o2 = mkOffer(M, { listingId: l.id, buyer: { id: 'c', name: 'C' }, amount: 50 }, ref).offer;
+    mkRespond(M, o.id, 'a', 'aceptar', null, ref); const mid = o2.status; mkDealStep(M, o.id, 'b', 'cancelar', ref);
+    return { ok: !!lowFixed.error && o.kind === 'compra' && mid === 'en espera' && l.status === 'publicada' && o2.status === 'pendiente' && mkInbox(M, 'a').sell === 1, detail: l.status };
+  });
+  check('Vitrina: cercanía por distrito y vitrina de ejemplo coherente', () => {
+    const T = freshState(today); const w = T.demo; const M = seedDemoMarket(w, w.referenceDate);
+    const near = distKm('Miraflores', 'Surquillo'); const far = distKm('Miraflores', 'Comas');
+    const rows = mkBrowse(M, w, 'alex', { id: 'demo:alex', district: 'Miraflores' }, { sort: 'cerca' });
+    const val = mkReputation(M, 'demo:valeria');
+    return { ok: near > 0 && near < 4 && far > 15 && distKm('Lince', 'Lince') === 0 && rows.length === 4 && rows.every((r) => r.listing.sellerId !== 'demo:alex') && rows[0].km <= rows[3].km && val.count === 2 && mkInbox(M, 'demo:alex').sell === 1,
+      detail: 'Miraflores–Surquillo ≈' + near + ' km · Valeria ★' + val.avg };
+  });
   return out;
 }
