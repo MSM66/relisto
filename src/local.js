@@ -168,6 +168,12 @@ async function saveBackupFile() {
       return 'Respaldo listo (' + n + ' fotos). Guárdalo en Archivos, Drive o envíalo a tu correo.';
     }
   } catch (e) { if (e && e.name === 'AbortError') return 'Respaldo cancelado.'; }
+  if (!IS_PWA && window.claude && typeof window.claude.use === 'function') {
+    try {
+      const dl = await window.claude.use('downloads');
+      if (dl) { await dl.save({ filename: name, data: file }); return 'Respaldo guardado (' + n + ' fotos): ' + name + '.'; }
+    } catch (e) { if (e && e.code === 'declined') return 'Respaldo cancelado.'; if (e && e.code === 'rate_limited') return 'Espera un momento y vuelve a intentarlo.'; }
+  }
   const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = name;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
   return 'Respaldo descargado (' + n + ' fotos): ' + name + '.';
