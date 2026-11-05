@@ -257,5 +257,21 @@ function runSelfTests(today) {
     return { ok: near > 0 && near < 4 && far > 15 && distKm('Lince', 'Lince') === 0 && rows.length === 4 && rows.every((r) => r.listing.sellerId !== 'demo:alex') && rows[0].km <= rows[3].km && val.count === 2 && mkInbox(M, 'demo:alex').sell === 1,
       detail: 'Miraflores–Surquillo ≈' + near + ' km · Valeria ★' + val.avg };
   });
+  check('Valor de compra rápido: mismo resultado que comparar antes y después', () => {
+    const T = freshState(today); const w = T.demo;
+    const cands = [{ category: 'inferior', subtype: 'chino', color: 'azul marino', formality: 2 }, { category: 'calzado', subtype: 'mocasines', color: 'negro', formality: 3 }, { category: 'superior', subtype: 'camisa', color: 'blanco', formality: 3 }, { category: 'capa', subtype: 'blazer', color: 'gris', formality: 3 }, { category: 'accesorio', subtype: 'reloj', color: 'negro', formality: 2 }]
+      .map((a, k) => Object.assign({ id: 'TST' + k, ownerId: 'alex', availability: 'disponible', name: 'x', cut: 'regular', warmth: 1 }, a));
+    const bad = cands.filter((c) => { const before = comboSet(w, 'alex', null); const after = comboSet(w, 'alex', c); const slow = [...after.keys()].filter((k) => !before.has(k)).length; const fast = purchaseValue(w, 'alex', c); return slow !== fast.added.length || fast.before !== before.size; });
+    return { ok: bad.length === 0, detail: cands.map((c) => c.subtype + ' +' + purchaseValue(w, 'alex', c).added.length).join(' · ') };
+  });
+  check('Armario grande (≈200 prendas): sugerencias en menos de 1,5 s', () => {
+    const T = freshState(today); const w = T.demo; const base = w.items.filter((i) => i.ownerId === 'alex');
+    for (let k = 0; k < 180; k++) { const c = clone(base[k % base.length]); c.id = 'BIG' + k; c.code = ''; c.name += ' ' + k; w.items.push(c); }
+    const t0 = Date.now(); const ctx = w.contexts.find((x) => x.id === 'C01');
+    const r = generateOutfits(w, ctx, w.profiles[0], { onlyAvailable: true }, today);
+    const sug = styleSuggestions(w, 'alex', Object.assign({}, w.profiles[0], { undertone: 'cálido' }), 4);
+    const ms = Date.now() - t0;
+    return { ok: r.complete.length >= 3 && sug.length > 0 && ms < 1500, detail: ms + ' ms · ' + r.complete.length + ' outfits' };
+  });
   return out;
 }

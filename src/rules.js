@@ -450,13 +450,24 @@ function generateOutfits(ws, ctx, profile, opts, today) {
   const avail = (i) => (onlyAvailable ? isUsable(i) : true);
   const by = (role) => pool.filter((i) => roleOf(i) === role && avail(i) && formalityOk(i, ctx));
   const hard = ctx.hard || {};
-  const tops = by('top').filter((i) => meetsHard(i, hard.superior));
-  const bottoms = by('bottom').filter((i) => meetsHard(i, hard.inferior));
-  const fulls = by('full');
-  const shoes = by('shoes').filter((i) => meetsHard(i, hard.calzado));
+  let tops = by('top').filter((i) => meetsHard(i, hard.superior));
+  let bottoms = by('bottom').filter((i) => meetsHard(i, hard.inferior));
+  let fulls = by('full');
+  let shoes = by('shoes').filter((i) => meetsHard(i, hard.calzado));
   const needLayer = ctx.requiredSlots.includes('capa');
-  const layers = needLayer ? by('layer').filter((i) => meetsHard(i, hard.capa)) : [null];
+  let layers = needLayer ? by('layer').filter((i) => meetsHard(i, hard.capa)) : [null];
+  /* Armarios grandes: se acota cada rol a las prendas más afines para responder rápido. */
+  const lists = { tops, bottoms, fulls, shoes, layers };
+  const product = () => (lists.tops.length * lists.bottoms.length + lists.fulls.length) * Math.max(1, lists.shoes.length) * Math.max(1, lists.layers.length);
+  if (product() > 2500) {
+    const favs = (profile.colors || []).map(norm); const LU = new Map(); const lastUse = (i) => { if (!LU.has(i.id)) LU.set(i.id, itemStats(ws, i).lastUsed || '0000'); return LU.get(i.id); };
+    const rank = (i) => (i.id === must ? 1000 : 0) + (favs.includes(norm(i.color)) ? 3 : 0) - Math.abs((i.formality || 2) - (ctx.formality || 2));
+    const trim = (k, cap) => { lists[k] = lists[k].slice().sort((a, b) => rank(b) - rank(a) || lastUse(a).localeCompare(lastUse(b)) || (a.id < b.id ? -1 : 1)).slice(0, cap); };
+    let cap = 16;
+    while (product() > 2500 && cap > 3) { ['tops', 'bottoms', 'fulls', 'shoes', 'layers'].forEach((k) => { if (lists[k][0] !== null) trim(k, cap); }); cap -= 2; }
+  }
   const bases = [];
+  tops = lists.tops; bottoms = lists.bottoms; fulls = lists.fulls; shoes = lists.shoes; layers = lists.layers;
   tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b])));
   fulls.forEach((f) => bases.push([f]));
   const shoeOpts = shoes.length ? shoes : [null];
@@ -519,20 +530,27 @@ function templateCoverage(ws, ownerId, interestIds) {
 }
 
 /* ---------- Valor de una compra: combinaciones nuevas ---------- */
-function comboSet(ws, ownerId, extraItem) {
+/* onlyWith: cuenta solo combinaciones que incluyen esa prenda (rápido para candidatas). */
+function comboSet(ws, ownerId, extraItem, onlyWith) {
   const items = ownedItems(ws, ownerId).filter((i) => isUsable(i)).concat(extraItem ? [extraItem] : []);
   const contexts = ws.contexts.filter((c) => c.ownerId === ownerId);
   const set = new Map();
+  const fix = onlyWith ? roleOf(onlyWith) : null;
+  if (fix && !['top', 'bottom', 'full', 'shoes', 'layer'].includes(fix)) return set;
   contexts.forEach((ctx) => {
     const ok = (i) => formalityOk(i, ctx);
     const hard = ctx.hard || {};
-    const tops = items.filter((i) => roleOf(i) === 'top' && ok(i) && meetsHard(i, hard.superior));
-    const bottoms = items.filter((i) => roleOf(i) === 'bottom' && ok(i) && meetsHard(i, hard.inferior));
-    const fulls = items.filter((i) => roleOf(i) === 'full' && ok(i));
-    const shoes = items.filter((i) => roleOf(i) === 'shoes' && ok(i) && meetsHard(i, hard.calzado));
+    const pick = (role, list) => (fix ? (fix === role ? list.filter((i) => i === onlyWith) : list.filter((i) => i !== onlyWith)) : list);
+    const tops = pick('top', items.filter((i) => roleOf(i) === 'top' && ok(i) && meetsHard(i, hard.superior)));
+    const bottoms = pick('bottom', items.filter((i) => roleOf(i) === 'bottom' && ok(i) && meetsHard(i, hard.inferior)));
+    const fulls = pick('full', items.filter((i) => roleOf(i) === 'full' && ok(i)));
+    const shoes = pick('shoes', items.filter((i) => roleOf(i) === 'shoes' && ok(i) && meetsHard(i, hard.calzado)));
     const needLayer = ctx.requiredSlots.includes('capa');
-    const layers = needLayer ? items.filter((i) => roleOf(i) === 'layer' && ok(i) && meetsHard(i, hard.capa)) : [null];
-    const bases = []; tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b]))); fulls.forEach((f) => bases.push([f]));
+    if (fix === 'layer' && !needLayer) return;
+    const layers = needLayer ? pick('layer', items.filter((i) => roleOf(i) === 'layer' && ok(i) && meetsHard(i, hard.capa))) : [null];
+    const bases = [];
+    if (fix !== 'full') tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b])));
+    if (!fix || fix === 'full' || fix === 'shoes' || fix === 'layer') fulls.forEach((f) => bases.push([f]));
     bases.forEach((b) => shoes.forEach((s) => layers.forEach((l) => {
       const combo = [...b, s, l].filter(Boolean);
       if (!harmony(combo.filter((i) => roleOf(i) !== 'layer')).ok) return;
@@ -543,12 +561,19 @@ function comboSet(ws, ownerId, extraItem) {
   });
   return set;
 }
+/* La base (sin candidata) se calcula una vez por estado del armario. */
+const COMBO_CACHE = { key: null, size: 0 };
+function baseComboCount(ws, ownerId) {
+  const key = ownerId + '|' + ws.contexts.filter((c) => c.ownerId === ownerId).map((c) => c.id + c.formality + (c.requiredSlots || []).join() + JSON.stringify(c.hard || {})).join(';') + '|' +
+    ws.items.filter((i) => i.ownerId === ownerId).map((i) => i.id + i.availability + i.formality + i.color + i.subtype + i.category).join(';');
+  if (COMBO_CACHE.key !== key) { COMBO_CACHE.key = key; COMBO_CACHE.size = comboSet(ws, ownerId, null).size; }
+  return COMBO_CACHE.size;
+}
 function purchaseValue(ws, ownerId, candidate) {
-  const before = comboSet(ws, ownerId, null);
-  const after = comboSet(ws, ownerId, candidate);
-  const added = [...after.values()].filter((c) => !before.has(c.key));
+  const before = baseComboCount(ws, ownerId);
+  const added = [...comboSet(ws, ownerId, candidate, candidate).values()];
   const similar = ownedItems(ws, ownerId).filter((i) => !isGone(i) && i.subtype === candidate.subtype && norm(i.color) === norm(candidate.color));
-  return { before: before.size, after: after.size, added, similar };
+  return { before, after: before + added.length, added, similar };
 }
 const VERSATILE_ARCHETYPES = [
   { name: 'Pantalón chino azul marino', category: 'inferior', subtype: 'chino', color: 'azul marino', formality: 2 },

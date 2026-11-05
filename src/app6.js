@@ -242,7 +242,7 @@ Object.assign(ACT, {
     commit();
   },
   washToggle: (el) => { const i = w_item(el.dataset.item); if (!i) return; i.availability = i.availability === 'por lavar' ? 'disponible' : 'por lavar'; toast(i.availability === 'por lavar' ? i.name + ': por lavar. No aparecerá en sugerencias hasta que la laves.' : i.name + ': disponible.'); commit(); },
-  washAll: () => { const w = ws(); const dirty = ownedItems(w, w.activeProfileId).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability)); dirty.forEach((i) => { i.availability = 'disponible'; }); celebrate(null); toast(plural(dirty.length, 'prenda vuelve', 'prendas vuelven') + ' a estar disponibles.'); commit(); },
+  washAll: () => { const w = ws(); const dirty = ownedItems(w, w.activeProfileId).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability)); dirty.forEach((i) => { i.availability = 'disponible'; }); celebrate(null); toast(plural(dirty.length, 'prenda vuelve', 'prendas vuelven') + ' a estar ' + (dirty.length === 1 ? 'disponible.' : 'disponibles.')); commit(); },
   labelsOpen: () => openModal({ type: 'labels', sel: new Set(ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id)) }),
   labelsAll: () => { const m = UI.modal; const all = ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id); m.sel = m.sel.size === all.length ? new Set() : new Set(all); render(); },
   labelsPrint: (el) => { const w = ws(); const ids = el.dataset.one ? [el.dataset.one] : Array.from(UI.modal.sel); printLabels(ids.map((id) => w.items.find((i) => i.id === id)).filter((i) => i && i.code)); }

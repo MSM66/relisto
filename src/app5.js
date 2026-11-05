@@ -8,8 +8,8 @@ const TOUR_STEPS = [
   { sel: ['[data-tour="ctx"]'], title: 'Dime a dónde vas', text: 'Toca aquí y escribe o dicta tu día: “reunión en San Isidro, caminaré bastante”. RELISTO lo convierte en campos.' },
   { sel: ['[data-tour="arma"]', '[data-tour="nav-arma"]'], title: 'Un toque, tres outfits', text: '“Arma mi día” combina solo ropa disponible. Desliza para ver cada propuesta y amplía hasta seis.' },
   { sel: ['.outfit .grow-btn', '[data-tour="arma"]'], before: () => { if (!genState() && ownedItems(ws(), ws().activeProfileId).length) doGenerate(); }, title: 'Elige y confirma', text: '“Me lo pongo hoy” anota tu elección. Cuando lo uses, toca “Sí, lo usé”: así RELISTO aprende qué usas de verdad.' },
-  { sel: ['[data-tour="nav-armario"]', '[data-tour="side-armario"]'], title: 'Tu armario con fotos', text: 'Toma una foto, elige qué es y su color, y listo: el nombre se completa solo.' },
-  { sel: ['[data-tour="nav-circular"]', '[data-tour="side-circular"]'], title: 'Dale más vida', text: 'Prendas olvidadas, reparación, venta o donación. Sin culpa: repetir también es tener estilo.' },
+  { sel: ['[data-tour="nav-armario"]', '[data-tour="side-armario"]'], title: 'Tu armario con fotos', text: 'Toma una foto, elige qué es y su color, y listo: el nombre se completa solo. En Panorama ves qué usas y qué puedes redescubrir.' },
+  { sel: ['[data-tour="nav-circular"]', '[data-tour="side-circular"]'], title: 'Dale más vida', text: 'Prendas olvidadas, reparación o donación, y la Vitrina para vender con tu precio y recibir ofertas. Sin culpa: repetir también es tener estilo.' },
   { sel: ['[data-tour="who"]', '[data-tour="account"]', '[data-tour="side-perfil"]'], title: IS_PWA ? 'Tu cuenta, tus datos' : 'Perfiles y datos', text: IS_PWA ? 'Aquí cambias de perfil, entras a tu cuenta y compartes RELISTO. Tu armario queda cifrado en este teléfono.' : 'Cambia entre Alex, Valeria y Noa o entra a tu armario personal.' }
 ];
 function tourDone() { try { return localStorage.getItem('relisto-tour-done') === '1'; } catch (e) { return false; } }

@@ -1,5 +1,5 @@
 /* RELISTO · service worker: página fresca con conexión, copia local sin conexión. */
-const VERSION = '20261104.1956';
+const VERSION = '20261105.2029';
 const CACHE = 'relisto-' + VERSION;
 const FONTS = 'relisto-fonts';
 const CORE = ['./', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];

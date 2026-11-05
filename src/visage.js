@@ -97,7 +97,7 @@ function styleSuggestions(ws, ownerId, p, limit) {
   // Variedad: primero una por categoría y color distinto; luego se completa por puntaje.
   const picked = []; const seenType = new Set(); const seenCat = new Set(); const seenColor = new Set(); const max = limit || 3;
   for (const s of out) { const c = s.candidate; if (seenCat.has(c.category) || seenColor.has(norm(c.color))) continue; seenCat.add(c.category); seenColor.add(norm(c.color)); seenType.add(c.subtype); picked.push(s); if (picked.length >= max) return picked; }
-  for (const s of out) { if (picked.includes(s) || seenType.has(s.candidate.subtype)) continue; seenType.add(s.candidate.subtype); picked.push(s); if (picked.length >= max) break; }
+  for (const s of out) { if (picked.includes(s) || seenType.has(s.candidate.subtype) || picked.some((x) => x.candidate.category === s.candidate.category && norm(x.candidate.color) === norm(s.candidate.color))) continue; seenType.add(s.candidate.subtype); picked.push(s); if (picked.length >= max) break; }
   return picked;
 }
 const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);

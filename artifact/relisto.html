@@ -7,8 +7,8 @@
 /* Concepto: armario editorial. Barra lateral bosque en escritorio, navegación inferior en móvil; tarjetas blancas sobre marfil. */
 :root {
   --ivory: #F7F4ED; --forest: #173F35; --sage: #DCE8DB; --coral: #D86A52; --lavender: #E8E0F2; --graphite: #252A29; --white: #FFFFFF; --gold: #D9B76F;
-  --bg: var(--ivory); --surface: var(--white); --surface-2: #FBF9F4; --ink: var(--graphite); --ink-2: #5A605D; --ink-3: #7B817D;
-  --line: #E5E0D4; --line-strong: #CFC8B8; --primary: var(--forest); --on-primary: #F7F4ED; --primary-soft: var(--sage); --on-soft: #173F35;
+  --bg: var(--ivory); --surface: var(--white); --surface-2: #FBF9F4; --ink: var(--graphite); --ink-2: #5A605D; --ink-3: #646A66;
+  --line: #E5E0D4; --line-strong: #CFC8B8; --primary: var(--forest); --primary-fill: var(--forest); --on-primary: #F7F4ED; --primary-soft: var(--sage); --on-soft: #173F35;
   --accent: var(--coral); --accent-ink: #A9452F; --accent-soft: #F8E2DB; --explore: var(--lavender); --on-explore: #45346A; --detail: var(--gold);
   --ok: #2F6B4F; --ok-soft: #DCE8DB; --warn: #8A5A12; --warn-soft: #F5E7C8; --bad: #A13A2A; --bad-soft: #F6DCD6; --info: #3E4F84; --info-soft: #E3E7F5;
   --tile: #F1EDE3; --nav: var(--forest); --on-nav: #EAF1EA; --nav-muted: #A9C2B4; --shadow: 0 1px 2px rgba(23,63,53,.06), 0 6px 20px rgba(23,63,53,.06);
@@ -18,12 +18,12 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #111614; --surface: #19201D; --surface-2: #1E2622; --ink: #ECE9E1; --ink-2: #B9BDB6; --ink-3: #959B94; --line: #2B3531; --line-strong: #3B4842;
-  --primary: #3F8A72; --on-primary: #F7F4ED; --primary-soft: #23382F; --on-soft: #CFE3D2; --accent: #E58A72; --accent-ink: #F0A592; --accent-soft: #3A2520;
+  --primary: #6CB89C; --primary-fill: #2E6B57; --on-primary: #F7F4ED; --primary-soft: #23382F; --on-soft: #CFE3D2; --accent: #E58A72; --accent-ink: #F0A592; --accent-soft: #3A2520;
   --explore: #2C2638; --on-explore: #D9CDEE; --detail: #D9B76F; --ok: #8CCBA8; --ok-soft: #1F3329; --warn: #E7C27A; --warn-soft: #3A2F18; --bad: #F0A08F; --bad-soft: #3D211C;
   --info: #B8C3EE; --info-soft: #232A42; --tile: #232B27; --nav: #0E1311; --on-nav: #E6EEE8; --nav-muted: #8DA699; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #111614; --surface: #19201D; --surface-2: #1E2622; --ink: #ECE9E1; --ink-2: #B9BDB6; --ink-3: #959B94; --line: #2B3531; --line-strong: #3B4842;
-  --primary: #3F8A72; --on-primary: #F7F4ED; --primary-soft: #23382F; --on-soft: #CFE3D2; --accent: #E58A72; --accent-ink: #F0A592; --accent-soft: #3A2520;
+  --primary: #6CB89C; --primary-fill: #2E6B57; --on-primary: #F7F4ED; --primary-soft: #23382F; --on-soft: #CFE3D2; --accent: #E58A72; --accent-ink: #F0A592; --accent-soft: #3A2520;
   --explore: #2C2638; --on-explore: #D9CDEE; --detail: #D9B76F; --ok: #8CCBA8; --ok-soft: #1F3329; --warn: #E7C27A; --warn-soft: #3A2F18; --bad: #F0A08F; --bad-soft: #3D211C;
   --info: #B8C3EE; --info-soft: #232A42; --tile: #232B27; --nav: #0E1311; --on-nav: #E6EEE8; --nav-muted: #8DA699; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; }
 
@@ -92,7 +92,7 @@ a { color: var(--primary); }
 .btn:hover { background: var(--surface-2); }
 .btn:active { transform: translateY(1px); }
 .btn svg { width: 17px; height: 17px; flex: none; }
-.btn.primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.btn.primary { background: var(--primary-fill); border-color: var(--primary-fill); color: var(--on-primary); }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn.soft { background: var(--primary-soft); border-color: transparent; color: var(--on-soft); }
 .btn.accent { background: var(--accent-soft); border-color: transparent; color: var(--accent-ink); }
@@ -121,7 +121,7 @@ a { color: var(--primary); }
 @media (min-width: 760px) { .grid.two { grid-template-columns: 1fr 1fr; } }
 .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap; }
 .chip.btnchip { cursor: pointer; }
-.chip.btnchip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.chip.btnchip[aria-pressed="true"] { background: var(--primary-fill); border-color: var(--primary-fill); color: var(--on-primary); }
 .chip.sim { background: var(--warn-soft); border-color: transparent; color: var(--warn); }
 .chip.ok { background: var(--ok-soft); border-color: transparent; color: var(--ok); }
 .chip.bad { background: var(--bad-soft); border-color: transparent; color: var(--bad); }
@@ -216,7 +216,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .steps { display: flex; flex-wrap: wrap; gap: 6px; }
 .steps span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-3); }
 .steps span.done { background: var(--primary-soft); border-color: transparent; color: var(--on-soft); }
-.steps span.now { background: var(--primary); border-color: transparent; color: var(--on-primary); }
+.steps span.now { background: var(--primary-fill); border-color: transparent; color: var(--on-primary); }
 .tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
 .tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 9px 12px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
 .tabs button[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
@@ -262,7 +262,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .nl-box { display: grid; gap: 8px; padding: 14px; border-radius: 18px; background: var(--surface-2); border: 1px solid var(--line); }
 .nl-row { display: flex; gap: 10px; align-items: stretch; }
 .nl-row textarea { flex: 1; min-height: 84px; }
-.mic { flex: none; width: 56px; border-radius: 16px; border: 0; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; cursor: pointer; }
+.mic { flex: none; width: 56px; border-radius: 16px; border: 0; background: var(--primary-fill); color: var(--on-primary); display: grid; place-items: center; cursor: pointer; }
 .mic svg { width: 26px; height: 26px; }
 .mic.on { background: var(--accent); color: #fff; animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(216,106,82,.45); } 50% { box-shadow: 0 0 0 9px rgba(216,106,82,0); } }
@@ -299,7 +299,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .avatar.lg { width: 52px; height: 52px; font-size: 18px; }
 .avatar svg { width: 18px; height: 18px; }
 .bottomnav button.nav-cta { color: var(--primary); font-weight: 800; }
-.nav-cta-in { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); margin-top: -28px; box-shadow: 0 8px 20px rgba(23,63,53,.35); border: 4px solid var(--surface); }
+.nav-cta-in { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-fill); color: var(--on-primary); margin-top: -28px; box-shadow: 0 8px 20px rgba(23,63,53,.35); border: 4px solid var(--surface); }
 .nav-cta-in svg { width: 26px; height: 26px; }
 .fab-add { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 41; width: 56px; height: 56px; border-radius: 18px; border: 0; background: var(--accent); color: #fff; display: grid; place-items: center; box-shadow: 0 8px 22px rgba(216,106,82,.4); cursor: pointer; }
 .fab-add svg { width: 28px; height: 28px; }
@@ -307,7 +307,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .ctx-card { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px; border-radius: 18px; background: var(--surface-2); border: 1px solid var(--line); cursor: pointer; color: inherit; text-align: left; font: inherit; }
 .ctx-card:hover { border-color: var(--line-strong); }
 .ctx-title { font-size: 17px; }
-.ctx-edit { width: 48px; height: 48px; border-radius: 14px; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; flex: none; }
+.ctx-edit { width: 48px; height: 48px; border-radius: 14px; background: var(--primary-fill); color: var(--on-primary); display: grid; place-items: center; flex: none; }
 .ctx-edit svg { width: 22px; height: 22px; }
 .chip-scroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .chip-scroll::-webkit-scrollbar { display: none; }
@@ -399,7 +399,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .celebrate { position: fixed; inset: 0; z-index: 130; pointer-events: none; display: grid; place-items: center; }
 .celebrate .burst { position: absolute; left: 50%; top: 50%; }
 .celebrate .burst i { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 3px; background: var(--c); transform: rotate(var(--a)) translateY(0); animation: burst .9s cubic-bezier(.2,.7,.3,1) forwards; }
-.celebrate .tick { width: 84px; height: 84px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; animation: pop .5s cubic-bezier(.2,1.4,.4,1) both, fade 1.5s ease forwards; box-shadow: 0 10px 30px rgba(23,63,53,.35); }
+.celebrate .tick { width: 84px; height: 84px; border-radius: 50%; background: var(--primary-fill); color: var(--on-primary); display: grid; place-items: center; animation: pop .5s cubic-bezier(.2,1.4,.4,1) both, fade 1.5s ease forwards; box-shadow: 0 10px 30px rgba(23,63,53,.35); }
 .celebrate .tick svg { width: 44px; height: 44px; }
 .celebrate b { position: absolute; top: calc(50% + 56px); font-family: var(--font-display); font-weight: 400; font-size: 26px; color: var(--ink); background: var(--surface); padding: 4px 14px; border-radius: 12px; animation: fade 1.5s ease forwards; }
 @media (max-width: 959px) { .toast { top: calc(66px + env(safe-area-inset-top, 0px)); bottom: auto; } }
@@ -622,13 +622,22 @@ button.swap-row:hover { border-color: var(--line-strong); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .star-btn.on { background:#3A2F18; border-color:#7A5F22; color:#E7C27A; } :root:not([data-theme="light"]) .stars { color:#E7C27A; } }
 :root[data-theme="dark"] .star-btn.on { background:#3A2F18; border-color:#7A5F22; color:#E7C27A; }
 :root[data-theme="dark"] .stars { color:#E7C27A; }
+/* ---- 3.5 QA: contraste, palabras largas y objetivos táctiles ---- */
+.nbadge { background:#B3482F; color:#fff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nbadge { background:#F0A592; color:#2A120C; } }
+:root[data-theme="dark"] .nbadge { background:#F0A592; color:#2A120C; }
+.stars { color:#8F5B0B; }
+.card, .modal, .mk-card, .item-card, .outfit, .toast, .who-chip, .note { overflow-wrap: anywhere; }
+.btn, .chip, .badge, .nbadge, .tabs button, .seg2 button, .eyebrow { overflow-wrap: normal; }
+.btn { flex-shrink: 0; }
+@media (pointer: coarse) { .chip.btnchip { min-height: 34px; } }
 </style>
 <div id="app"></div>
 <div id="modal-root"></div>
 <script>
 "use strict";
 const IS_PWA = false;
-const APP_VERSION = "20261104.1956";
+const APP_VERSION = "20261105.2029";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -1083,13 +1092,24 @@ function generateOutfits(ws, ctx, profile, opts, today) {
   const avail = (i) => (onlyAvailable ? isUsable(i) : true);
   const by = (role) => pool.filter((i) => roleOf(i) === role && avail(i) && formalityOk(i, ctx));
   const hard = ctx.hard || {};
-  const tops = by('top').filter((i) => meetsHard(i, hard.superior));
-  const bottoms = by('bottom').filter((i) => meetsHard(i, hard.inferior));
-  const fulls = by('full');
-  const shoes = by('shoes').filter((i) => meetsHard(i, hard.calzado));
+  let tops = by('top').filter((i) => meetsHard(i, hard.superior));
+  let bottoms = by('bottom').filter((i) => meetsHard(i, hard.inferior));
+  let fulls = by('full');
+  let shoes = by('shoes').filter((i) => meetsHard(i, hard.calzado));
   const needLayer = ctx.requiredSlots.includes('capa');
-  const layers = needLayer ? by('layer').filter((i) => meetsHard(i, hard.capa)) : [null];
+  let layers = needLayer ? by('layer').filter((i) => meetsHard(i, hard.capa)) : [null];
+  /* Armarios grandes: se acota cada rol a las prendas más afines para responder rápido. */
+  const lists = { tops, bottoms, fulls, shoes, layers };
+  const product = () => (lists.tops.length * lists.bottoms.length + lists.fulls.length) * Math.max(1, lists.shoes.length) * Math.max(1, lists.layers.length);
+  if (product() > 2500) {
+    const favs = (profile.colors || []).map(norm); const LU = new Map(); const lastUse = (i) => { if (!LU.has(i.id)) LU.set(i.id, itemStats(ws, i).lastUsed || '0000'); return LU.get(i.id); };
+    const rank = (i) => (i.id === must ? 1000 : 0) + (favs.includes(norm(i.color)) ? 3 : 0) - Math.abs((i.formality || 2) - (ctx.formality || 2));
+    const trim = (k, cap) => { lists[k] = lists[k].slice().sort((a, b) => rank(b) - rank(a) || lastUse(a).localeCompare(lastUse(b)) || (a.id < b.id ? -1 : 1)).slice(0, cap); };
+    let cap = 16;
+    while (product() > 2500 && cap > 3) { ['tops', 'bottoms', 'fulls', 'shoes', 'layers'].forEach((k) => { if (lists[k][0] !== null) trim(k, cap); }); cap -= 2; }
+  }
   const bases = [];
+  tops = lists.tops; bottoms = lists.bottoms; fulls = lists.fulls; shoes = lists.shoes; layers = lists.layers;
   tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b])));
   fulls.forEach((f) => bases.push([f]));
   const shoeOpts = shoes.length ? shoes : [null];
@@ -1152,20 +1172,27 @@ function templateCoverage(ws, ownerId, interestIds) {
 }
 
 /* ---------- Valor de una compra: combinaciones nuevas ---------- */
-function comboSet(ws, ownerId, extraItem) {
+/* onlyWith: cuenta solo combinaciones que incluyen esa prenda (rápido para candidatas). */
+function comboSet(ws, ownerId, extraItem, onlyWith) {
   const items = ownedItems(ws, ownerId).filter((i) => isUsable(i)).concat(extraItem ? [extraItem] : []);
   const contexts = ws.contexts.filter((c) => c.ownerId === ownerId);
   const set = new Map();
+  const fix = onlyWith ? roleOf(onlyWith) : null;
+  if (fix && !['top', 'bottom', 'full', 'shoes', 'layer'].includes(fix)) return set;
   contexts.forEach((ctx) => {
     const ok = (i) => formalityOk(i, ctx);
     const hard = ctx.hard || {};
-    const tops = items.filter((i) => roleOf(i) === 'top' && ok(i) && meetsHard(i, hard.superior));
-    const bottoms = items.filter((i) => roleOf(i) === 'bottom' && ok(i) && meetsHard(i, hard.inferior));
-    const fulls = items.filter((i) => roleOf(i) === 'full' && ok(i));
-    const shoes = items.filter((i) => roleOf(i) === 'shoes' && ok(i) && meetsHard(i, hard.calzado));
+    const pick = (role, list) => (fix ? (fix === role ? list.filter((i) => i === onlyWith) : list.filter((i) => i !== onlyWith)) : list);
+    const tops = pick('top', items.filter((i) => roleOf(i) === 'top' && ok(i) && meetsHard(i, hard.superior)));
+    const bottoms = pick('bottom', items.filter((i) => roleOf(i) === 'bottom' && ok(i) && meetsHard(i, hard.inferior)));
+    const fulls = pick('full', items.filter((i) => roleOf(i) === 'full' && ok(i)));
+    const shoes = pick('shoes', items.filter((i) => roleOf(i) === 'shoes' && ok(i) && meetsHard(i, hard.calzado)));
     const needLayer = ctx.requiredSlots.includes('capa');
-    const layers = needLayer ? items.filter((i) => roleOf(i) === 'layer' && ok(i) && meetsHard(i, hard.capa)) : [null];
-    const bases = []; tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b]))); fulls.forEach((f) => bases.push([f]));
+    if (fix === 'layer' && !needLayer) return;
+    const layers = needLayer ? pick('layer', items.filter((i) => roleOf(i) === 'layer' && ok(i) && meetsHard(i, hard.capa))) : [null];
+    const bases = [];
+    if (fix !== 'full') tops.forEach((t) => bottoms.forEach((b) => bases.push([t, b])));
+    if (!fix || fix === 'full' || fix === 'shoes' || fix === 'layer') fulls.forEach((f) => bases.push([f]));
     bases.forEach((b) => shoes.forEach((s) => layers.forEach((l) => {
       const combo = [...b, s, l].filter(Boolean);
       if (!harmony(combo.filter((i) => roleOf(i) !== 'layer')).ok) return;
@@ -1176,12 +1203,19 @@ function comboSet(ws, ownerId, extraItem) {
   });
   return set;
 }
+/* La base (sin candidata) se calcula una vez por estado del armario. */
+const COMBO_CACHE = { key: null, size: 0 };
+function baseComboCount(ws, ownerId) {
+  const key = ownerId + '|' + ws.contexts.filter((c) => c.ownerId === ownerId).map((c) => c.id + c.formality + (c.requiredSlots || []).join() + JSON.stringify(c.hard || {})).join(';') + '|' +
+    ws.items.filter((i) => i.ownerId === ownerId).map((i) => i.id + i.availability + i.formality + i.color + i.subtype + i.category).join(';');
+  if (COMBO_CACHE.key !== key) { COMBO_CACHE.key = key; COMBO_CACHE.size = comboSet(ws, ownerId, null).size; }
+  return COMBO_CACHE.size;
+}
 function purchaseValue(ws, ownerId, candidate) {
-  const before = comboSet(ws, ownerId, null);
-  const after = comboSet(ws, ownerId, candidate);
-  const added = [...after.values()].filter((c) => !before.has(c.key));
+  const before = baseComboCount(ws, ownerId);
+  const added = [...comboSet(ws, ownerId, candidate, candidate).values()];
   const similar = ownedItems(ws, ownerId).filter((i) => !isGone(i) && i.subtype === candidate.subtype && norm(i.color) === norm(candidate.color));
-  return { before: before.size, after: after.size, added, similar };
+  return { before, after: before + added.length, added, similar };
 }
 const VERSATILE_ARCHETYPES = [
   { name: 'Pantalón chino azul marino', category: 'inferior', subtype: 'chino', color: 'azul marino', formality: 2 },
@@ -2227,6 +2261,22 @@ function runSelfTests(today) {
     return { ok: near > 0 && near < 4 && far > 15 && distKm('Lince', 'Lince') === 0 && rows.length === 4 && rows.every((r) => r.listing.sellerId !== 'demo:alex') && rows[0].km <= rows[3].km && val.count === 2 && mkInbox(M, 'demo:alex').sell === 1,
       detail: 'Miraflores–Surquillo ≈' + near + ' km · Valeria ★' + val.avg };
   });
+  check('Valor de compra rápido: mismo resultado que comparar antes y después', () => {
+    const T = freshState(today); const w = T.demo;
+    const cands = [{ category: 'inferior', subtype: 'chino', color: 'azul marino', formality: 2 }, { category: 'calzado', subtype: 'mocasines', color: 'negro', formality: 3 }, { category: 'superior', subtype: 'camisa', color: 'blanco', formality: 3 }, { category: 'capa', subtype: 'blazer', color: 'gris', formality: 3 }, { category: 'accesorio', subtype: 'reloj', color: 'negro', formality: 2 }]
+      .map((a, k) => Object.assign({ id: 'TST' + k, ownerId: 'alex', availability: 'disponible', name: 'x', cut: 'regular', warmth: 1 }, a));
+    const bad = cands.filter((c) => { const before = comboSet(w, 'alex', null); const after = comboSet(w, 'alex', c); const slow = [...after.keys()].filter((k) => !before.has(k)).length; const fast = purchaseValue(w, 'alex', c); return slow !== fast.added.length || fast.before !== before.size; });
+    return { ok: bad.length === 0, detail: cands.map((c) => c.subtype + ' +' + purchaseValue(w, 'alex', c).added.length).join(' · ') };
+  });
+  check('Armario grande (≈200 prendas): sugerencias en menos de 1,5 s', () => {
+    const T = freshState(today); const w = T.demo; const base = w.items.filter((i) => i.ownerId === 'alex');
+    for (let k = 0; k < 180; k++) { const c = clone(base[k % base.length]); c.id = 'BIG' + k; c.code = ''; c.name += ' ' + k; w.items.push(c); }
+    const t0 = Date.now(); const ctx = w.contexts.find((x) => x.id === 'C01');
+    const r = generateOutfits(w, ctx, w.profiles[0], { onlyAvailable: true }, today);
+    const sug = styleSuggestions(w, 'alex', Object.assign({}, w.profiles[0], { undertone: 'cálido' }), 4);
+    const ms = Date.now() - t0;
+    return { ok: r.complete.length >= 3 && sug.length > 0 && ms < 1500, detail: ms + ' ms · ' + r.complete.length + ' outfits' };
+  });
   return out;
 }
 /* =====================================================================
@@ -2412,7 +2462,7 @@ function styleSuggestions(ws, ownerId, p, limit) {
   // Variedad: primero una por categoría y color distinto; luego se completa por puntaje.
   const picked = []; const seenType = new Set(); const seenCat = new Set(); const seenColor = new Set(); const max = limit || 3;
   for (const s of out) { const c = s.candidate; if (seenCat.has(c.category) || seenColor.has(norm(c.color))) continue; seenCat.add(c.category); seenColor.add(norm(c.color)); seenType.add(c.subtype); picked.push(s); if (picked.length >= max) return picked; }
-  for (const s of out) { if (picked.includes(s) || seenType.has(s.candidate.subtype)) continue; seenType.add(s.candidate.subtype); picked.push(s); if (picked.length >= max) break; }
+  for (const s of out) { if (picked.includes(s) || seenType.has(s.candidate.subtype) || picked.some((x) => x.candidate.category === s.candidate.category && norm(x.candidate.color) === norm(s.candidate.color))) continue; seenType.add(s.candidate.subtype); picked.push(s); if (picked.length >= max) break; }
   return picked;
 }
 const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -4238,8 +4288,8 @@ function renderAbout() {
     block('Trabajo por resolver', '“Cuando tengo una actividad, quiero elegir rápidamente una combinación que me guste, me resulte cómoda y sea adecuada, aprovechando mi ropa disponible.”') +
     block('Propuesta de valor', 'Decisión rápida + inventario real + aprendizaje de preferencias expresadas + compras que amplían combinaciones + circulación responsable.') +
     block('Hipótesis a validar', '1) Con unas cinco prendas compatibles ya hay valor percibido. 2) La carga inicial del armario es la principal barrera de activación. 3) Ver la completitud y las alternativas reduce compras impulsivas. 4) Las personas confirman el uso si el gesto es de un toque.') +
-    block('MVP (este prototipo)', 'Perfil mínimo, armario con fotos de sesión, generador determinista 3→6, completitud transparente, historial con confirmación de uso, comparador y pedido simulados, desuso y donación con estados separados, exportación JSON.') +
-    block('Ampliación futura', 'Etiquetado por imagen con IA (opcional y confirmado por la persona), clima real, catálogos autorizados con stock confirmado, checkout seguro del comercio, sincronización de fotos, entidades de donación verificadas.') +
+    block('MVP (este prototipo)', 'Cuentas con DNI y datos cifrados en el teléfono, armario con fotos y códigos QR, generador determinista 3→6 con figura ilustrada y giro 360°, paleta personal y visagismo, completitud transparente, calendario con varias opciones, historial con confirmación de uso, panorama de salud del armario, vitrina entre personas (publicar, ofertar, acordar y opinar), comparador y pedidos simulados, desuso y donación con estados separados, respaldo y exportación.') +
+    block('Ampliación futura', 'Servidor para sincronizar entre dispositivos y abrir la vitrina a otros celulares, etiquetado por imagen con IA (opcional y confirmado por la persona), clima real, catálogos autorizados con stock confirmado, checkout seguro del comercio, entidades de donación verificadas.') +
     block('Modelo de negocio (hipótesis)', 'Acceso básico gratuito a armario y outfits; funciones avanzadas opcionales. Una futura afiliación sería visible y nunca desplazaría un outfit completo y adecuado.') +
     block('Criterios de éxito', '<b>Métrica principal:</b> outfits confirmados como usados por usuario activo semanal (activo = completó una acción central esa semana). <b>Complementarias:</b> tiempo al primer outfit elegido, paso de elección a uso, retorno semanal, diversidad de prendas usadas, satisfacción y rechazos por disponibilidad.') +
     '</div><div class="card stack"><span class="eyebrow">Eventos locales de esta sesión (ejemplo, no evidencia de demanda)</span><div class="kpis">' +
@@ -4332,7 +4382,7 @@ function renderItemForm(m) {
   const types = QUICK_TYPES[d.category] || [];
   const typeChips = types.length ? '<div class="field"><span class="lbl">Tipo</span><div class="chip-scroll">' + types.map((t) => '<button type="button" class="chip btnchip" data-act="mfSet" data-path="subtype" data-val="' + esc(t) + '" aria-pressed="' + (d.subtype === t) + '">' + esc(t) + '</button>').join('') + '</div></div>' : '';
   const colorChips = '<div class="field"><span class="lbl">Color' + (d.color && d.color !== 'sin color' ? ': <b>' + esc(d.color) + '</b>' : '') + (m.detected ? ' <span class="chip explore" style="padding:1px 8px">' + (norm(d.color) === norm(m.detected) ? 'detectado en tu foto' : 'en tu foto parece ' + esc(m.detected)) + '</span>' : '') + '</span><div class="swatches">' + QUICK_COLORS.map((c) => '<button type="button" class="swatch" style="background:' + colorHex(c) + '" data-act="mfSet" data-path="color" data-val="' + esc(c) + '" aria-pressed="' + (norm(d.color) === norm(c)) + '" aria-label="' + esc(c) + '" title="' + esc(c) + '"></button>').join('') + '</div></div>';
-  const nameField = '<div class="field"><label for="if-name">Nombre' + (quick ? ' (opcional)' : ' *') + '</label><input class="input" id="if-name" value="' + esc(d.name || '') + '" placeholder="' + esc(suggestedName(d)) + '"' + bindAttr('mf', 'name') + '></div>';
+  const nameField = '<div class="field"><label for="if-name">Nombre' + (quick ? ' (opcional)' : ' *') + '</label><input class="input" id="if-name" maxlength="80" value="' + esc(d.name || '') + '" placeholder="' + esc(suggestedName(d)) + '"' + bindAttr('mf', 'name') + '></div>';
   const details = '<div class="form-grid">' +
     (quick ? '' : fSelect('if-cat', 'Categoría *', 'mf', 'category', CATEGORIES[d.category] ? d.category : '__custom', catOpts)) +
     (!CATEGORIES[d.category] ? fInput('if-ccat', 'Categoría personalizada', 'mf', 'customCategory', d.customCategory || (d.category !== '__custom' ? d.category : '')) : '') +
@@ -4981,8 +5031,8 @@ const TOUR_STEPS = [
   { sel: ['[data-tour="ctx"]'], title: 'Dime a dónde vas', text: 'Toca aquí y escribe o dicta tu día: “reunión en San Isidro, caminaré bastante”. RELISTO lo convierte en campos.' },
   { sel: ['[data-tour="arma"]', '[data-tour="nav-arma"]'], title: 'Un toque, tres outfits', text: '“Arma mi día” combina solo ropa disponible. Desliza para ver cada propuesta y amplía hasta seis.' },
   { sel: ['.outfit .grow-btn', '[data-tour="arma"]'], before: () => { if (!genState() && ownedItems(ws(), ws().activeProfileId).length) doGenerate(); }, title: 'Elige y confirma', text: '“Me lo pongo hoy” anota tu elección. Cuando lo uses, toca “Sí, lo usé”: así RELISTO aprende qué usas de verdad.' },
-  { sel: ['[data-tour="nav-armario"]', '[data-tour="side-armario"]'], title: 'Tu armario con fotos', text: 'Toma una foto, elige qué es y su color, y listo: el nombre se completa solo.' },
-  { sel: ['[data-tour="nav-circular"]', '[data-tour="side-circular"]'], title: 'Dale más vida', text: 'Prendas olvidadas, reparación, venta o donación. Sin culpa: repetir también es tener estilo.' },
+  { sel: ['[data-tour="nav-armario"]', '[data-tour="side-armario"]'], title: 'Tu armario con fotos', text: 'Toma una foto, elige qué es y su color, y listo: el nombre se completa solo. En Panorama ves qué usas y qué puedes redescubrir.' },
+  { sel: ['[data-tour="nav-circular"]', '[data-tour="side-circular"]'], title: 'Dale más vida', text: 'Prendas olvidadas, reparación o donación, y la Vitrina para vender con tu precio y recibir ofertas. Sin culpa: repetir también es tener estilo.' },
   { sel: ['[data-tour="who"]', '[data-tour="account"]', '[data-tour="side-perfil"]'], title: IS_PWA ? 'Tu cuenta, tus datos' : 'Perfiles y datos', text: IS_PWA ? 'Aquí cambias de perfil, entras a tu cuenta y compartes RELISTO. Tu armario queda cifrado en este teléfono.' : 'Cambia entre Alex, Valeria y Noa o entra a tu armario personal.' }
 ];
 function tourDone() { try { return localStorage.getItem('relisto-tour-done') === '1'; } catch (e) { return false; } }
@@ -5407,7 +5457,7 @@ Object.assign(ACT, {
     commit();
   },
   washToggle: (el) => { const i = w_item(el.dataset.item); if (!i) return; i.availability = i.availability === 'por lavar' ? 'disponible' : 'por lavar'; toast(i.availability === 'por lavar' ? i.name + ': por lavar. No aparecerá en sugerencias hasta que la laves.' : i.name + ': disponible.'); commit(); },
-  washAll: () => { const w = ws(); const dirty = ownedItems(w, w.activeProfileId).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability)); dirty.forEach((i) => { i.availability = 'disponible'; }); celebrate(null); toast(plural(dirty.length, 'prenda vuelve', 'prendas vuelven') + ' a estar disponibles.'); commit(); },
+  washAll: () => { const w = ws(); const dirty = ownedItems(w, w.activeProfileId).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability)); dirty.forEach((i) => { i.availability = 'disponible'; }); celebrate(null); toast(plural(dirty.length, 'prenda vuelve', 'prendas vuelven') + ' a estar ' + (dirty.length === 1 ? 'disponible.' : 'disponibles.')); commit(); },
   labelsOpen: () => openModal({ type: 'labels', sel: new Set(ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id)) }),
   labelsAll: () => { const m = UI.modal; const all = ownedItems(ws(), ws().activeProfileId).filter((i) => !isGone(i)).map((i) => i.id); m.sel = m.sel.size === all.length ? new Set() : new Set(all); render(); },
   labelsPrint: (el) => { const w = ws(); const ids = el.dataset.one ? [el.dataset.one] : Array.from(UI.modal.sel); printLabels(ids.map((id) => w.items.find((i) => i.id === id)).filter((i) => i && i.code)); }
@@ -5986,7 +6036,7 @@ function renderMkPublish(m) {
   return modalWrap('Que lo sepan', '<div class="stack">' +
     '<div class="row" style="flex-wrap:nowrap;gap:12px;align-items:center"><div style="width:84px;flex:none">' + thumb(i, { noTag: true, noFlip: true }) + '</div><div class="stack tight" style="min-width:0"><b>' + esc(i.name) + '</b><span class="tiny muted">' + esc(i.code || '') + (i.size ? ' · talla ' + esc(i.size) : '') + '</span><span class="tiny muted">' + esc(ctx) + '</span></div></div>' +
     (ph ? '' : '<div class="note">Sin foto se muestra la ilustración. Una foto real ayuda a que vean la prenda como es: agrégala desde su ficha.</div>') +
-    '<div class="field"><label for="mk-price">Tu precio de venta (S/) *</label><input class="input num" id="mk-price" type="number" inputmode="numeric" min="1" max="100000" placeholder="Ej.: 60" value="' + esc(d.price ?? '') + '" data-mk-draft="price"></div>' +
+    '<div class="field"><label for="mk-price">Tu precio de venta (S/, sin céntimos) *</label><input class="input num" id="mk-price" type="number" inputmode="numeric" step="1" min="1" max="100000" placeholder="Ej.: 60" value="' + esc(d.price ?? '') + '" data-mk-draft="price"></div>' +
     '<label class="check"><input type="checkbox"' + (d.acceptOffers ? ' checked' : '') + bindAttr('mf', 'acceptOffers') + '> Acepto ofertas (puedo responder con una contraoferta)</label>' +
     '<div class="field"><span class="lbl">Estado de la prenda</span><div class="row">' + MK_CONDITIONS.map((c) => '<button type="button" class="chip btnchip" data-act="mkDraftSet" data-k="condition" data-val="' + c + '" aria-pressed="' + (d.condition === c) + '">' + esc(c) + '</button>').join('') + '</div></div>' +
     '<div class="field"><label for="mk-pd">Distrito de entrega *</label><select class="input" id="mk-pd"' + bindAttr('mf', 'district') + '>' + opt('', d.district, 'Elige tu distrito') + (myD.length ? '<optgroup label="Tus distritos">' + myD.map((x) => opt(x, d.district)).join('') + '</optgroup><optgroup label="Todos">' : '') + MK_DISTRICTS.map((x) => opt(x, d.district)).join('') + (myD.length ? '</optgroup>' : '') + '</select><span class="tiny muted">Solo se muestra el distrito, nunca tu dirección.</span></div>' +
@@ -6009,7 +6059,7 @@ function renderMkListing(m) {
   else if (myOffer) actions = '<div class="note info row between"><span>Ya ofertaste ' + fmtPEN(myOffer.amount) + '. Estado: ' + esc(myOffer.status) + '.</span><button class="btn sm" data-act="mkGoCompro">Ver en Compro</button></div>';
   else actions = '<div class="stack tight"><button class="btn primary" data-act="mkBuy" data-id="' + l.id + '">Comprar a ' + fmtPEN(l.price) + '</button>' +
     (l.acceptOffers ? '<div class="row" style="flex-wrap:nowrap"><label class="sr-only" for="mk-amt">Tu oferta en soles</label><input class="input num" id="mk-amt" type="number" inputmode="numeric" min="1" max="' + (l.price - 1) + '" placeholder="Tu oferta (S/)" value="' + esc(amt) + '" data-mk-amt="' + l.id + '" style="flex:1;min-width:0"><button class="btn" data-act="mkMakeOffer" data-id="' + l.id + '">Ofertar</button></div>' : '<span class="tiny muted">Precio fijo: no acepta ofertas.</span>') +
-    '<details class="more"><summary>Mensaje y contacto (opcional)</summary><div class="stack tight" style="margin-top:8px"><input class="input" id="mk-msg" maxlength="200" placeholder="Ej.: ¿puedo recogerla el sábado?" value="' + esc(UI.mk.msg || '') + '" data-mk-msg="1"><input class="input" id="mk-ct" maxlength="80" placeholder="Cómo coordinar: WhatsApp, Instagram…" value="' + esc(UI.mk.contact || '') + '" data-mk-ct="1"><span class="tiny muted">Tu contacto solo se comparte si aceptan tu oferta.</span></div></details></div>';
+    '<details class="more"><summary>Mensaje y contacto (opcional)</summary><div class="stack tight" style="margin-top:8px"><label class="sr-only" for="mk-msg">Mensaje para quien vende</label><input class="input" id="mk-msg" maxlength="200" placeholder="Ej.: ¿puedo recogerla el sábado?" value="' + esc(UI.mk.msg || '') + '" data-mk-msg="1"><label class="sr-only" for="mk-ct">Cómo coordinar</label><input class="input" id="mk-ct" maxlength="80" placeholder="Cómo coordinar: WhatsApp, Instagram…" value="' + esc(UI.mk.contact || '') + '" data-mk-ct="1"><span class="tiny muted">Tu contacto solo se comparte si aceptan tu oferta.</span></div></details></div>';
   const reviews = rep.reviews.slice(0, 3).map((x) => '<div class="mk-review">' + starsHTML(x.stars, 1) + '<span class="tiny muted">' + esc(x.fromName) + ' · compra verificada · ' + fmtDate(x.createdAt) + (x.origin === 'demo' ? ' · Simulado' : '') + '</span>' + (x.tags.length ? '<span class="tiny">' + esc(x.tags.join(' · ')) + '</span>' : '') + (x.comment ? '<span class="small">“' + esc(x.comment) + '”</span>' : '') + '</div>').join('');
   const chips = [l.condition, l.snap.size ? 'talla ' + l.snap.size : null, l.snap.material && !/no confirmado/.test(l.snap.material) ? l.snap.material : null].filter(Boolean).map((t) => '<span class="chip">' + esc(t) + '</span>').join('');
   return modalWrap(l.snap.name, '<div class="grid two"><div class="stack tight">' + thumb(mkPseudo(l), { cls: 'xl', noTag: !MKPH[l.id] }) + '</div><div class="stack">' +
