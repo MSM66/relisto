@@ -75,7 +75,7 @@ function renderPanorama() {
   return '<div class="stack">' +
     '<div class="card stack"><div class="row between"><span class="eyebrow">Salud de tu armario' + demo + '</span><button class="btn sm ghost" data-act="nav" data-view="circular">Umbral: ' + th + ' días</button></div>' + tiles + healthBar(h) + '</div>' +
     cards + '<div class="grid two">' + weeklyChart(weeklyWear(w, p.id, TODAY, 8)) + top + '</div>' +
-    '<p class="tiny muted">Cada prenda activa está en un solo grupo. Los días se cuentan desde el último uso confirmado o, si nunca se registró, desde que la agregaste. El valor usa solo precios que registraste' + (isDemo() ? ' (en la demo son ficticios)' : '') + '; el costo por uso incluye los usos anteriores que indicaste. No calculamos agua, CO₂ ni ahorro: no hay una metodología verificable para hacerlo aquí.</p></div>';
+    infoMore('¿Cómo se calcula?', 'Cada prenda activa está en un solo grupo. Los días se cuentan desde el último uso confirmado o, si nunca se registró, desde que la agregaste. El valor usa solo precios que registraste' + (isDemo() ? ' (en la demo son ficticios)' : '') + '; el costo por uso incluye los usos anteriores que indicaste. No calculamos agua, CO₂ ni ahorro: no hay una metodología verificable para hacerlo aquí.', true) + '</div>';
 }
 
 /* ---------- Pestaña nueva en Mi armario ---------- */

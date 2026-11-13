@@ -32,7 +32,7 @@ function renderNeeds() {
   const styled = styleCompleteness(p).paletteReady;
   const sugg = styled ? styleSuggestions(w, p.id, p, 4) : versatileSuggestions(w, p.id);
   const value = '<div class="stack">' + sectionTitle('Lo que suma a mi armario', '', 'Valor estimado por combinaciones') +
-    '<p class="small muted" style="max-width:70ch">Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.</p>' +
+    infoMore('¿Cómo se calcula?', 'Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.') +
     (styled ? '' : '<div class="card explore row between"><span class="small" style="flex:1;min-width:200px"><b>Sugerencias a tu medida.</b> Con tu subtono, tono de piel y forma del rostro, RELISTO elige colores y cuellos de tu paleta.</span><button class="btn sm primary" data-act="styleOpen">' + IC.palette + 'Completar en 1 minuto</button></div>') +
     (sugg.length ? '<div class="grid two">' + sugg.map((s) => valueCard(s)).join('') + '</div>' : '<div class="note">Con tu armario actual no hay una prenda versátil que sume combinaciones sin duplicar algo que ya tienes.</div>') + '</div>';
   const plansHTML = '<div class="card stack"><span class="eyebrow">Planes de compra</span>' + (plans.length ? plans.map((pl) => '<div class="row between"><span><b>' + esc(pl.id) + '</b> · ' + esc(pl.reason || '') + '<br><span class="small muted">Presupuesto ' + fmtPEN(pl.budgetPEN) + ' · fecha planificada ' + fmtDate(pl.plannedDate) + '</span></span><span class="badge info">' + esc(pl.status) + '</span></div>').join('<hr class="sep">') : '<span class="small muted">Sin planes por ahora.</span>') + '</div>';
@@ -175,7 +175,7 @@ function renderBudget() {
   const budget = Number(p.monthlyBudget) || 0;
   return '<div class="card stack">' + '<div class="form-grid">' + fInput('b-month', 'Presupuesto mensual orientativo (S/)', 'prof', 'monthlyBudget', p.monthlyBudget ?? '', 'number') +
     fSelect('b-freq', 'Frecuencia deseada de compras', 'prof', 'shoppingFrequency', p.shoppingFrequency, ['cuando lo necesito', 'una vez al mes', 'cada tres meses', 'dos veces al año']) + '</div>' +
-    '<div class="kpis"><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget) : '—') + '</b><span>presupuesto del mes</span></div><div class="kpi"><b class="num">' + fmtPEN(spent) + '</b><span>gasto ' + (isDemo() ? 'simulado' : 'registrado') + ' este mes</span></div>' +
+    '<div class="kpis k2"><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget) : '—') + '</b><span>presupuesto del mes</span></div><div class="kpi"><b class="num">' + fmtPEN(spent) + '</b><span>gasto ' + (isDemo() ? 'simulado' : 'registrado') + ' este mes</span></div>' +
     '<div class="kpi"><b class="num">' + fmtPEN(planned) + '</b><span>compras planificadas abiertas</span></div><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget - spent) : '—') + '</b><span>disponible estimado</span></div></div>' +
     '<p class="small muted">El presupuesto es opcional y solo tuyo. Préstamo, segunda mano y reparación suelen costar menos que una prenda nueva: compáralos antes.</p></div>';
 }
@@ -230,14 +230,14 @@ function renderCircular() {
     '<div class="kpi"><b class="num">' + h.totalUses + '</b><span>usos registrados</span></div><div class="kpi"><b class="num">' + h.recovered + '</b><span>prendas recuperadas del desuso</span></div>' +
     '<div class="kpi"><b class="num">' + h.repairs + '</b><span>reparaciones completadas</span></div><div class="kpi"><b class="num">' + h.donations + '</b><span>donaciones entregadas</span></div></div>' +
     (cpu.length ? '<div class="stack tight"><span class="small"><b>Costo por uso</b> (precio registrado ÷ usos registrados)</span>' + cpu.map((x) => '<div class="row between small"><span>' + esc(x.item.name) + '</span><span class="num">' + fmtPEN(Math.round(x.cpu * 100) / 100) + ' · ' + x.uses + ' usos</span></div>').join('') + '</div>' : '') +
-    '<p class="tiny muted">El costo por uso se basa en los usos registrados y puede no incluir usos anteriores' + (isDemo() ? '; en la demo, los usos base y los precios son ficticios' : '') + '. No mostramos agua, CO₂ ni impacto de donación: no hay metodología verificable para calcularlos aquí. Repetir un outfit no demuestra por sí solo una compra evitada.</p></div>';
+    infoMore('¿Cómo se calcula?', 'El costo por uso se basa en los usos registrados y puede no incluir usos anteriores' + (isDemo() ? '; en la demo, los usos base y los precios son ficticios' : '') + '. No mostramos agua, CO₂ ni impacto de donación: no hay metodología verificable para calcularlos aquí. Repetir un outfit no demuestra por sí solo una compra evitada.', true) + '</div>';
   return sectionTitle('Dale más vida', '', 'Circular') +
     '<div class="card soft stack tight"><b class="serif" style="font-size:22px">Antes de comprar, descubre otra combinación.</b><span class="small">Reutiliza, repara, presta, vende o dona. Todas son decisiones voluntarias.</span></div>' +
-    '<div class="card stack"><span class="eyebrow">Umbral de revisión: ' + th + ' días sin uso registrado</span>' + thControls + '<span class="tiny muted">El tiempo cuenta desde el último uso confirmado. Si nunca se registró un uso, desde la incorporación. Un armario recién cargado no permite saber si una prenda llevaba un año sin usarse.</span></div>' +
+    '<div class="card stack"><span class="eyebrow">Umbral de revisión: ' + th + ' días sin uso registrado</span>' + thControls + infoMore('¿Cómo se cuenta?', 'El tiempo cuenta desde el último uso confirmado. Si nunca se registró un uso, desde la incorporación. Un armario recién cargado no permite saber si una prenda llevaba un año sin usarse.') + '</div>' +
     (recentCir ? '<div class="note info">Caso sugerido: ' + esc(recentCir.reason) + '. ' + esc(recentCir.note) + '</div>' : '') +
     sectionTitle('Para revisar', '<span class="chip num">' + r.review.length + '</span>') + review + excluded +
     '<div class="grid two">' + repairHTML + track + '</div>' + habitsHTML +
-    '<div class="note">Reciclaje textil: si una prenda está desgastada o rota sin arreglo, márcalo al completar los detalles de donación; RELISTO te lo indicará como destino adecuado, sin inventar puntos de reciclaje.</div>';
+    infoMore('¿Y el reciclaje textil?', 'Reciclaje textil: si una prenda está desgastada o rota sin arreglo, márcalo al completar los detalles de donación; RELISTO te lo indicará como destino adecuado, sin inventar puntos de reciclaje.');
 }
 
 /* ============================ MI PERFIL ============================ */
@@ -274,11 +274,7 @@ function renderProfile() {
   } else if (t === 'color') {
     body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(cap1(k)) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
       '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="no sé" aria-pressed="' + (p.undertone === 'no sé') + '"><b>No sé</b><span class="tiny">Prueba: ¿te favorecen más las joyas doradas (cálido) o plateadas (frío)? ¿Ambas? (neutro)</span></button></div></div>' +
-      '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
-      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad.</span></div>' +
-      '<div class="card stack"><span class="eyebrow">Forma del rostro (visagismo, opcional)</span>' + faceShapePicker(p) + '</div>' +
-      '<div class="card stack"><span class="eyebrow">Cabello y ojos (opcional)</span><div class="field"><span class="lbl">Color de cabello</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
-      '<div class="form-grid">' + fInput('p-eyes', 'Ojos', 'prof', 'eyes', p.eyes) + '</div></div>' +
+      '<div class="card stack"><div class="form-grid">' + fInput('p-eyes', 'Color de ojos (opcional)', 'prof', 'eyes', p.eyes) + '</div></div>' +
       renderPaletteCard(p) + '<p class="small muted">Las armonías de color y el visagismo son sugerencias flexibles basadas en lo que declaras, no reglas. Tu gusto manda.</p><div class="row">' + skip('color') + '</div>';
   } else if (t === 'figura') {
     body = renderFigureTab();

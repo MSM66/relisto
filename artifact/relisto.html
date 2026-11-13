@@ -402,7 +402,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .celebrate .tick { width: 84px; height: 84px; border-radius: 50%; background: var(--primary-fill); color: var(--on-primary); display: grid; place-items: center; animation: pop .5s cubic-bezier(.2,1.4,.4,1) both, fade 1.5s ease forwards; box-shadow: 0 10px 30px rgba(23,63,53,.35); }
 .celebrate .tick svg { width: 44px; height: 44px; }
 .celebrate b { position: absolute; top: calc(50% + 56px); font-family: var(--font-display); font-weight: 400; font-size: 26px; color: var(--ink); background: var(--surface); padding: 4px 14px; border-radius: 12px; animation: fade 1.5s ease forwards; }
-@media (max-width: 959px) { .toast { top: calc(66px + env(safe-area-inset-top, 0px)); bottom: auto; } }
+@media (max-width: 959px) { .toast.over-sheet { top: calc(14px + env(safe-area-inset-top, 0px)); bottom: auto; } .toast.over-fab:not(.over-sheet) { bottom: calc(156px + env(safe-area-inset-bottom, 0px)); } }
 .install-bar { display: grid; gap: 8px; padding: 10px 12px; border-radius: 16px; background: var(--explore); color: var(--on-explore); }
 .today-banner > .stack { flex: 1 1 55%; }
 .today-banner > .btn { margin-left: auto; }
@@ -631,13 +631,49 @@ button.swap-row:hover { border-color: var(--line-strong); }
 .btn, .chip, .badge, .nbadge, .tabs button, .seg2 button, .eyebrow { overflow-wrap: normal; }
 .btn { flex-shrink: 0; }
 @media (pointer: coarse) { .chip.btnchip { min-height: 34px; } }
+/* ---- 3.6 Usabilidad ---- */
+@media (max-width: 959px) { .toast:not(.over-sheet):not(.over-fab) { bottom: calc(108px + env(safe-area-inset-bottom, 0px)); } }
+.toast { display:flex; align-items:center; gap:12px; width:max-content; }
+.toast[hidden] { display:none; }
+.toast-undo { flex:none; border:0; border-radius:10px; padding:8px 12px; min-height:36px; font:inherit; font-weight:800; background:#F7F4ED; color:#252A29; cursor:pointer; }
+.info-more { font-size:13px; }
+.info-more summary { display:inline-flex; align-items:center; gap:7px; cursor:pointer; color:var(--ink-2); font-weight:600; list-style:none; min-height:32px; }
+.info-more summary::-webkit-details-marker { display:none; }
+.info-more .i-dot { display:inline-grid; place-items:center; width:18px; height:18px; border-radius:50%; border:1.5px solid currentColor; font-size:11px; font-weight:800; font-style:normal; }
+.info-more p { margin:4px 0 0; max-width:70ch; }
+.icon-btn.bell { position:relative; }
+.bell-n { position:absolute; top:-5px; right:-5px; }
+.side-bell { position:relative; }
+.side-bell .bell-n { position:static; margin-left:auto; }
+.pend-row { display:flex; gap:12px; align-items:flex-start; padding:12px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface); }
+.pend-ic { width:36px; height:36px; flex:none; border-radius:12px; display:grid; place-items:center; background:var(--primary-soft); color:var(--on-soft); }
+.pend-ic svg { width:20px; height:20px; }
+.acc-list { display:grid; gap:8px; }
+.acc { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; }
+.acc-head { display:flex; align-items:center; gap:12px; width:100%; padding:12px 14px; min-height:60px; border:0; background:none; color:inherit; font:inherit; cursor:pointer; }
+.acc-ic { width:36px; height:36px; flex:none; border-radius:12px; display:grid; place-items:center; background:var(--tile); color:var(--primary); }
+.acc-ic svg { width:20px; height:20px; }
+.acc-chev { font-size:22px; color:var(--ink-3); transition:transform .15s; }
+.acc.open .acc-chev { transform:rotate(90deg); }
+.acc-body { display:grid; gap:10px; padding:0 14px 14px; }
+.acc-body .style-nudge, .acc-body .card { margin:0; }
+.first-steps .fs-row { display:flex; align-items:center; gap:12px; padding:6px 0; }
+.fs-n { width:28px; height:28px; flex:none; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:13px; border:1.5px solid var(--line-strong); color:var(--ink-2); }
+.fs-n svg { width:15px; height:15px; }
+.fs-row.done .fs-n { background:var(--ok-soft); border-color:transparent; color:var(--ok); }
+.fs-row.done b { color:var(--ink-2); text-decoration:line-through; text-decoration-color:var(--line-strong); }
+.fs-row.now .fs-n { background:var(--primary-fill); border-color:transparent; color:var(--on-primary); }
+.today-banner.past { align-items:flex-start; }
+.tabs.fade-r { -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); }
+.tabs.fade-l { -webkit-mask-image:linear-gradient(270deg,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(270deg,#000 calc(100% - 36px),transparent); }
+.tabs.fade-l.fade-r { -webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); }
 </style>
 <div id="app"></div>
 <div id="modal-root"></div>
 <script>
 "use strict";
 const IS_PWA = false;
-const APP_VERSION = "20261105.2032";
+const APP_VERSION = "20261113.1656";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -3960,7 +3996,7 @@ function renderNeeds() {
   const styled = styleCompleteness(p).paletteReady;
   const sugg = styled ? styleSuggestions(w, p.id, p, 4) : versatileSuggestions(w, p.id);
   const value = '<div class="stack">' + sectionTitle('Lo que suma a mi armario', '', 'Valor estimado por combinaciones') +
-    '<p class="small muted" style="max-width:70ch">Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.</p>' +
+    infoMore('¿Cómo se calcula?', 'Calculamos las combinaciones válidas y deduplicadas con tus prendas disponibles en tus contextos, antes y después de sumar una candidata. Son posibilidades estimadas, no garantía de uso. Accesorios y reordenamientos no cuentan como combinaciones nuevas.') +
     (styled ? '' : '<div class="card explore row between"><span class="small" style="flex:1;min-width:200px"><b>Sugerencias a tu medida.</b> Con tu subtono, tono de piel y forma del rostro, RELISTO elige colores y cuellos de tu paleta.</span><button class="btn sm primary" data-act="styleOpen">' + IC.palette + 'Completar en 1 minuto</button></div>') +
     (sugg.length ? '<div class="grid two">' + sugg.map((s) => valueCard(s)).join('') + '</div>' : '<div class="note">Con tu armario actual no hay una prenda versátil que sume combinaciones sin duplicar algo que ya tienes.</div>') + '</div>';
   const plansHTML = '<div class="card stack"><span class="eyebrow">Planes de compra</span>' + (plans.length ? plans.map((pl) => '<div class="row between"><span><b>' + esc(pl.id) + '</b> · ' + esc(pl.reason || '') + '<br><span class="small muted">Presupuesto ' + fmtPEN(pl.budgetPEN) + ' · fecha planificada ' + fmtDate(pl.plannedDate) + '</span></span><span class="badge info">' + esc(pl.status) + '</span></div>').join('<hr class="sep">') : '<span class="small muted">Sin planes por ahora.</span>') + '</div>';
@@ -4103,7 +4139,7 @@ function renderBudget() {
   const budget = Number(p.monthlyBudget) || 0;
   return '<div class="card stack">' + '<div class="form-grid">' + fInput('b-month', 'Presupuesto mensual orientativo (S/)', 'prof', 'monthlyBudget', p.monthlyBudget ?? '', 'number') +
     fSelect('b-freq', 'Frecuencia deseada de compras', 'prof', 'shoppingFrequency', p.shoppingFrequency, ['cuando lo necesito', 'una vez al mes', 'cada tres meses', 'dos veces al año']) + '</div>' +
-    '<div class="kpis"><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget) : '—') + '</b><span>presupuesto del mes</span></div><div class="kpi"><b class="num">' + fmtPEN(spent) + '</b><span>gasto ' + (isDemo() ? 'simulado' : 'registrado') + ' este mes</span></div>' +
+    '<div class="kpis k2"><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget) : '—') + '</b><span>presupuesto del mes</span></div><div class="kpi"><b class="num">' + fmtPEN(spent) + '</b><span>gasto ' + (isDemo() ? 'simulado' : 'registrado') + ' este mes</span></div>' +
     '<div class="kpi"><b class="num">' + fmtPEN(planned) + '</b><span>compras planificadas abiertas</span></div><div class="kpi"><b class="num">' + (budget ? fmtPEN(budget - spent) : '—') + '</b><span>disponible estimado</span></div></div>' +
     '<p class="small muted">El presupuesto es opcional y solo tuyo. Préstamo, segunda mano y reparación suelen costar menos que una prenda nueva: compáralos antes.</p></div>';
 }
@@ -4158,14 +4194,14 @@ function renderCircular() {
     '<div class="kpi"><b class="num">' + h.totalUses + '</b><span>usos registrados</span></div><div class="kpi"><b class="num">' + h.recovered + '</b><span>prendas recuperadas del desuso</span></div>' +
     '<div class="kpi"><b class="num">' + h.repairs + '</b><span>reparaciones completadas</span></div><div class="kpi"><b class="num">' + h.donations + '</b><span>donaciones entregadas</span></div></div>' +
     (cpu.length ? '<div class="stack tight"><span class="small"><b>Costo por uso</b> (precio registrado ÷ usos registrados)</span>' + cpu.map((x) => '<div class="row between small"><span>' + esc(x.item.name) + '</span><span class="num">' + fmtPEN(Math.round(x.cpu * 100) / 100) + ' · ' + x.uses + ' usos</span></div>').join('') + '</div>' : '') +
-    '<p class="tiny muted">El costo por uso se basa en los usos registrados y puede no incluir usos anteriores' + (isDemo() ? '; en la demo, los usos base y los precios son ficticios' : '') + '. No mostramos agua, CO₂ ni impacto de donación: no hay metodología verificable para calcularlos aquí. Repetir un outfit no demuestra por sí solo una compra evitada.</p></div>';
+    infoMore('¿Cómo se calcula?', 'El costo por uso se basa en los usos registrados y puede no incluir usos anteriores' + (isDemo() ? '; en la demo, los usos base y los precios son ficticios' : '') + '. No mostramos agua, CO₂ ni impacto de donación: no hay metodología verificable para calcularlos aquí. Repetir un outfit no demuestra por sí solo una compra evitada.', true) + '</div>';
   return sectionTitle('Dale más vida', '', 'Circular') +
     '<div class="card soft stack tight"><b class="serif" style="font-size:22px">Antes de comprar, descubre otra combinación.</b><span class="small">Reutiliza, repara, presta, vende o dona. Todas son decisiones voluntarias.</span></div>' +
-    '<div class="card stack"><span class="eyebrow">Umbral de revisión: ' + th + ' días sin uso registrado</span>' + thControls + '<span class="tiny muted">El tiempo cuenta desde el último uso confirmado. Si nunca se registró un uso, desde la incorporación. Un armario recién cargado no permite saber si una prenda llevaba un año sin usarse.</span></div>' +
+    '<div class="card stack"><span class="eyebrow">Umbral de revisión: ' + th + ' días sin uso registrado</span>' + thControls + infoMore('¿Cómo se cuenta?', 'El tiempo cuenta desde el último uso confirmado. Si nunca se registró un uso, desde la incorporación. Un armario recién cargado no permite saber si una prenda llevaba un año sin usarse.') + '</div>' +
     (recentCir ? '<div class="note info">Caso sugerido: ' + esc(recentCir.reason) + '. ' + esc(recentCir.note) + '</div>' : '') +
     sectionTitle('Para revisar', '<span class="chip num">' + r.review.length + '</span>') + review + excluded +
     '<div class="grid two">' + repairHTML + track + '</div>' + habitsHTML +
-    '<div class="note">Reciclaje textil: si una prenda está desgastada o rota sin arreglo, márcalo al completar los detalles de donación; RELISTO te lo indicará como destino adecuado, sin inventar puntos de reciclaje.</div>';
+    infoMore('¿Y el reciclaje textil?', 'Reciclaje textil: si una prenda está desgastada o rota sin arreglo, márcalo al completar los detalles de donación; RELISTO te lo indicará como destino adecuado, sin inventar puntos de reciclaje.');
 }
 
 /* ============================ MI PERFIL ============================ */
@@ -4202,11 +4238,7 @@ function renderProfile() {
   } else if (t === 'color') {
     body = renderStyleNudge(true) + '<div class="card stack"><span class="eyebrow">Subtono (lo declaras tú)</span><div class="under-grid">' + Object.entries(PALETTES).map(([k, v]) => '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="' + k + '" aria-pressed="' + (p.undertone === k) + '"><span class="under-sw">' + v.colors.slice(0, 4).map((c) => '<i style="background:' + colorHex(c) + '"></i>').join('') + '</span><b>' + esc(cap1(k)) + '</b><span class="tiny">' + esc(v.hint) + '</span></button>').join('') +
       '<button type="button" class="under-card" data-act="profSet" data-path="undertone" data-val="no sé" aria-pressed="' + (p.undertone === 'no sé') + '"><b>No sé</b><span class="tiny">Prueba: ¿te favorecen más las joyas doradas (cálido) o plateadas (frío)? ¿Ambas? (neutro)</span></button></div></div>' +
-      '<div class="card stack"><span class="eyebrow">Tono de piel (opcional, selección manual)</span><div class="row">' + MONK.map((c, i) => '<button class="tone-swatch" style="background:' + c + '" data-act="setTone" data-n="' + (i + 1) + '" aria-pressed="' + (p.skinTone === 'Monk ' + (i + 1) + ', seleccionado manualmente') + '" aria-label="Tono Monk ' + (i + 1) + '"></button>').join('') + '<button class="btn sm ghost" data-act="setTone" data-n="0">Prefiero omitir</button></div>' +
-      '<span class="tiny muted">Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). Actual: ' + esc(p.skinTone) + '. RELISTO no infiere etnia, atractivo, salud ni personalidad.</span></div>' +
-      '<div class="card stack"><span class="eyebrow">Forma del rostro (visagismo, opcional)</span>' + faceShapePicker(p) + '</div>' +
-      '<div class="card stack"><span class="eyebrow">Cabello y ojos (opcional)</span><div class="field"><span class="lbl">Color de cabello</span><div class="swatches">' + Object.entries(HAIR_COLORS).filter(([k]) => k !== 'otro').map(([k, hx]) => '<button type="button" class="swatch" style="background:' + hx + '" data-act="profSet" data-path="hair" data-val="' + esc(k) + '" aria-pressed="' + (p.hair === k) + '" aria-label="' + esc(k) + '" title="' + esc(k) + '"></button>').join('') + '</div></div>' +
-      '<div class="form-grid">' + fInput('p-eyes', 'Ojos', 'prof', 'eyes', p.eyes) + '</div></div>' +
+      '<div class="card stack"><div class="form-grid">' + fInput('p-eyes', 'Color de ojos (opcional)', 'prof', 'eyes', p.eyes) + '</div></div>' +
       renderPaletteCard(p) + '<p class="small muted">Las armonías de color y el visagismo son sugerencias flexibles basadas en lo que declaras, no reglas. Tu gusto manda.</p><div class="row">' + skip('color') + '</div>';
   } else if (t === 'figura') {
     body = renderFigureTab();
@@ -5802,7 +5834,7 @@ function renderPanorama() {
   return '<div class="stack">' +
     '<div class="card stack"><div class="row between"><span class="eyebrow">Salud de tu armario' + demo + '</span><button class="btn sm ghost" data-act="nav" data-view="circular">Umbral: ' + th + ' días</button></div>' + tiles + healthBar(h) + '</div>' +
     cards + '<div class="grid two">' + weeklyChart(weeklyWear(w, p.id, TODAY, 8)) + top + '</div>' +
-    '<p class="tiny muted">Cada prenda activa está en un solo grupo. Los días se cuentan desde el último uso confirmado o, si nunca se registró, desde que la agregaste. El valor usa solo precios que registraste' + (isDemo() ? ' (en la demo son ficticios)' : '') + '; el costo por uso incluye los usos anteriores que indicaste. No calculamos agua, CO₂ ni ahorro: no hay una metodología verificable para hacerlo aquí.</p></div>';
+    infoMore('¿Cómo se calcula?', 'Cada prenda activa está en un solo grupo. Los días se cuentan desde el último uso confirmado o, si nunca se registró, desde que la agregaste. El valor usa solo precios que registraste' + (isDemo() ? ' (en la demo son ficticios)' : '') + '; el costo por uso incluye los usos anteriores que indicaste. No calculamos agua, CO₂ ni ahorro: no hay una metodología verificable para hacerlo aquí.', true) + '</div>';
 }
 
 /* ---------- Pestaña nueva en Mi armario ---------- */
@@ -5959,7 +5991,7 @@ function renderVitrina() {
     const rows = mkBrowse(M, w, p.id, me, { cat: UI.mk.cat, near: UI.mk.near && !!me.district, sort: UI.mk.sort });
     body = filters + (rows.length ? '<div class="mk-grid">' + rows.map((r) => mkCard(r, me)).join('') + '</div>'
       : '<div class="card">' + emptyState('Aún no hay prendas aquí', M.listings.some((l) => l.status === 'publicada' && l.sellerId !== me.id) ? 'Prueba quitar filtros o ampliar la distancia.' : 'Sé quien empieza: publica algo que ya no uses.', '<button class="btn primary" data-act="mkPick">Publicar una prenda</button>') + '</div>') +
-      '<p class="tiny muted">“+N outfits” cuenta combinaciones nuevas con las prendas que ya tienes. La distancia es aproximada entre distritos: el costo del delivery lo acuerdan entre ustedes.</p>';
+      infoMore('¿Qué significan “+N outfits” y los km?', '“+N outfits” cuenta combinaciones nuevas con las prendas que ya tienes. La distancia es aproximada entre distritos: el costo del delivery lo acuerdan entre ustedes.');
   } else if (s === 'vendo') body = renderVendo(M, me);
   else body = renderCompro(M, me);
   return '<div class="stack">' + head + scope + sub + body + '</div>';
@@ -6207,6 +6239,220 @@ document.addEventListener('input', (e) => {
   else if (t.dataset.mkCt) UI.mk.contact = t.value;
   else if (t.dataset.mkComment) { const id = t.dataset.mkComment; (UI.mk.rev[id] || (UI.mk.rev[id] = { stars: 0, tags: [], comment: '' })).comment = t.value; }
 });
+/* =====================================================================
+   USABILIDAD 3.6: Hoy compacto, confirmación de ayer, primeros pasos,
+   pendientes en un solo lugar, avisos con Deshacer, perfil en 4 pestañas,
+   pestañas que no se cortan y explicaciones plegadas.
+   ===================================================================== */
+IC.bell = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7 2.5 7h-17S6 15 6 9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>';
+
+/* ---------- 8) Explicaciones plegadas ---------- */
+function infoMore(title, html, tiny) {
+  return '<details class="info-more"><summary><span class="i-dot" aria-hidden="true">i</span>' + esc(title) + '</summary><p class="' + (tiny ? 'tiny' : 'small') + ' muted">' + html + '</p></details>';
+}
+
+/* ---------- 6) Avisos abajo y con Deshacer ---------- */
+toast = function (msg, undo) { // eslint-disable-line no-func-assign
+  UI.toast = msg; UI.toastUndo = typeof undo === 'function' ? undo : null;
+  paintToast();
+  clearTimeout(UI.toastTimer);
+  UI.toastTimer = setTimeout(() => { UI.toast = null; UI.toastUndo = null; const t = document.getElementById('toast'); if (t) t.hidden = true; }, UI.toastUndo ? 7000 : 4200);
+};
+function paintToast() {
+  const el = document.getElementById('toast'); if (!el) return;
+  el.hidden = !UI.toast;
+  el.classList.toggle('over-sheet', !!UI.modal);
+  el.classList.toggle('over-fab', !!document.querySelector('.fab-add'));
+  el.innerHTML = '<span>' + esc(UI.toast || '') + '</span>' + (UI.toastUndo ? '<button type="button" class="toast-undo" data-act="toastUndo">Deshacer</button>' : '');
+}
+/* Deshacer genérico: guarda una copia del espacio (y de la vitrina) antes de la acción. */
+function withUndo(name, fallbackMsg, when) {
+  const orig = ACT[name]; if (!orig) return;
+  ACT[name] = function (el, e) {
+    if (when && !when(el)) return orig(el, e);
+    const space = S.space; const snap = JSON.stringify(S[space]); const mk = IS_PWA && !isDemo() ? JSON.stringify(MKDEV) : null;
+    const before = UI.toast; UI.toast = null;
+    orig(el, e);
+    if (JSON.stringify(S[space]) === snap && (!mk || mk === JSON.stringify(MKDEV))) { if (!UI.toast) UI.toast = before; return; }
+    toast(UI.toast || fallbackMsg, () => {
+      if (S.space !== space) { toast('Ya no se puede deshacer: cambiaste de espacio.'); return; }
+      S[space] = JSON.parse(snap);
+      if (mk) { MKDEV = JSON.parse(mk); LOCAL.set('market', MKDEV).catch(() => {}); }
+      toast('Deshecho.'); commit();
+    });
+  };
+}
+
+/* ---------- 3) Pendientes en un solo lugar ---------- */
+function pendingList() {
+  const w = ws(); const p = prof(); if (!w || !p) return [];
+  const out = [];
+  const mine = w.wearLogs.filter((l) => l.ownerId === p.id && ['elegido', 'planificado'].includes(l.status));
+  mine.filter((l) => l.date === TODAY).slice(-1).forEach((l) => out.push({ id: 'hoy', icon: IC.hoy, title: 'Confirma tu outfit de hoy', text: '«' + l.snapshot.name + '»', btn: '<button class="btn sm primary" data-act="confirmWear" data-log="' + l.id + '">' + IC.check + 'Sí, lo usé</button>' }));
+  const y = pastUnconfirmed();
+  if (y) out.push({ id: 'ayer', icon: IC.hoy, title: '¿Usaste «' + y.snapshot.name + '»?', text: 'Lo elegiste ' + relDays(daysBetween(y.date, TODAY)) + ' y falta confirmarlo.', btn: '<button class="btn sm primary" data-act="confirmWear" data-log="' + y.id + '">Sí</button><button class="btn sm" data-act="pastNo" data-log="' + y.id + '">No</button>' });
+  const dirty = ownedItems(w, p.id).filter((i) => ['por lavar', 'en lavandería'].includes(i.availability));
+  if (dirty.length) out.push({ id: 'lavar', icon: IC.armario, title: plural(dirty.length, 'prenda por lavar', 'prendas por lavar'), text: dirty.slice(0, 3).map((i) => i.name).join(', ') + (dirty.length > 3 ? '…' : ''), btn: '<button class="btn sm" data-act="washAll">Ya las lavé</button>' });
+  let inbox = { sell: 0, buy: 0 }; try { inbox = mkInbox(mkStore(), mkMe().id); } catch (e) { /* sin vitrina */ }
+  if (inbox.sell) out.push({ id: 'vendo', icon: IC.circular, title: plural(inbox.sell, 'aviso en tus ventas', 'avisos en tus ventas'), text: 'Ofertas por responder o entregas por coordinar.', btn: '<button class="btn sm primary" data-act="mkGoVendo">Ver en Vendo</button>' });
+  if (inbox.buy) out.push({ id: 'compro', icon: IC.circular, title: plural(inbox.buy, 'aviso en tus compras', 'avisos en tus compras'), text: 'Contraofertas, entregas por confirmar u opiniones por dejar.', btn: '<button class="btn sm primary" data-act="mkGoCompro">Ver en Compro</button>' });
+  const rep = ownedItems(w, p.id).filter((i) => i.availability === 'en reparación');
+  if (rep.length) out.push({ id: 'repara', icon: IC.circular, title: plural(rep.length, 'prenda en reparación', 'prendas en reparación'), text: rep.map((i) => i.name).join(', '), btn: '<button class="btn sm" data-act="pendGo" data-view="circular">Ver en Circular</button>' });
+  const ready = (w.orders || []).filter((o) => o.ownerId === p.id && /listo para recoger|en reparto/.test(o.status));
+  if (ready.length) out.push({ id: 'pedido', icon: IC.plan, title: plural(ready.length, 'pedido por recibir', 'pedidos por recibir') + (isDemo() ? ' (simulado)' : ''), text: ready.map((o) => o.id + ' · ' + o.status).join(', '), btn: '<button class="btn sm" data-act="pendGo" data-view="plan" data-tab="pedidos">Ver pedidos</button>' });
+  return out;
+}
+function pastUnconfirmed() {
+  const w = ws(); const p = prof(); if (!w || !p) return null;
+  const from = addDays(TODAY, -3);
+  return w.wearLogs.filter((l) => l.ownerId === p.id && ['elegido', 'planificado'].includes(l.status) && l.date < TODAY && l.date >= from).sort((a, b) => b.date.localeCompare(a.date))[0] || null;
+}
+function renderPending() {
+  const list = pendingList();
+  return modalWrap('Pendientes', list.length ? '<div class="stack tight">' + list.map((x) => '<div class="pend-row"><span class="pend-ic" aria-hidden="true">' + x.icon + '</span><span class="stack tight" style="min-width:0;flex:1"><b>' + esc(x.title) + '</b><span class="small muted">' + esc(x.text) + '</span><span class="row">' + x.btn + '</span></span></div>').join('') + '</div>'
+    : emptyState('Todo al día', 'Aquí verás outfits por confirmar, prendas por lavar y avisos de la vitrina.', ''), { eyebrow: list.length ? plural(list.length, 'cosa espera tu respuesta', 'cosas esperan tu respuesta') : 'Sin pendientes' });
+}
+const _renderShell11 = renderShell;
+renderShell = function () { // eslint-disable-line no-func-assign
+  const n = pendingList().length;
+  const bell = (cls) => '<button type="button" class="' + cls + '" data-act="pendOpen" aria-label="Pendientes' + (n ? ': ' + n : ': ninguno') + '">' + IC.bell + (cls === 'icon-btn bell' ? '' : '<span>Pendientes</span>') + (n ? '<span class="nbadge num bell-n">' + n + '</span>' : '') + '</button>';
+  return _renderShell11()
+    .replace('<button type="button" class="icon-btn" data-act="menu"', bell('icon-btn bell') + '<button type="button" class="icon-btn" data-act="menu"')
+    .replace('<button type="button" data-act="tourStart">', bell('side-bell') + '<button type="button" data-act="tourStart">');
+};
+
+/* ---------- 1) Hoy compacto · 2) ¿Lo usaste? · 7) Primeros pasos ---------- */
+const _renderInstallCard11 = renderInstallCard;
+renderInstallCard = function (force) { return force ? _renderInstallCard11(true) : ''; }; // eslint-disable-line no-func-assign
+const _renderResults11 = renderResults;
+renderResults = function () { return genState() ? _renderResults11() : ''; }; // eslint-disable-line no-func-assign
+
+function firstSteps() {
+  if (isDemo()) return '';
+  const w = ws(); const p = prof(); if (!p || p.firstStepsDone) return '';
+  const n = ownedItems(w, p.id).length;
+  const armed = !!p.armedOnce || w.wearLogs.some((l) => l.ownerId === p.id);
+  const used = w.wearLogs.some((l) => l.ownerId === p.id && l.status === 'usado');
+  const steps = [
+    [n >= 3, 'Agrega 3 prendas', n >= 3 ? 'Listo' : n + ' de 3 · arriba, abajo y calzado', '<button class="btn sm primary" data-act="addItem">' + IC.camera + 'Agregar</button>'],
+    [armed, 'Arma tu día', 'Un toque y verás tres outfits', n >= 3 ? '<button class="btn sm primary" data-act="armaDia">' + IC.spark + 'Armar</button>' : ''],
+    [used, 'Confirma lo que usaste', 'Con “Sí, lo usé” el armario aprende', '']
+  ];
+  const done = steps.filter((s) => s[0]).length;
+  if (done === 3) { p.firstStepsDone = true; scheduleSave(); return ''; }
+  const next = steps.findIndex((s) => !s[0]);
+  return '<section class="card first-steps stack tight" aria-label="Primeros pasos"><div class="row between"><span class="eyebrow">Primeros pasos · ' + done + ' de 3</span><button class="btn sm ghost" data-act="firstSkip">Omitir</button></div>' +
+    '<div class="meter" role="img" aria-label="' + done + ' de 3 pasos"><i style="width:' + Math.round((done / 3) * 100) + '%"></i></div>' +
+    steps.map((s, k) => '<div class="fs-row' + (s[0] ? ' done' : k === next ? ' now' : '') + '"><span class="fs-n" aria-hidden="true">' + (s[0] ? IC.check : k + 1) + '</span><span class="stack tight" style="flex:1;min-width:0"><b>' + s[1] + '</b><span class="tiny muted">' + esc(s[2]) + '</span></span>' + (k === next ? s[3] : '') + '</div>').join('') + '</section>';
+}
+function pastBanner() {
+  const l = pastUnconfirmed(); if (!l) return '';
+  const w = ws();
+  const thumbs = l.snapshot.items.slice(0, 3).map((s) => { const it = w.items.find((i) => i.id === s.id) || s; return '<span class="mini">' + thumb(Object.assign({ cut: 'regular' }, it), { noTag: true, noFlip: true }) + '</span>'; }).join('');
+  const when = daysBetween(l.date, TODAY) === 1 ? 'ayer' : 'el ' + fmtDate(l.date, { weekday: 'long', day: 'numeric', month: undefined, year: undefined });
+  return '<div class="today-banner past" role="group" aria-label="Confirmar un outfit anterior"><span class="minis">' + thumbs + '</span><span class="stack tight" style="flex:1;min-width:0"><b>¿Usaste ' + when + ' «' + esc(l.snapshot.name) + '»?</b>' +
+    '<span class="row"><button class="btn sm primary" data-act="confirmWear" data-log="' + l.id + '">' + IC.check + 'Sí</button><button class="btn sm" data-act="pastNo" data-log="' + l.id + '">No</button><button class="btn sm ghost" data-act="pastOther" data-log="' + l.id + '">Usé otra cosa</button></span></span></div>';
+}
+const _todayBanner11 = todayBanner;
+todayBanner = function () { return pastBanner() + _todayBanner11(); }; // eslint-disable-line no-func-assign
+
+function accRow(id, icon, title, sub, body) {
+  const open = UI.hoyOpen === id;
+  return '<div class="acc' + (open ? ' open' : '') + '"><button type="button" class="acc-head" data-act="hoyAcc" data-id="' + id + '" aria-expanded="' + open + '"><span class="acc-ic" aria-hidden="true">' + icon + '</span><span class="stack tight" style="flex:1;min-width:0;text-align:left"><b>' + title + '</b>' + (sub ? '<span class="tiny muted">' + sub + '</span>' : '') + '</span><span class="acc-chev" aria-hidden="true">›</span></button>' + (open ? '<div class="acc-body">' + body + '</div>' : '') + '</div>';
+}
+renderTodaySide = function () { // eslint-disable-line no-func-assign
+  const w = ws(); const p = prof(); const rows = [];
+  const sc = styleCompleteness(p);
+  if (sc.percent < 100 && !UI.styleLater) rows.push(accRow('estilo', IC.palette, 'Tu perfil de estilo · ' + sc.percent + '%', sc.paletteReady ? 'Afina tus sugerencias' : 'Descubre tu paleta personal', renderStyleNudge(false)));
+  const forgotten = ownedItems(w, p.id).filter((i) => isUsable(i) && !Object.values(i.exclusions || {}).some(Boolean) && ['top', 'bottom', 'full', 'layer', 'shoes'].includes(roleOf(i)))
+    .map((i) => Object.assign({ item: i }, daysSinceUse(w, i, TODAY))).sort((a, b) => b.days - a.days)[0];
+  if (forgotten && forgotten.days >= 30) rows.push(accRow('olvidada', IC.circular, 'Dale otra oportunidad', esc(forgotten.item.name) + ' · ' + (forgotten.basis === 'último uso' ? 'sin uso ' + relDays(forgotten.days) : 'sin estrenar'),
+    '<div class="row" style="flex-wrap:nowrap;align-items:center"><div style="width:72px;flex:none">' + thumb(forgotten.item, { noTag: true }) + '</div><span class="small">Ya está en tu armario. Hagámosla protagonista.</span></div><div class="row"><button class="btn sm primary" data-act="useItem" data-item="' + forgotten.item.id + '">Quiero usar esta prenda</button><button class="btn sm" data-act="openItem" data-item="' + forgotten.item.id + '">Ver ficha</button></div>'));
+  const cov = templateCoverage(w, p.id); const h = habits(w, p.id, TODAY, 30);
+  rows.push(accRow('armario', IC.armario, 'Tu armario', h.distinctUsed + ' de ' + h.eligible + ' prendas en uso este mes',
+    (cov.total ? '<div class="kpi"><b class="num">' + cov.ok + ' de ' + cov.total + '</b><span>plantillas de interés que puedes completar hoy <button class="btn sm ghost" data-act="coverage">Ver cuáles</button></span></div>' : '') +
+    '<div class="row"><button class="btn sm primary" data-act="addItem">' + IC.plus + 'Agregar prenda</button><button class="btn sm" data-act="quickWear">Registrar uso rápido</button><button class="btn sm" data-act="healthOpen">Ver panorama</button></div>'));
+  const last = w.wearLogs.filter((l) => l.ownerId === p.id && l.date < TODAY && l.status === 'usado').sort((a, b) => (a.date + a.id).localeCompare(b.date + b.id)).pop();
+  if (last) rows.push(accRow('ultimo', IC.check, 'Último outfit usado', esc(last.snapshot.name) + ' · ' + relDays(daysBetween(last.date, TODAY)), '<span class="small">' + esc(last.snapshot.items.map((s) => s.name).join(', ')) + '</span><div class="row"><button class="btn sm" data-act="pendGo" data-view="armario" data-tab="historial">Ver historial</button></div>'));
+  const inst = _renderInstallCard11(false);
+  if (inst) rows.push(accRow('instalar', IC.spark, 'Instala RELISTO', 'Ícono propio, pantalla completa y sin conexión', inst));
+  return '<div class="acc-list" aria-label="Accesos">' + rows.join('') + '</div>';
+};
+const _renderHoy11 = renderHoy;
+renderHoy = function () { // eslint-disable-line no-func-assign
+  const html = _renderHoy11(); const fs = firstSteps();
+  if (!fs) return html;
+  const i = html.indexOf('<section class="hero"');
+  const j = html.indexOf('</section>', i) + 10;
+  return html.slice(0, j) + fs + html.slice(j);
+};
+
+/* ---------- 4) Perfil en 4 pestañas ---------- */
+const PROF_GROUPS = [['tu', 'Tú y tu estilo', ['esenciales', 'estilo']], ['imagen', 'Color y figura', ['figura', 'color']], ['medidas', 'Medidas y comodidad', ['medidas', 'comodidad']], ['datos', 'Privacidad y datos', ['datos']]];
+const profGroup = (t) => PROF_GROUPS.find((g) => g[0] === t || g[2].includes(t)) || PROF_GROUPS[0];
+const _renderProfile11 = renderProfile;
+renderProfile = function () { // eslint-disable-line no-func-assign
+  const cur = UI.profTab; const g = profGroup(cur);
+  const TAB = '<div class="tabs" role="tablist">';
+  const parts = g[2].map((t) => { UI.profTab = t; const h = _renderProfile11(); const a = h.indexOf(TAB); return { head: h.slice(0, a), body: h.slice(h.indexOf('</div>', a) + 6) }; });
+  UI.profTab = cur;
+  let body = parts.map((x) => x.body).join('');
+  if (g[0] === 'imagen') {
+    const nudge = renderStyleNudge(true);
+    body = body.replace(nudge, '');
+    body = nudge + body + infoMore('Sobre los tonos de piel', 'Referencia: Escala Monk de tono de piel (Dr. Ellis Monk, publicada por Google, CC BY 4.0). La selección es manual. RELISTO no infiere etnia, atractivo, salud ni personalidad.', true);
+  }
+  const tabs = TAB + PROF_GROUPS.map(([id, l]) => '<button role="tab" type="button" data-act="profTab" data-tab="' + id + '" aria-selected="' + (g[0] === id) + '">' + l + '</button>').join('') + '</div>';
+  return parts[0].head + tabs + body;
+};
+
+/* ---------- 5) Pestañas que no se cortan ---------- */
+function wireTabs() {
+  document.querySelectorAll('.tabs').forEach((t) => {
+    const upd = () => { t.classList.toggle('fade-r', t.scrollLeft + t.clientWidth < t.scrollWidth - 4); t.classList.toggle('fade-l', t.scrollLeft > 4); };
+    const sel = t.querySelector('[aria-selected="true"]');
+    if (sel && t.scrollWidth > t.clientWidth) t.scrollLeft = Math.max(0, sel.offsetLeft - (t.clientWidth - sel.offsetWidth) / 2);
+    upd(); t.addEventListener('scroll', upd, { passive: true });
+  });
+}
+
+const _renderModal11 = renderModal;
+renderModal = function () { // eslint-disable-line no-func-assign
+  if (UI.modal.type === 'pending') return renderPending();
+  const html = _renderModal11();
+  if (UI.modal.type === 'quickWear' && UI.modal.date) return html.replace('Cuenta como uso confirmado hoy.', 'Cuenta como uso confirmado ' + (daysBetween(UI.modal.date, TODAY) === 1 ? 'ayer' : 'el ' + fmtDate(UI.modal.date)) + '.').split('Usé hoy').join('La usé');
+  return html;
+};
+const _render11 = render;
+render = function () { // eslint-disable-line no-func-assign
+  _render11();
+  if (IS_PWA && UI.auth) return;
+  paintToast(); wireTabs();
+};
+
+Object.assign(ACT, {
+  toastUndo: () => { const u = UI.toastUndo; UI.toastUndo = null; if (u) u(); },
+  pendOpen: () => openModal({ type: 'pending' }),
+  pendGo: (el) => { UI.modal = null; UI.view = el.dataset.view; if (el.dataset.view === 'plan' && el.dataset.tab) UI.plan.tab = el.dataset.tab; if (el.dataset.view === 'armario' && el.dataset.tab) UI.closet.tab = el.dataset.tab; if (el.dataset.view === 'circular') UI.circ.tab = 'revisar'; render(); window.scrollTo(0, 0); },
+  hoyAcc: (el) => { UI.hoyOpen = UI.hoyOpen === el.dataset.id ? null : el.dataset.id; render(); },
+  firstSkip: () => { const p = prof(); if (p) { p.firstStepsDone = true; commit(); } },
+  pastNo: (el) => { const l = ws().wearLogs.find((x) => x.id === el.dataset.log); if (l && l.status !== 'usado') l.status = 'descartado'; toast('Anotado: ese día no lo usaste.'); commit(); },
+  pastOther: (el) => { const l = ws().wearLogs.find((x) => x.id === el.dataset.log); if (!l) return; const date = l.date; if (l.status !== 'usado') l.status = 'descartado'; scheduleSave(); openModal({ type: 'quickWear', date }); }
+});
+const _quickWearItem11 = ACT.quickWearItem;
+ACT.quickWearItem = (el) => {
+  const date = UI.modal && UI.modal.date; if (!date) return _quickWearItem11(el);
+  guard('qw' + el.dataset.item, () => { const l = quickWear(ws(), el.dataset.item, date, currentThreshold()); UI.modal = null; if (l) toast('Uso registrado: ' + l.snapshot.items[0].name + '.'); commit(); });
+};
+const _armaDia11 = ACT.armaDia;
+ACT.armaDia = (el, e) => { const p = prof(); if (p && !isDemo() && !p.armedOnce && ownedItems(ws(), p.id).length) { p.armedOnce = true; scheduleSave(); } return _armaDia11(el, e); };
+/* Acciones delicadas con Deshacer */
+withUndo('washAll', 'Prendas marcadas como lavadas.');
+withUndo('unsave', 'Quitado de guardados.');
+withUndo('mkWithdraw', 'Retirada de la vitrina.');
+withUndo('mkRespond', 'Oferta rechazada.', (el) => el.dataset.a === 'rechazar');
+withUndo('cancelChoice', 'Elección cancelada.');
+withUndo('pastNo', 'Anotado.');
 /* ============================ INICIO ============================ */
 render();
 initCapabilities();

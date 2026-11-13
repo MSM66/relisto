@@ -103,7 +103,7 @@ function renderVitrina() {
     const rows = mkBrowse(M, w, p.id, me, { cat: UI.mk.cat, near: UI.mk.near && !!me.district, sort: UI.mk.sort });
     body = filters + (rows.length ? '<div class="mk-grid">' + rows.map((r) => mkCard(r, me)).join('') + '</div>'
       : '<div class="card">' + emptyState('Aún no hay prendas aquí', M.listings.some((l) => l.status === 'publicada' && l.sellerId !== me.id) ? 'Prueba quitar filtros o ampliar la distancia.' : 'Sé quien empieza: publica algo que ya no uses.', '<button class="btn primary" data-act="mkPick">Publicar una prenda</button>') + '</div>') +
-      '<p class="tiny muted">“+N outfits” cuenta combinaciones nuevas con las prendas que ya tienes. La distancia es aproximada entre distritos: el costo del delivery lo acuerdan entre ustedes.</p>';
+      infoMore('¿Qué significan “+N outfits” y los km?', '“+N outfits” cuenta combinaciones nuevas con las prendas que ya tienes. La distancia es aproximada entre distritos: el costo del delivery lo acuerdan entre ustedes.');
   } else if (s === 'vendo') body = renderVendo(M, me);
   else body = renderCompro(M, me);
   return '<div class="stack">' + head + scope + sub + body + '</div>';
