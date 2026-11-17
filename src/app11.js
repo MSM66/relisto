@@ -29,6 +29,7 @@ function withUndo(name, fallbackMsg, when) {
   const orig = ACT[name]; if (!orig) return;
   ACT[name] = function (el, e) {
     if (when && !when(el)) return orig(el, e);
+    if (/^mk/.test(name) && typeof CLOUD !== 'undefined' && CLOUD.on && AUTH.acct && AUTH.acct.cloud && !isDemo()) return orig(el, e);
     const space = S.space; const snap = JSON.stringify(S[space]); const mk = IS_PWA && !isDemo() ? JSON.stringify(MKDEV) : null;
     const before = UI.toast; UI.toast = null;
     orig(el, e);
