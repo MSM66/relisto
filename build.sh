@@ -16,7 +16,7 @@ const enc = Buffer.from(raw.map((b, i) => b ^ key[i % key.length])).toString("ba
 fs.writeFileSync("build/kb-enc.js", "const KB = (() => { const k = " + JSON.stringify(key.toString()) + "; const b = atob(" + JSON.stringify(enc) + "); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i) ^ k.charCodeAt(i % k.length); return JSON.parse(new TextDecoder().decode(u)); })();\n");
 '
 CORE1="src/seed.js src/rules.js build/KB src/kb.js src/illus.js src/ops.js src/market.js"
-CORE2="src/qr.js src/visage.js src/figure.js src/local.js src/auth.js src/app1.js src/app2.js src/app3.js src/app4.js src/app5.js src/app6.js src/app7.js src/app8.js src/app9.js src/app10.js src/app11.js src/cloud.js src/boot.js"
+CORE2="src/qr.js src/visage.js src/figure.js src/local.js src/auth.js src/app1.js src/app2.js src/app3.js src/app4.js src/app5.js src/app6.js src/app7.js src/app8.js src/app9.js src/app10.js src/app11.js src/cloud.js src/beta.js src/welcome.js src/boot.js"
 JS_ACAD="$(echo $CORE1 | sed 's#build/KB#build/kb-plain.js#') src/tests.js $CORE2"
 printf 'function runSelfTests() { return []; }\n' > build/notests.js
 JS_STORE="$(echo $CORE1 | sed 's#build/KB#build/kb-enc.js#') build/notests.js $CORE2"

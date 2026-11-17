@@ -682,6 +682,107 @@ button.swap-row:hover { border-color: var(--line-strong); }
 .tabs.fade-l { -webkit-mask-image:linear-gradient(270deg,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(270deg,#000 calc(100% - 36px),transparent); }
 .tabs.fade-l.fade-r { -webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent); }
 .auth-h em { display:block; font-style:italic; color:var(--accent-ink); }
+/* ---- 3.7 Beta y bienvenida en historias ---- */
+.beta-pill { border: 1px solid rgba(233,200,122,.55); background: rgba(217,183,111,.16); color: #F3D995; border-radius: 999px; padding: 6px 10px; min-height: 34px; font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .04em; cursor: pointer; white-space: nowrap; }
+@media (max-width: 400px) { .beta-pill-txt { display: none; } }
+@media (min-width: 960px) { .beta-pill { display: none; } }
+.beta-side { width: 100%; justify-content: center; background: rgba(255,255,255,.08); color: var(--on-nav); border-color: rgba(255,255,255,.22); }
+.beta-tag { justify-self: center; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent-soft); border-radius: 999px; padding: 4px 10px; }
+.fb-faces { display: flex; justify-content: space-between; gap: 6px; }
+.fb-face { flex: 1; min-height: 56px; font-size: 28px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; filter: grayscale(.6); transition: transform .12s, filter .12s; }
+.fb-face[aria-pressed="true"] { filter: none; border-color: var(--primary); box-shadow: inset 0 0 0 2px var(--primary); transform: scale(1.06); }
+html.story-open { overflow: hidden; }
+.stories { position: fixed; inset: 0; z-index: 200; color: #FBF7EF; display: flex; flex-direction: column; padding: calc(10px + env(safe-area-inset-top, 0px)) 18px calc(18px + env(safe-area-inset-bottom, 0px)); overflow: hidden; }
+.stories.st-forest { background: radial-gradient(120% 80% at 20% 0%, #2B6B57 0%, #173F35 55%, #0E2A23 100%); }
+.stories.st-coral { background: radial-gradient(120% 80% at 80% 0%, #E8866E 0%, #B9503A 55%, #7E2F21 100%); }
+.stories.st-lavender { background: radial-gradient(120% 80% at 20% 0%, #8E7BB8 0%, #5B4884 55%, #352853 100%); }
+.stories.st-sage { background: radial-gradient(120% 80% at 80% 0%, #5E8F7C 0%, #2F5E50 55%, #1B3B32 100%); }
+.stories.st-gold { background: radial-gradient(120% 80% at 20% 0%, #D9B76F 0%, #A57F33 55%, #5E4517 100%); }
+.st-bars { display: flex; gap: 4px; }
+.st-bars i { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.3); overflow: hidden; }
+.st-bars b { display: block; height: 100%; background: #fff; }
+.st-top { display: flex; align-items: center; gap: 8px; margin-top: 10px; position: relative; z-index: 3; }
+.st-brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: .1em; font-size: 13px; }
+.st-brand svg { width: 26px; height: 26px; }
+.st-x { width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(0,0,0,.18); color: #fff; font-size: 15px; cursor: pointer; }
+.st-tap { position: absolute; top: 70px; bottom: 0; width: 34%; border: 0; background: transparent; z-index: 2; cursor: pointer; }
+.st-tap.prev { left: 0; } .st-tap.next { right: 0; width: 66%; }
+.st-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; min-height: 0; position: relative; z-index: 1; }
+.stories.interactive .st-body { justify-content: flex-start; gap: 14px; padding-top: 14px; overflow-y: auto; }
+.st-copy { display: grid; gap: 8px; max-width: 520px; }
+.st-copy h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 9vw, 46px); line-height: 1.04; margin: 0; }
+.st-copy h2 em { color: #FFE2A8; }
+.st-copy p { margin: 0; font-size: 16px; line-height: 1.45; color: rgba(255,255,255,.88); }
+.st-eyebrow { font-size: 11.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.75); }
+.st-beta { font-size: 14px !important; background: rgba(0,0,0,.18); border-radius: 14px; padding: 10px 12px; }
+.st-vis { position: relative; min-height: 250px; display: grid; place-items: center; }
+.st-card { background: #FBF7EF; color: #252A29; border-radius: 18px; padding: 10px; width: 150px; box-shadow: 0 18px 40px rgba(0,0,0,.28); display: grid; gap: 6px; }
+.st-card-l { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #A9452F; }
+.st-card-g { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.st-card-g span { background: #F1EDE3; border-radius: 10px; aspect-ratio: 1; display: grid; place-items: center; }
+.st-card-g span:last-child { grid-column: span 2; aspect-ratio: 2.2; }
+.st-card-g svg { width: 88%; height: 88%; }
+.st-fan .st-card { position: absolute; }
+.st-fan .f1 { transform: translateX(-92px) rotate(-12deg); animation: fanL .7s cubic-bezier(.2,1.2,.4,1) both; }
+.st-fan .f2 { transform: translateY(-14px); z-index: 2; animation: fanC .7s .12s cubic-bezier(.2,1.2,.4,1) both; }
+.st-fan .f3 { transform: translateX(92px) rotate(12deg); animation: fanR .7s .24s cubic-bezier(.2,1.2,.4,1) both; }
+@keyframes fanL { from { transform: translate(0, 40px) rotate(0); opacity: 0; } }
+@keyframes fanC { from { transform: translateY(60px); opacity: 0; } }
+@keyframes fanR { from { transform: translate(0, 40px) rotate(0); opacity: 0; } }
+.st-phone { width: min(280px, 80vw); margin: 0 auto; background: rgba(255,255,255,.12); border-radius: 26px; padding: 14px; display: grid; gap: 10px; place-items: stretch; }
+.st-ctx { background: #FBF7EF; color: #252A29; border-radius: 16px; padding: 10px 12px; display: grid; gap: 2px; }
+.st-ctx span { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #646A66; }
+.st-ctx i { font-style: normal; font-size: 12px; color: #5A605D; }
+.st-cta { background: #173F35; color: #fff; border-radius: 999px; text-align: center; font-weight: 800; padding: 11px; animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(255,255,255,.12); } }
+.st-slide { display: grid; place-items: center; animation: slideUp .6s .5s both; }
+.st-slide .st-card { width: 100%; }
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } }
+.st-spin .st-fig { width: min(230px, 62vw); animation: spin 4s ease-in-out infinite; transform-origin: 50% 50%; }
+.st-fig svg { width: 100%; height: auto; display: block; }
+@keyframes spin { 0%, 28%, 100% { transform: scaleX(1); } 40% { transform: scaleX(.06); } 52%, 78% { transform: scaleX(-1); } 90% { transform: scaleX(-.06); } }
+.st-badge { position: absolute; right: 10%; top: 8%; background: rgba(0,0,0,.25); border-radius: 999px; padding: 6px 10px; font-weight: 800; font-size: 13px; }
+.st-memory { display: flex; gap: 18px; align-items: center; justify-content: center; }
+.st-flip { width: 150px; height: 170px; position: relative; transform-style: preserve-3d; animation: flip 3s ease-in-out infinite; }
+.st-face { position: absolute; inset: 0; border-radius: 18px; background: #FBF7EF; color: #252A29; display: grid; place-items: center; backface-visibility: hidden; font-size: 46px; box-shadow: 0 16px 34px rgba(0,0,0,.25); }
+.st-face svg { width: 80%; height: 70%; }
+.st-face span { position: absolute; bottom: 8px; left: 10px; font-size: 11px; font-weight: 700; background: #fff; border-radius: 6px; padding: 2px 6px; }
+.st-face.b { transform: rotateY(180deg); background: linear-gradient(135deg, #DCE8DB, #B9D3C3); }
+@keyframes flip { 0%, 35% { transform: rotateY(0); } 50%, 85% { transform: rotateY(180deg); } 100% { transform: rotateY(360deg); } }
+.st-tag { background: #FBF7EF; color: #252A29; border-radius: 16px; padding: 12px; display: grid; gap: 4px; width: 128px; box-shadow: 0 16px 34px rgba(0,0,0,.25); }
+.st-tag b { font-family: ui-monospace, Menlo, monospace; letter-spacing: .06em; }
+.st-tag span { font-size: 11.5px; color: #5A605D; }
+.st-qr { display: block; width: 72px; } .st-qr svg { width: 100%; height: auto; }
+.st-shop { display: grid; gap: 12px; justify-items: center; }
+.st-listing { background: #FBF7EF; color: #252A29; border-radius: 18px; padding: 12px; width: min(300px, 84vw); display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; box-shadow: 0 18px 40px rgba(0,0,0,.28); animation: slideUp .6s both; }
+.st-listing > svg { width: 96px; height: 96px; background: #F1EDE3; border-radius: 12px; }
+.st-listing div { display: grid; gap: 3px; font-size: 13px; }
+.st-listing b { font-size: 20px; } .st-listing i { color: #646A66; font-size: 12px; }
+.st-listing em { font-style: normal; font-weight: 700; color: #45346A; background: #E8E0F2; border-radius: 999px; padding: 2px 8px; justify-self: start; font-size: 12px; }
+.st-stars { color: #8F5B0B; }
+.st-offer { background: #252A29; color: #fff; border-radius: 14px; padding: 10px 14px; font-size: 14px; animation: slideUp .5s 1.2s both; }
+.st-offer u { text-decoration: none; color: #FFE2A8; font-weight: 800; margin-left: 6px; }
+.st-copy.top { margin-top: 4px; }
+.st-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.st-opt { text-align: left; border: 1.5px solid rgba(255,255,255,.28); background: rgba(255,255,255,.08); color: #fff; border-radius: 16px; padding: 10px 12px; min-height: 64px; font: inherit; display: grid; gap: 2px; cursor: pointer; }
+.st-opt span { font-size: 12px; color: rgba(255,255,255,.78); }
+.st-opt[aria-pressed="true"] { background: #FBF7EF; color: #173F35; border-color: #FBF7EF; }
+.st-opt[aria-pressed="true"] span { color: #5A605D; }
+.st-sub { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.75); }
+.st-colors { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-col { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid rgba(255,255,255,.28); background: rgba(255,255,255,.08); color: #fff; border-radius: 999px; padding: 5px 10px 5px 6px; min-height: 36px; font: inherit; font-size: 13px; cursor: pointer; }
+.st-col i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,.7); }
+.st-col[aria-pressed="true"] { background: #FBF7EF; color: #173F35; border-color: #FBF7EF; }
+.st-foot { display: flex; justify-content: space-between; gap: 10px; padding-top: 10px; position: relative; z-index: 3; }
+.st-go { background: #FBF7EF !important; color: #173F35 !important; border-color: #FBF7EF !important; font-weight: 800; }
+.st-skip { color: #fff !important; }
+.st-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.st-reveal .st-fig { width: min(220px, 58vw); }
+.st-fig.pop { animation: popIn .8s cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes popIn { from { transform: scale(.6) translateY(30px); opacity: 0; } }
+@media (min-width: 900px) { .stories { padding-left: max(18px, calc(50vw - 300px)); padding-right: max(18px, calc(50vw - 300px)); } }
+@media (prefers-reduced-motion: reduce) { .stories *, .stories *::before { animation: none !important; transition: none !important; } }
+html.reduce-motion .stories * { animation: none !important; }
 </style>
 </head>
 <body>
@@ -693,7 +794,7 @@ const IS_PWA = true;
 const IS_STORE = false;
 const SB_URL = "https://ymarbfgxwlsyovlradpr.supabase.co";
 const SB_KEY = "sb_publishable_dHpnjVDy4SQiAzLKehLUuA_xtzAUd-K";
-const APP_VERSION = "20261117.1916";
+const APP_VERSION = "20261117.1938";
 /* === DATOS: semilla de demostración (ficticia) === */
 const SEED = {"meta":{"mode":"demo","currency":"PEN","timezone":"America/Lima","referenceDate":"FECHA_LOCAL_AL_PRIMER_INICIO","note":"Todos los perfiles, medidas, prendas, usos, precios, tiendas y pedidos de este conjunto son ficticios."},"profiles":[{"id":"alex","name":"Alex","gender":"masculino","expression":"masculina","heightCm":176,"build":"media","skinTone":"Monk 5, seleccionado manualmente","undertone":"neutro","topSize":"M","bottomSize":"EU 42","shoeSize":"EU 42","fit":"regular","styles":["smart casual","business casual"],"colors":["azul marino","beige","blanco","terracota"],"city":"Lima","districts":["Miraflores","San Isidro","Santiago de Surco"],"monthlyBudget":350,"donationThresholdDays":365},{"id":"valeria","name":"Valeria","gender":"femenino","expression":"femenina","heightCm":164,"build":"media","skinTone":"Monk 7, seleccionado manualmente","undertone":"cálido","topSize":"M","bottomSize":"EU 38","shoeSize":"EU 38","fit":"regular","styles":["clásico","romántico","creativo"],"colors":["marfil","burdeos","salvia","negro"],"city":"Lima","districts":["Barranco","Miraflores"],"monthlyBudget":300,"donationThresholdDays":365},{"id":"noa","name":"Noa","gender":"otro","expression":"andrógina","heightCm":172,"build":"delgada","skinTone":"prefiere omitir","undertone":"no sé","topSize":"L","bottomSize":"EU 42","shoeSize":"EU 41","fit":"relajado","styles":["urbano","minimalista"],"colors":["negro","blanco","oliva","arena"],"city":"Lima","districts":["San Borja","Santiago de Surco"],"monthlyBudget":250,"donationThresholdDays":180}],"itemDefaults":{"availability":"disponible","createdDaysAgo":730,"baselineLastUsedDaysAgo":60,"baselineWearCount":10,"attributeSource":"ficha ficticia confirmada para demo","sentimental":false,"seasonalExclusion":false},"itemColumns":["id","ownerId","nombre","categoria","color","fibra_o_material","tejido_o_acabado","corte","talla","precioDemoPEN"],"items":[["A01","alex","Camisa blanca","superior","blanco","algodón","popelina","regular","M",159],["A02","alex","Camisa celeste","superior","celeste","algodón","Oxford","regular","M",149],["A03","alex","Polo azul marino","superior","azul marino","algodón","piqué","regular","M",89],["A04","alex","Camiseta terracota","superior","terracota","algodón","jersey","regular","M",69],["A05","alex","Pantalón chino beige","inferior","beige","algodón","sarga","recto","EU 42",199],["A06","alex","Jean azul oscuro","inferior","azul oscuro","algodón con elastano","denim","recto","EU 42",189],["A07","alex","Pantalón de vestir gris","inferior","gris","mezcla de lana","sarga","recto","EU 42",249],["A08","alex","Blazer azul marino","capa","azul marino","mezcla de lana","tejido plano","regular","EU 50",399],["A09","alex","Casaca verde oliva","capa","oliva","nylon","tejido plano","regular","L",259],["A10","alex","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 42",219],["A11","alex","Zapatos Oxford negros","calzado","negro","cuero","liso","clásico","EU 42",279],["A12","alex","Mocasines marrones","calzado","marrón","cuero","liso","clásico","EU 42",239],["A13","alex","Cinturón marrón","accesorio","marrón","cuero","liso","ajustable","M",79],["A14","alex","Reloj de acero","accesorio","plateado","acero","cepillado","esfera redonda","ajustable",199],["A15","alex","Mochila negra","bolso","negro","nylon","tejido plano","mediana","única",169],["A16","alex","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 42",179],["A17","alex","Camisa azul de rayas","superior","azul y blanco","algodón","tejido plano","regular","M",129],["A18","alex","Suéter camel","superior","camel","lana","punto","regular","M",159],["V01","valeria","Blusa marfil","superior","marfil","algodón","tejido plano","regular","M",139],["V02","valeria","Top negro","superior","negro","viscosa","punto","regular","M",79],["V03","valeria","Falda midi salvia","inferior","salvia","poliéster","satén","evasé","EU 38",149],["V04","valeria","Pantalón negro","inferior","negro","mezcla de poliéster y viscosa","sarga","recto","EU 38",179],["V05","valeria","Jean azul","inferior","azul","algodón","denim","recto","EU 38",169],["V06","valeria","Vestido burdeos","cuerpo_completo","burdeos","viscosa","tejido plano","midi","M",229],["V07","valeria","Blazer beige","capa","beige","mezcla de lino","tejido plano","relajado","EU 38",259],["V08","valeria","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 38",189],["V09","valeria","Botines negros","calzado","negro","cuero","liso","tacón bajo","EU 38",249],["V10","valeria","Sandalias beige","calzado","beige","material no confirmado","liso","tacón bajo","EU 38",139],["V11","valeria","Bolso beige","bolso","beige","material no confirmado","liso","pequeño","única",129],["V12","valeria","Collar de acero","accesorio","dorado","acero","pulido","cadena fina","ajustable",59],["N01","noa","Camiseta blanca","superior","blanco","algodón","jersey","relajado","L",65],["N02","noa","Camiseta negra","superior","negro","algodón","jersey","relajado","L",65],["N03","noa","Camisa oliva","superior","oliva","lino","tejido plano","relajado","L",149],["N04","noa","Pantalón cargo negro","inferior","negro","algodón","sarga","relajado","EU 42",169],["N05","noa","Jean gris","inferior","gris","algodón","denim","recto","EU 42",159],["N06","noa","Sobrecamisa arena","capa","arena","algodón","sarga","oversized","L",179],["N07","noa","Zapatillas negras","calzado","negro","textil sintético","malla","bajo","EU 41",169],["N08","noa","Zapatillas blancas","calzado","blanco","material no confirmado","liso","bajo","EU 41",179],["N09","noa","Mochila negra","bolso","negro","material no confirmado","tejido plano","mediana","única",129]],"itemOverrides":{"A04":{"baselineLastUsedDaysAgo":120},"A11":{"availability":"en_reparacion","repairEstimateDemoPEN":45,"repairReadyInDaysDemo":2},"A17":{"availability":"por_lavar","baselineLastUsedDaysAgo":1},"A18":{"createdDaysAgo":500,"baselineLastUsedDaysAgo":430,"baselineWearCount":4}},"contexts":[{"id":"C01","ownerId":"alex","name":"Reunión con confianza","occasion":"reunión","district":"San Isidro","time":"09:00","temperatureC":22,"weatherSource":"manual demo","dressCode":"business casual flexible","intent":["profesionalismo","cercanía"],"walking":"moderada","requiredSlots":["superior","inferior","calzado"],"allowCleanWhiteSneakers":true},{"id":"C02","ownerId":"alex","name":"Cita de noche","occasion":"cita","district":"Miraflores","time":"20:00","temperatureC":18,"weatherSource":"manual demo","dressCode":"smart casual","intent":["confianza","intención romántica"],"requiredSlots":["superior","inferior","calzado"]},{"id":"C03","ownerId":"alex","name":"Evento formal con Oxford negros","occasion":"evento","district":"San Isidro","time":"19:00","temperatureC":19,"weatherSource":"manual demo","dressCode":"sastrería no black tie","intent":["elegancia"],"requiredSlots":["superior","inferior","calzado","capa"],"hardRequirements":{"calzado":"Oxford negros de cuero, EU 42","capa":"blazer"},"note":"El calzado propio compatible A11 está en reparación."},{"id":"C04","ownerId":"valeria","name":"Cena con estilo","occasion":"cena","district":"Barranco","time":"20:00","temperatureC":20,"weatherSource":"manual demo","dressCode":"smart casual","intent":["elegancia"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"C05","ownerId":"noa","name":"Clases y paseo","occasion":"clases","district":"San Borja","time":"15:00","temperatureC":23,"weatherSource":"manual demo","dressCode":"casual","intent":["comodidad","creatividad"],"requiredSlots":["superior","inferior","calzado"]}],"outfitTemplates":[{"id":"OA1","ownerId":"alex","contextId":"C01","name":"Clásico cercano","style":"smart casual","itemIds":["A01","A05","A12","A13","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA2","ownerId":"alex","contextId":"C01","name":"Azul ejecutivo","style":"business casual","itemIds":["A02","A07","A12","A08","A14"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA3","ownerId":"alex","contextId":"C01","name":"Profesional relajado","style":"business casual","itemIds":["A03","A07","A10","A08","A15"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA4","ownerId":"alex","contextId":"C01","name":"Luz y contraste","style":"smart casual","itemIds":["A02","A05","A10"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA5","ownerId":"alex","contextId":"C01","name":"Sobriedad urbana","style":"smart casual","itemIds":["A01","A07","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA6","ownerId":"alex","contextId":"C01","name":"Neutros con intención","style":"smart casual","itemIds":["A03","A05","A12"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OA7","ownerId":"alex","contextId":"C03","name":"Formal pendiente de calzado","style":"formal","itemIds":["A01","A07","A08"],"requiredSlots":["superior","inferior","calzado","capa"],"missingRequirementId":"M01"},{"id":"OV1","ownerId":"valeria","contextId":"C04","name":"Burdeos protagonista","style":"elegante de noche","itemIds":["V06","V09","V11","V12"],"requiredSlots":["superior_e_inferior_o_cuerpo_completo","calzado"]},{"id":"OV2","ownerId":"valeria","contextId":"C04","name":"Clásico ligero","style":"smart casual","itemIds":["V01","V04","V08","V07"],"requiredSlots":["superior","inferior","calzado"]},{"id":"OV3","ownerId":"valeria","contextId":"C04","name":"Salvia y marfil","style":"romántico","itemIds":["V01","V03","V10","V11"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON1","ownerId":"noa","contextId":"C05","name":"Urbano esencial","style":"urbano","itemIds":["N01","N04","N07","N09"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON2","ownerId":"noa","contextId":"C05","name":"Oliva y gris","style":"minimalista","itemIds":["N03","N05","N08"],"requiredSlots":["superior","inferior","calzado"]},{"id":"ON3","ownerId":"noa","contextId":"C05","name":"Capas neutras","style":"urbano","itemIds":["N02","N05","N07","N06"],"requiredSlots":["superior","inferior","calzado"]}],"wearLogs":[{"id":"H01","ownerId":"alex","outfitId":"OA1","daysAgo":4,"status":"usado"},{"id":"H02","ownerId":"alex","outfitId":"OA2","daysAgo":8,"status":"usado"},{"id":"H03","ownerId":"alex","outfitId":"OA3","daysAgo":1,"status":"usado"},{"id":"H04","ownerId":"valeria","outfitId":"OV1","daysAgo":2,"status":"usado"},{"id":"H05","ownerId":"valeria","outfitId":"OV2","daysAgo":6,"status":"usado"},{"id":"H06","ownerId":"noa","outfitId":"ON1","daysAgo":3,"status":"usado"},{"id":"H07","ownerId":"noa","outfitId":"ON2","daysAgo":7,"status":"usado"}],"missingRequirements":[{"id":"M01","ownerId":"alex","category":"calzado","subtype":"Oxford","color":"negro","material":"cuero","size":"EU 42","maxBudgetPEN":350,"neededInDays":3,"districts":["Miraflores","San Isidro","Santiago de Surco"],"condition":"nuevo","existingCompatibleItemId":"A11","note":"Ofrecer primero reparación; comparar compra solo si la persona desea explorarla."}],"commercialOffers":[{"id":"DEMO-P01","requirementId":"M01","demo":true,"store":"Estudio Norte — tienda ficticia","district":"Miraflores","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Clásico","color":"negro","material":"cuero","size":"EU 42","pricePEN":289,"deliveryPEN":12,"totalDeliveryPEN":301,"pickupPEN":0,"stockDemo":4,"deliveryInDays":1,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P02","requirementId":"M01","demo":true,"store":"Distrito Sastre — tienda ficticia","district":"San Isidro","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Urbano","color":"negro","material":"cuero","size":"EU 42","pricePEN":329,"deliveryPEN":null,"totalDeliveryPEN":null,"pickupPEN":0,"stockDemo":3,"deliveryInDays":2,"pickupInDays":1,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null},{"id":"DEMO-P03","requirementId":"M01","demo":true,"store":"Paso Diario — tienda ficticia","district":"Santiago de Surco","branch":"Sucursal de demostración; sin dirección real","product":"Oxford negro Esencial","color":"negro","material":"cuero","size":"EU 42","pricePEN":249,"deliveryPEN":18,"totalDeliveryPEN":267,"pickupPEN":0,"stockDemo":2,"deliveryInDays":3,"pickupInDays":2,"condition":"nuevo","source":"Catálogo ficticio precargado","url":null}],"purchasePlans":[{"id":"PLAN01","ownerId":"alex","requirementId":"M01","status":"evaluando reparación","budgetPEN":350,"plannedInDays":3}],"orders":[{"id":"DEMO-1042","ownerId":"alex","demo":true,"source":"simulación","product":"Camisa de lino arena de ejemplo","category":"superior","material":"lino","color":"arena","size":"M","store":"Estudio Norte — tienda ficticia","district":"Miraflores","modality":"recojo","pricePEN":129,"status":"listo para recoger (simulado)","note":"No existe pedido, pago, reserva ni dirección real. No añadir al armario hasta simular el recojo."}],"circularActions":[{"id":"CIR01","ownerId":"alex","itemId":"A18","status":"sugerida","reason":"430 días sin uso en el historial simulado","destination":null,"note":"No se ha confirmado una donación ni una entidad receptora."}]};
 /* =====================================================================
@@ -6540,6 +6641,8 @@ ACT.aboutPrivacy = () => { UI.view = 'perfil'; UI.profTab = 'datos'; UI.modal = 
 const CLOUD = { on: IS_PWA && !!SB_URL && !!SB_KEY, session: null, version: null, market: null, pushTimer: null, pushing: false, dirty: false, status: 'idle', lastPull: 0, pollTimer: null };
 const APP_URL = () => location.origin + location.pathname.replace(/[^/]*$/, '');
 const isCloudAcct = () => CLOUD.on && !!AUTH.acct && !!AUTH.acct.cloud;
+(() => { try { const q = new URLSearchParams(location.search).get('invite'); if (q) { localStorage.setItem('relisto-invite', q.trim().toUpperCase().slice(0, 40)); history.replaceState(null, '', location.pathname + location.hash); } } catch (e) { /* */ } })();
+const savedInvite = () => { try { return localStorage.getItem('relisto-invite') || ''; } catch (e) { return ''; } };
 
 /* ---------- Cliente mínimo (fetch) ---------- */
 const SB = {
@@ -6568,7 +6671,7 @@ const SB = {
     CLOUD.session = { access_token: s.access_token, refresh_token: s.refresh_token, expires_at: s.expires_at, user: s.user || (CLOUD.session && CLOUD.session.user) };
     await LOCAL.set('sb-session', CLOUD.session);
   },
-  signUp: (email, password, name) => SB.json('/auth/v1/signup?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email, password, data: { name } } }),
+  signUp: (email, password, name, invite) => SB.json('/auth/v1/signup?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email, password, data: { name, invite } } }),
   signIn: (email, password) => SB.json('/auth/v1/token?grant_type=password', { method: 'POST', anon: true, json: { email, password } }),
   recover: (email) => SB.json('/auth/v1/recover?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email } }),
   user: () => SB.json('/auth/v1/user'),
@@ -6586,6 +6689,7 @@ const sbError = (e) => {
   if (/invalid login credentials/i.test(m)) return 'Correo o contraseña incorrectos.';
   if (/email not confirmed/i.test(m)) return 'Confirma tu correo: te enviamos un enlace al registrarte.';
   if (/already registered|already exists/i.test(m)) return 'Ya existe una cuenta con ese correo. Inicia sesión.';
+  if (/database error saving new user|invite_required/i.test(m)) return 'Ese código de invitación no es válido o ya se usó todas las veces.';
   if (/not authorized|email_address_not_authorized/i.test(m) || (e && e.code === 'email_address_not_authorized')) return 'Todavía no podemos enviar correos a esa dirección. Intenta más tarde.';
   if (/rate limit|too many/i.test(m) || (e && e.status === 429)) return 'Demasiados intentos. Espera unos minutos y vuelve a probar.';
   if (/password/i.test(m) && /6|weak|short/i.test(m)) return 'La contraseña es muy débil: usa al menos 8 caracteres con letras y números.';
@@ -6695,11 +6799,15 @@ if (CLOUD.on) {
   };
   doSignup = async function () { // eslint-disable-line no-func-assign
     const a = UI.auth; a.error = '';
-    a.error = (String(a.name || '').trim() ? '' : 'Escribe tu nombre o alias.') || (emailOk(a.email) ? '' : 'Escribe un correo válido.') || pwError(a.pw, a.pw2) || (a.terms ? '' : 'Acepta la política de privacidad para continuar.');
+    const invite = String(a.invite || savedInvite()).trim().toUpperCase();
+    a.error = (invite ? '' : 'Escribe tu código de invitación.') || (String(a.name || '').trim() ? '' : 'Escribe tu nombre o alias.') || (emailOk(a.email) ? '' : 'Escribe un correo válido.') || pwError(a.pw, a.pw2) || (a.terms ? '' : 'Acepta la política de privacidad para continuar.');
     if (a.error) return render();
     a.busy = true; render();
     try {
-      const r = await SB.signUp(String(a.email).trim().toLowerCase(), a.pw, String(a.name).trim().slice(0, 40));
+      const okInvite = await SB.json('/rest/v1/rpc/beta_check_invite', { method: 'POST', anon: true, json: { p_code: invite } }).catch((e) => { if (e instanceof TypeError) throw e; return true; });
+      if (okInvite === false) { a.busy = false; a.error = 'Ese código de invitación no es válido o ya se usó todas las veces.'; return render(); }
+      try { localStorage.setItem('relisto-invite', invite); } catch (e) { /* */ }
+      const r = await SB.signUp(String(a.email).trim().toLowerCase(), a.pw, String(a.name).trim().slice(0, 40), invite);
       if (r && r.access_token) { await openCloud(r); await LOCAL.set('welcomed', true); afterCloudLogin(true); return; }
       UI.auth = { screen: 'confirm', email: String(a.email).trim() };
     } catch (e) { a.busy = false; a.error = sbError(e); }
@@ -6934,10 +7042,11 @@ if (CLOUD.on) {
     if (a.screen === 'welcome') {
       body = '<h1 class="serif auth-h">Relisto. <em>Ya tienes qué ponerte.</em></h1><p class="muted" style="margin:0">Tu próximo gran outfit ya está en tu armario: solo falta combinarlo.</p>' +
         '<ul class="clean auth-feats"><li>' + IC.spark + '<span><b>Un toque, tres outfits</b> con la ropa que ya tienes.</span></li><li>' + IC.camera + '<span><b>Tu armario con fotos</b>, en tu cuenta y en todos tus teléfonos.</span></li><li>' + IC.circular + '<span><b>La Vitrina</b>: vende lo que no usas a gente cerca de ti.</span></li></ul>' +
-        '<button class="btn primary lg wide" data-act="authGo" data-screen="signup">Crear mi cuenta gratis</button><button class="btn lg wide" data-act="authGo" data-screen="login">Ya tengo cuenta</button><button class="btn ghost wide" data-act="authDemo">Explorar la demo sin cuenta</button>';
+        '<span class="beta-tag">Beta privada</span><button class="btn primary lg wide" data-act="authGo" data-screen="signup">Crear mi cuenta gratis</button><button class="btn lg wide" data-act="authGo" data-screen="login">Ya tengo cuenta</button><button class="btn ghost wide" data-act="authDemo">Explorar la demo sin cuenta</button>';
     } else if (a.screen === 'signup') {
       const sc = pwScore(a.pw); const lbl = ['', 'débil', 'aceptable', 'buena', 'fuerte'][sc];
-      body = '<h1 class="serif auth-h">Crea tu cuenta</h1><form class="stack" data-auth-form="signup" novalidate>' + authField('au-name', 'Nombre o alias', 'name', a.name, 'text', ' autocomplete="nickname" maxlength="40"') + email() +
+      const inv = a.invite !== undefined ? a.invite : savedInvite();
+      body = '<h1 class="serif auth-h">Crea tu cuenta</h1><p class="small muted" style="margin:0">RELISTO está en beta privada: necesitas el código que te compartieron.</p><form class="stack" data-auth-form="signup" novalidate>' + authField('au-invite', 'Código de invitación', 'invite', inv, 'text', ' autocapitalize="characters" autocomplete="off" maxlength="40" placeholder="Ej.: RELISTO-BETA"') + authField('au-name', 'Nombre o alias', 'name', a.name, 'text', ' autocomplete="nickname" maxlength="40"') + email() +
         pwField('au-pw', 'Crea una contraseña', 'pw', a.pw, true) + '<div class="pw-meter" aria-live="polite"><i class="s' + sc + '"></i><span class="tiny muted">' + (a.pw ? 'Seguridad: ' + lbl : 'Mínimo 8 caracteres, con letras y números.') + '</span></div>' +
         pwField('au-pw2', 'Repite la contraseña', 'pw2', a.pw2) +
         '<label class="check" for="au-terms"><input type="checkbox" id="au-terms"' + (a.terms ? ' checked' : '') + bindAttr('auth', 'terms', 'bool') + '> <span>Acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a></span></label>' +
@@ -6977,7 +7086,7 @@ if (CLOUD.on) {
       '<div class="row"><a class="btn sm ghost" href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a><button class="btn sm ghost" data-act="askDeleteAccount">Eliminar mi cuenta</button></div></div>';
   };
     ACT.askDeleteAccount = () => openModal({ type: 'confirm', title: 'Eliminar mi cuenta', text: 'Se borran para siempre tu cuenta, tu armario, tus fotos, tu historial y tus publicaciones de la Vitrina, en la nube y en este teléfono. No se puede deshacer.', okLabel: 'Eliminar todo', okAct: 'deleteAccountNow', danger: true });
-  ACT.authGo = (el) => { const keep = UI.auth || {}; UI.authMsg = ''; UI.auth = { screen: el.dataset.screen, email: keep.email || '', terms: keep.terms }; render(); };
+  ACT.authGo = (el) => { const keep = UI.auth || {}; UI.authMsg = ''; UI.auth = { screen: el.dataset.screen, email: keep.email || '', terms: keep.terms, invite: keep.invite }; render(); };
   Object.assign(ACT, {
     importPick: (el) => { UI.auth.pick = el.dataset.id; UI.auth.pw = ''; UI.auth.error = ''; render(); },
     importLocal: (el) => doImportLocal(el.dataset.id),
@@ -7020,6 +7129,250 @@ document.addEventListener('error', (e) => {
   const id = (img.src.split('/').pop() || '').replace(/\.[a-z]+$/i, '');
   if (MKPH[id] && !MKPH[id].file) { delete MKPH[id]; clearTimeout(CLOUD.imgTimer); CLOUD.imgTimer = setTimeout(render, 50); }
 }, true);
+/* =====================================================================
+   BETA PRIVADA: etiqueta "Beta", comentarios desde cualquier pantalla
+   (se guardan en Supabase; sin conexión quedan en cola) y un recordatorio
+   amable para opinar después de unos días de uso.
+   ===================================================================== */
+const BETA_ON = IS_PWA;
+const FB_KINDS = [['me-encanta', 'Me encantó'], ['fallo', 'Algo falló'], ['confuso', 'Me confundió'], ['idea', 'Tengo una idea']];
+const FB_FACES = ['😞', '😕', '😐', '🙂', '😍'];
+const fbFlag = (k, v) => { try { if (v === undefined) return localStorage.getItem('relisto-fb-' + k); localStorage.setItem('relisto-fb-' + k, String(v)); } catch (e) { return null; } return null; };
+function screenName() {
+  const v = UI.view; const sub = v === 'armario' ? UI.closet.tab : v === 'plan' ? UI.plan.tab : v === 'circular' ? (UI.circ.tab === 'vitrina' ? 'vitrina-' + UI.mk.sub : 'revisar') : v === 'perfil' ? UI.profTab : '';
+  return (v + (sub ? '/' + sub : '') + (UI.modal ? ' · ' + UI.modal.type : '')).slice(0, 60);
+}
+function deviceInfo() {
+  const ua = navigator.userAgent || '';
+  const os = /iPhone|iPad/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Otro';
+  return (os + ' · ' + window.innerWidth + 'x' + window.innerHeight + ' · ' + (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches ? 'instalada' : 'navegador')).slice(0, 160);
+}
+function renderFeedback(m) {
+  return modalWrap('¿Qué te parece RELISTO?', '<p class="small muted">Estás probando una versión temprana. Lo que nos cuentes decide lo que mejoramos primero.</p>' +
+    '<div class="fb-faces" role="group" aria-label="¿Cómo te sientes con la app?">' + FB_FACES.map((f, i) => '<button type="button" class="fb-face" data-act="fbRate" data-n="' + (i + 1) + '" aria-pressed="' + (m.rating === i + 1) + '" aria-label="' + ['Nada bien', 'No mucho', 'Normal', 'Bien', 'Me encanta'][i] + '">' + f + '</button>').join('') + '</div>' +
+    '<div class="row">' + FB_KINDS.map(([k, t]) => '<button type="button" class="chip btnchip" data-act="fbKind" data-val="' + k + '" aria-pressed="' + (m.kind === k) + '">' + t + '</button>').join('') + '</div>' +
+    '<div class="field"><label for="fb-msg">Cuéntanos (opcional)</label><textarea class="input" id="fb-msg" rows="4" maxlength="2000" placeholder="' + (m.kind === 'fallo' ? '¿Qué estabas haciendo y qué pasó?' : m.kind === 'idea' ? '¿Qué te gustaría que hiciera RELISTO?' : 'Lo que más te gustó, lo que cambiarías…') + '" data-fb-msg="1">' + esc(m.message || '') + '</textarea></div>' +
+    '<p class="tiny muted">Se envía con la pantalla donde estabas (' + esc(m.screen) + '), la versión de la app y el tipo de teléfono. Nada más.</p>' +
+    (m.error ? '<div class="note bad">' + esc(m.error) + '</div>' : '') +
+    '<div class="sheet-foot row"><button class="btn primary" data-act="fbSend"' + (m.busy ? ' disabled' : '') + '>' + (m.busy ? 'Enviando…' : 'Enviar comentario') + '</button><button class="btn ghost" data-act="closeModal">Ahora no</button></div>', { eyebrow: 'Beta privada' });
+}
+async function fbDeliver(item) {
+  if (typeof CLOUD === 'undefined' || !CLOUD.on) return { local: true };
+  const args = { p_rating: item.rating || null, p_kind: item.kind || 'comentario', p_message: item.message || '', p_screen: item.screen, p_version: APP_VERSION, p_device: item.device };
+  const r = (typeof isCloudAcct === 'function' && isCloudAcct()) ? await SB.rpc('send_feedback', args) : await SB.json('/rest/v1/rpc/send_feedback', { method: 'POST', anon: true, json: args });
+  if (r && r.error) throw Object.assign(new Error(r.error), { user: true });
+  return r;
+}
+async function fbFlush() {
+  let q = []; try { q = JSON.parse(localStorage.getItem('relisto-fb-queue') || '[]'); } catch (e) { q = []; }
+  if (!q.length) return;
+  const left = [];
+  for (const it of q) { try { await fbDeliver(it); } catch (e) { if (!e.user) left.push(it); } }
+  try { localStorage.setItem('relisto-fb-queue', JSON.stringify(left)); } catch (e) { /* */ }
+}
+window.addEventListener('online', () => { fbFlush(); });
+setTimeout(fbFlush, 4000);
+
+if (BETA_ON) {
+  /* Etiqueta "Beta" en la barra superior y en el panel lateral: abre los comentarios. */
+  const _renderShell13 = renderShell;
+  renderShell = function () { // eslint-disable-line no-func-assign
+    return _renderShell13()
+      .replace('<span class="grow"></span>', '<span class="grow"></span><button type="button" class="beta-pill" data-act="fbOpen" data-tour="beta" aria-label="Beta: enviar un comentario">Beta<span class="beta-pill-txt"> · Opina</span></button>')
+      .replace('<div class="save-state" data-save-state', '<button type="button" class="btn sm beta-side" data-act="fbOpen">💬 Enviar comentario</button><div class="save-state" data-save-state');
+  };
+  /* Recordatorio en Pendientes tras dos días de uso, si aún no opinó. */
+  const _pendingList13 = pendingList;
+  pendingList = function () { // eslint-disable-line no-func-assign
+    const out = _pendingList13();
+    let first = fbFlag('first'); if (!first) { fbFlag('first', Date.now()); first = Date.now(); }
+    if (!fbFlag('sent') && !fbFlag('snooze') && Date.now() - Number(first) > 2 * 86400000) out.push({ id: 'beta', icon: IC.spark, title: '¿Qué te parece RELISTO?', text: 'Llevas unos días probándolo. Tu opinión decide qué mejoramos primero.', btn: '<button class="btn sm primary" data-act="fbOpen">Opinar</button><button class="btn sm ghost" data-act="fbSnooze">Más tarde</button>' });
+    return out;
+  };
+  const _renderModal13 = renderModal;
+  renderModal = function () { return UI.modal.type === 'feedback' ? renderFeedback(UI.modal) : _renderModal13(); }; // eslint-disable-line no-func-assign
+  const _renderModalMenu13 = renderModal;
+  renderModal = function () { // eslint-disable-line no-func-assign
+    const html = _renderModalMenu13();
+    if (UI.modal.type !== 'menu') return html;
+    const i = html.indexOf('<div class="stack">');
+    return i < 0 ? html : html.slice(0, i + 19) + '<button class="btn" style="justify-content:flex-start" data-act="fbOpen">💬 Enviar comentario (beta)</button><button class="btn" style="justify-content:flex-start" data-act="storiesOpen">' + IC.spark + 'Ver la bienvenida</button>' + html.slice(i + 19);
+  };
+}
+document.addEventListener('input', (e) => { if (e.target && e.target.dataset && e.target.dataset.fbMsg && UI.modal && UI.modal.type === 'feedback') UI.modal.message = e.target.value; });
+Object.assign(ACT, {
+  fbOpen: () => { const screen = screenName(); openModal({ type: 'feedback', rating: 0, kind: '', message: '', screen }); },
+  fbRate: (el) => { UI.modal.rating = Number(el.dataset.n); UI.modal.error = ''; render(); },
+  fbKind: (el) => { UI.modal.kind = UI.modal.kind === el.dataset.val ? '' : el.dataset.val; UI.modal.error = ''; render(); },
+  fbSnooze: () => { fbFlag('snooze', 1); UI.modal = null; render(); toast('Te lo recordamos más adelante.'); },
+  fbSend: () => guard('fbs', async () => {
+    const m = UI.modal; m.error = '';
+    if (!m.rating && !String(m.message || '').trim()) { m.error = 'Elige una carita o escribe algo.'; return render(); }
+    const item = { rating: m.rating, kind: m.kind, message: String(m.message || '').trim(), screen: m.screen.replace(/ · feedback$/, ''), device: deviceInfo(), at: Date.now() };
+    m.busy = true; render();
+    try { await fbDeliver(item); }
+    catch (e) {
+      if (e.user) { m.busy = false; m.error = e.message; return render(); }
+      try { const q = JSON.parse(localStorage.getItem('relisto-fb-queue') || '[]'); q.push(item); localStorage.setItem('relisto-fb-queue', JSON.stringify(q.slice(-20))); } catch (e2) { /* */ }
+    }
+    fbFlag('sent', 1); UI.modal = null; render();
+    celebrate('¡Gracias!'); toast('Recibido. Gracias por ayudarnos a mejorar RELISTO.');
+  })
+});
+/* =====================================================================
+   BIENVENIDA EN HISTORIAS + RECORRIDO POR TODA LA APP
+   Al instalar: 7 historias de pantalla completa (como en Instagram) con
+   piezas reales de RELISTO animadas; la sexta te pregunta tu vibra y tus
+   colores, y la séptima te muestra tu figura con esa paleta. Después,
+   un recorrido que viaja por Hoy, Armario, Plan, Circular y Perfil.
+   ===================================================================== */
+const STORY_MS = 6500;
+const ST = { root: null, raf: null, timer: 0, last: 0 };
+const storiesDone = () => { try { return localStorage.getItem('relisto-stories-done') === '1'; } catch (e) { return true; } };
+const STORY_STYLES = [['casual', 'Cómodo y sencillo'], ['smart casual', 'Relajado pero cuidado'], ['urbano/streetwear', 'Urbano, con actitud'], ['clásico', 'Atemporal'], ['minimalista', 'Pocas piezas, muy bien elegidas'], ['creativo', 'Me gusta arriesgar']];
+const STORY_COLORS = ['negro', 'blanco', 'gris', 'beige', 'azul marino', 'celeste', 'verde', 'oliva', 'burdeos', 'terracota', 'camel', 'rosa'];
+const sItem = (category, subtype, color, extra) => Object.assign({ id: 'ST-' + subtype + color, name: subtype, category, subtype, color, cut: 'regular', formality: 2, pattern: 'liso', availability: 'disponible' }, extra || {});
+const miniCard = (items, label, cls) => '<div class="st-card ' + (cls || '') + '"><span class="st-card-l">' + esc(label) + '</span><div class="st-card-g">' + items.map((i) => '<span>' + illusSVG(i) + '</span>').join('') + '</div></div>';
+function storyPicks() { UI.story.picks = UI.story.picks || { styles: [], colors: [] }; return UI.story.picks; }
+function storyFigureItems() {
+  const pk = storyPicks(); const c1 = pk.colors[0] || 'azul marino'; const c2 = pk.colors.find((c) => ['negro', 'gris', 'beige', 'blanco', 'azul marino', 'camel'].includes(c) && c !== c1) || (c1 === 'beige' ? 'azul marino' : 'beige');
+  const urban = pk.styles.includes('urbano/streetwear') || pk.styles.includes('casual');
+  return [sItem('superior', urban ? 'camiseta' : 'camisa', c1), sItem('inferior', urban ? 'jean' : 'chino', urban ? 'azul' : c2), sItem('calzado', urban ? 'zapatillas' : 'mocasines', urban ? 'blanco' : 'marrón')];
+}
+const SLIDES = [
+  { bg: 'st-forest', render: () => {
+    const p = prof() || {}; const n = p.name && !/^Tú$/.test(p.name) ? ', ' + esc(p.name.split(' ')[0]) : '';
+    return '<div class="st-vis st-fan">' + miniCard([sItem('superior', 'camisa', 'blanco'), sItem('inferior', 'chino', 'beige'), sItem('calzado', 'mocasines', 'marrón')], 'Segura', 'f1') +
+      miniCard([sItem('superior', 'polo', 'azul marino'), sItem('inferior', 'jean', 'azul'), sItem('calzado', 'zapatillas', 'blanco')], 'Con personalidad', 'f2') +
+      miniCard([sItem('superior', 'camiseta', 'terracota'), sItem('inferior', 'pantalón', 'negro'), sItem('calzado', 'zapatillas', 'negro')], 'Creativa', 'f3') + '</div>' +
+      '<div class="st-copy"><span class="st-eyebrow">Bienvenida</span><h2>Hola' + n + '.<br><em>Ya tienes qué ponerte.</em></h2><p>Tu próximo gran outfit ya está en tu armario. RELISTO solo lo encuentra por ti.</p></div>';
+  } },
+  { bg: 'st-coral', render: () => '<div class="st-vis st-phone"><div class="st-ctx"><span>Para hoy</span><b>Reunión con confianza</b><i>San Isidro · 09:00 · 22 °C</i></div><div class="st-cta">✨ Arma mi día</div>' +
+      '<div class="st-slide">' + miniCard([sItem('superior', 'camisa', 'celeste'), sItem('inferior', 'chino', 'beige'), sItem('calzado', 'mocasines', 'marrón')], '100% completo', 's1') + '</div></div>' +
+      '<div class="st-copy"><span class="st-eyebrow">1 · Hoy</span><h2>Un toque,<br><em>tres outfits.</em></h2><p>Dicta a dónde vas y RELISTO combina solo la ropa que tienes limpia y disponible.</p></div>' },
+  { bg: 'st-lavender', render: () => '<div class="st-vis st-spin"><div class="st-fig">' + figureSVG(Object.assign({}, prof() || {}, { build: 'media' }), storyFigureItems(), { label: 'Figura ilustrada girando' }) + '</div><span class="st-badge">↻ 360°</span></div>' +
+      '<div class="st-copy"><span class="st-eyebrow">2 · Ver puesto</span><h2>Pruébatelo<br><em>sin probártelo.</em></h2><p>Mira el outfit en una figura con tu tono de piel, de frente y de espalda.</p></div>' },
+  { bg: 'st-sage', render: () => '<div class="st-vis st-memory"><div class="st-flip"><div class="st-face a">' + illusSVG(sItem('superior', 'polo', 'azul marino')) + '<span>Ilustración</span></div><div class="st-face b">📷<span>Tu foto real</span></div></div>' +
+      '<div class="st-tag"><b>SUP-003</b><span>12 usos · último: ayer</span>' + (typeof QR !== 'undefined' ? '<span class="st-qr">' + QR.svg('SUP-003', { label: 'Código QR de ejemplo' }) + '</span>' : '') + '</div></div>' +
+      '<div class="st-copy"><span class="st-eyebrow">3 · Tu armario</span><h2>Tu ropa,<br><em>con memoria.</em></h2><p>Una foto basta: ilustración, color, código y cuántas veces la usaste. En Panorama ves qué puedes redescubrir.</p></div>' },
+  { bg: 'st-gold', render: () => '<div class="st-vis st-shop"><div class="st-listing">' + illusSVG(sItem('capa', 'sobrecamisa', 'arena')) + '<div><b>S/ 95</b> <i>acepta ofertas</i><span>San Borja · ≈ 4 km</span><em>+6 outfits con tu armario</em><span class="st-stars">★★★★★ 5</span></div></div><div class="st-offer">Noa ofertó <b>S/ 80</b> · <u>Aceptar</u></div></div>' +
+      '<div class="st-copy"><span class="st-eyebrow">4 · Circular</span><h2>Lo que no usas,<br><em>que lo sepan.</em></h2><p>Publica con tu precio, recibe ofertas de gente cerca y deja que tu ropa tenga otra vida.</p></div>' },
+  { bg: 'st-forest', interactive: true, render: () => {
+    const pk = storyPicks();
+    return '<div class="st-copy top"><span class="st-eyebrow">5 · Tú</span><h2>¿Cuál es<br><em>tu vibra?</em></h2><p>Elige hasta dos. Así tus primeras sugerencias ya se sienten tuyas.</p></div>' +
+      '<div class="st-pick">' + STORY_STYLES.map(([k, t]) => '<button type="button" class="st-opt" data-act="storyStyle" data-val="' + esc(k) + '" aria-pressed="' + pk.styles.includes(k) + '"><b>' + esc(cap1(k.split('/')[0])) + '</b><span>' + esc(t) + '</span></button>').join('') + '</div>' +
+      '<span class="st-sub">Colores que más usas</span><div class="st-colors">' + STORY_COLORS.map((c) => '<button type="button" class="st-col" data-act="storyColor" data-val="' + esc(c) + '" aria-pressed="' + pk.colors.includes(c) + '" aria-label="' + esc(c) + '"><i style="background:' + colorHex(c) + '"></i><span>' + esc(c) + '</span></button>').join('') + '</div>';
+  } },
+  { bg: 'st-coral', final: true, render: () => {
+    const pk = storyPicks(); const st = pk.styles[0] ? cap1(pk.styles[0].split('/')[0]) : 'tuyo';
+    return '<div class="st-vis st-reveal"><div class="st-fig pop">' + figureSVG(Object.assign({}, prof() || {}, { build: (prof() || {}).build || 'media' }), storyFigureItems(), { label: 'Tu figura con tu estilo' }) + '</div></div>' +
+      '<div class="st-copy"><span class="st-eyebrow">Listo</span><h2>Tu estilo:<br><em>' + esc(st) + '.</em></h2><p>Esta es tu figura con tus colores. La afinas cuando quieras en Mi perfil.</p>' +
+      (typeof BETA_ON !== 'undefined' && BETA_ON ? '<p class="st-beta">Estás en la <b>beta privada</b>: toca <b>Beta</b> arriba cuando quieras contarnos qué mejorar.</p>' : '') +
+      '<div class="st-actions"><button type="button" class="btn lg st-go" data-act="storyFinish" data-tour="1">Mostrarme la app</button><button type="button" class="btn ghost st-skip" data-act="storyFinish">Empezar ya</button></div></div>';
+  } }
+];
+function openStories() {
+  UI.story = { i: 0, picks: { styles: ((prof() || {}).styles || []).slice(0, 2), colors: ((prof() || {}).colors || []).slice(0, 3) }, paused: false };
+  UI.tour = null; paintStories(); startStoryClock();
+}
+function closeStories(saveFlag) {
+  cancelAnimationFrame(ST.raf); UI.story = null; if (ST.root) ST.root.innerHTML = '';
+  document.documentElement.classList.remove('story-open');
+  if (saveFlag) try { localStorage.setItem('relisto-stories-done', '1'); } catch (e) { /* */ }
+}
+function paintStories() {
+  if (!ST.root) { ST.root = document.createElement('div'); ST.root.id = 'story-root'; document.body.appendChild(ST.root); }
+  const s = UI.story; if (!s) { ST.root.innerHTML = ''; return; }
+  const sl = SLIDES[s.i];
+  document.documentElement.classList.add('story-open');
+  ST.root.innerHTML = '<div class="stories ' + sl.bg + (sl.interactive ? ' interactive' : '') + '" role="dialog" aria-modal="true" aria-label="Bienvenida a RELISTO, historia ' + (s.i + 1) + ' de ' + SLIDES.length + '">' +
+    '<div class="st-bars" aria-hidden="true">' + SLIDES.map((_, k) => '<i><b style="width:' + (k < s.i ? 100 : 0) + '%"' + (k === s.i ? ' id="st-now"' : '') + '></b></i>').join('') + '</div>' +
+    '<div class="st-top"><span class="st-brand">' + LOGO + 'RELISTO</span><span class="grow"></span>' + (sl.interactive || sl.final ? '' : '<button type="button" class="st-x" data-act="storyPause" aria-label="' + (s.paused ? 'Reanudar' : 'Pausar') + '">' + (s.paused ? '▶' : '❚❚') + '</button>') + '<button type="button" class="st-x" data-act="storySkip" aria-label="Saltar la bienvenida">✕</button></div>' +
+    (sl.interactive || sl.final ? '' : '<button type="button" class="st-tap prev" data-act="storyPrev" aria-label="Anterior"></button><button type="button" class="st-tap next" data-act="storyNext" aria-label="Siguiente"></button>') +
+    '<div class="st-body" key="' + s.i + '">' + sl.render() + '</div>' +
+    (sl.interactive ? '<div class="st-foot"><button type="button" class="btn ghost st-skip" data-act="storyPrev">Atrás</button><button type="button" class="btn lg st-go" data-act="storyNext">' + (storyPicks().styles.length || storyPicks().colors.length ? 'Ver mi estilo' : 'Saltar este paso') + '</button></div>' : '') +
+    '</div>';
+  const focus = ST.root.querySelector(sl.interactive ? '.st-opt' : sl.final ? '.st-go' : '[data-act="storyNext"]');
+  if (focus) try { focus.focus({ preventScroll: true }); } catch (e) { /* */ }
+}
+function startStoryClock() {
+  cancelAnimationFrame(ST.raf); ST.timer = 0; ST.last = performance.now();
+  const tick = (now) => {
+    const s = UI.story; if (!s) return;
+    const sl = SLIDES[s.i];
+    if (!s.paused && !sl.interactive && !sl.final && document.visibilityState === 'visible') ST.timer += now - ST.last;
+    ST.last = now;
+    const bar = document.getElementById('st-now');
+    if (bar) bar.style.width = (sl.interactive || sl.final ? 100 : Math.min(100, (ST.timer / STORY_MS) * 100)) + '%';
+    if (ST.timer >= STORY_MS) { storyGo(s.i + 1); return; }
+    ST.raf = requestAnimationFrame(tick);
+  };
+  ST.raf = requestAnimationFrame(tick);
+}
+function storyGo(i) {
+  if (!UI.story) return;
+  if (i < 0) i = 0;
+  if (i >= SLIDES.length) i = SLIDES.length - 1;
+  UI.story.i = i; UI.story.paused = false; paintStories(); startStoryClock();
+}
+function saveStoryPicks() {
+  const p = prof(); const pk = storyPicks(); if (!p) return;
+  if (pk.styles.length) p.styles = [...new Set(pk.styles.concat(p.styles || []))].slice(0, 4);
+  if (pk.colors.length) p.colors = [...new Set(pk.colors.concat(p.colors || []))].slice(0, 6);
+  if (pk.styles.length || pk.colors.length) commit({ render: false });
+}
+Object.assign(ACT, {
+  storiesOpen: () => { UI.modal = null; render(); openStories(); },
+  storyNext: () => storyGo(UI.story.i + 1),
+  storyPrev: () => storyGo(UI.story.i - 1),
+  storySkip: () => { saveStoryPicks(); closeStories(true); render(); toast('Puedes volver a verla en el menú ⋯ → Ver la bienvenida.'); },
+  storyPause: () => { UI.story.paused = !UI.story.paused; paintStories(); },
+  storyStyle: (el) => { const pk = storyPicks(); const v = el.dataset.val; pk.styles = pk.styles.includes(v) ? pk.styles.filter((x) => x !== v) : pk.styles.concat(v).slice(-2); paintStories(); },
+  storyColor: (el) => { const pk = storyPicks(); const v = el.dataset.val; pk.colors = pk.colors.includes(v) ? pk.colors.filter((x) => x !== v) : pk.colors.concat(v).slice(-3); paintStories(); },
+  storyFinish: (el) => { saveStoryPicks(); closeStories(true); UI.view = 'hoy'; render(); if (el.dataset.tour) setTimeout(startTour, 250); else toast('¡Listo! El recorrido por la app está en el menú ⋯ cuando lo quieras.'); }
+});
+document.addEventListener('keydown', (e) => {
+  if (!UI.story) return;
+  if (e.key === 'Escape') { e.preventDefault(); ACT.storySkip(); }
+  else if (e.key === 'ArrowRight' && !SLIDES[UI.story.i].interactive) storyGo(UI.story.i + 1);
+  else if (e.key === 'ArrowLeft') storyGo(UI.story.i - 1);
+}, true);
+/* Mantener presionado pausa la historia (como en redes). */
+document.addEventListener('pointerdown', (e) => { if (UI.story && e.target.closest && e.target.closest('.st-tap')) { ST.hold = setTimeout(() => { if (UI.story) { UI.story.paused = true; ST.held = true; } }, 350); } });
+document.addEventListener('pointerup', () => { clearTimeout(ST.hold); if (ST.held && UI.story) { UI.story.paused = false; ST.held = false; ST.swallow = true; setTimeout(() => { ST.swallow = false; }, 50); } });
+document.addEventListener('click', (e) => { if (ST.swallow && e.target.closest && e.target.closest('.st-tap')) { e.stopPropagation(); e.preventDefault(); } }, true);
+
+/* ---------- Recorrido por toda la app ---------- */
+const emptyCloset = () => { const w = ws(); const p = prof(); return !!(w && p) && !ownedItems(w, p.id).length; };
+const TOUR_ALL = [
+  { view: 'hoy', sel: ['[data-tour="ctx"]', '.hero [data-act="addItem"]'],
+    get title() { return emptyCloset() ? 'Empieza por tu ropa' : 'Dime a dónde vas'; },
+    get text() { return emptyCloset() ? 'Agrega 3 prendas con una foto (arriba, abajo y calzado) y RELISTO ya puede armarte outfits.' : 'Toca aquí y escribe o dicta tu día: “reunión en San Isidro, caminaré bastante”. RELISTO lo convierte en ocasión, clima y estilo.'; } },
+  { view: 'hoy', get sel() { return emptyCloset() ? ['[data-tour="nav-arma"]', '.side .big-cta'] : ['[data-tour="arma"]', '[data-tour="nav-arma"]']; }, title: 'Un toque, tres outfits', text: '“Arma mi día” combina solo ropa disponible. Elige uno con “Me lo pongo hoy” y, cuando lo uses, confírmalo.' },
+  { view: 'hoy', sel: ['.icon-btn.bell', '.side-bell'], title: 'Todo lo pendiente, aquí', text: 'Outfits por confirmar, ropa por lavar y ofertas de la Vitrina. Si hay algo, verás un número.' },
+  { view: 'armario', setup: () => { UI.closet.tab = 'prendas'; }, sel: ['.fab-add', '[data-act="addItem"]'], title: 'Tu armario en fotos', text: 'Toma una foto, elige qué es y listo: el color se detecta solo y cada prenda recibe su código.' },
+  { view: 'armario', setup: () => { UI.closet.tab = 'prendas'; }, sel: ['[data-act="closetTab"][data-tab="panorama"]'], title: 'Panorama', text: 'Qué usas, qué es ocasional y qué puedes redescubrir. Sin culpa: repetir también es tener estilo.' },
+  { view: 'plan', setup: () => { UI.plan.tab = 'faltantes'; }, sel: ['[data-act="planTab"][data-tab="calendario"]'], title: 'Planifica tu semana', text: 'Elige qué ponerte cada día, con varias opciones. Te avisamos si algo está por lavar o se repite.' },
+  { view: 'circular', setup: () => { UI.circ.tab = 'revisar'; }, sel: ['[data-act="circTab"][data-tab="vitrina"]'], title: 'La Vitrina', text: 'Vende lo que no usas con tu precio, recibe ofertas de gente cerca y deja estrellas al comprar.' },
+  { view: 'perfil', setup: () => { UI.profTab = 'tu'; }, sel: ['[data-act="profTab"][data-tab="imagen"]'], title: 'Tu paleta y tu figura', text: 'Con tu subtono y tu rostro, RELISTO elige colores que te favorecen y arma tu figura ilustrada.' },
+  { view: 'hoy', sel: ['[data-tour="beta"]', '[data-tour="who"]'], title: typeof BETA_ON !== 'undefined' && BETA_ON ? 'Tu opinión manda' : 'Tu cuenta', text: typeof BETA_ON !== 'undefined' && BETA_ON ? 'Estás en la beta privada. Toca “Beta” cuando algo te guste, falle o se te ocurra una idea: lo leemos todo.' : 'Aquí cambias de perfil, entras a tu cuenta y compartes RELISTO.' }
+];
+TOUR_STEPS.splice(0, TOUR_STEPS.length, ...TOUR_ALL);
+tourGo = function (i) { // eslint-disable-line no-func-assign
+  if (i < 0) return;
+  if (i >= TOUR_STEPS.length) { endTour(true); UI.view = 'hoy'; render(); return; }
+  UI.tour.i = i; UI.tour.scrolled = -1; const st = TOUR_STEPS[i];
+  UI.modal = null; UI.view = st.view || 'hoy'; if (st.setup) st.setup(); if (st.before) st.before();
+  render(); window.scrollTo(0, 0);
+  const el = visibleEl(st.sel); const tabs = el && el.closest('.tabs');
+  if (tabs) { tabs.scrollLeft = Math.max(0, el.offsetLeft - (tabs.clientWidth - el.offsetWidth) / 2); renderTourLayer(); }
+};
+startTour = function () { UI.modal = null; UI.sceneHint = false; UI.tour = { i: 0, scrolled: -1 }; tourGo(0); }; // eslint-disable-line no-func-assign
+/* Primera vez: historias si nunca vio la bienvenida ni el recorrido. */
+maybeAutoTour = function () { // eslint-disable-line no-func-assign
+  if (!IS_PWA || UI.auth || UI.modal || UI.story) return;
+  if (!storiesDone() && !tourDone()) setTimeout(() => { if (!UI.auth && !UI.story) openStories(); }, 350);
+};
 /* ============================ INICIO ============================ */
 render();
 initCapabilities();

@@ -22,7 +22,8 @@ http.createServer((req, res) => {
         if ([...users.values()].some((u) => u.email === body.email)) return send(res, 422, { msg: 'User already registered' });
         if (!body.password || body.password.length < 6) return send(res, 422, { msg: 'Password should be at least 6 characters' });
         const id = crypto.randomUUID(); const u = { id, email: body.email, pw: body.password, name: (body.data || {}).name || '' };
-        users.set(id, u); sql("insert into auth.users (id, email, raw_user_meta_data) values ('" + id + "', " + lit(u.email) + ", " + lit(JSON.stringify({ name: u.name })) + "::jsonb)");
+        sql("insert into auth.users (id, email, raw_user_meta_data) values ('" + id + "', " + lit(u.email) + ", " + lit(JSON.stringify(Object.assign({ name: u.name }, body.data || {}))) + "::jsonb)");
+        users.set(id, u);
         return send(res, 200, session(u));
       }
       if (p === '/auth/v1/token') {
@@ -34,11 +35,10 @@ http.createServer((req, res) => {
       const uid = uidOf(req);
       if (p === '/auth/v1/user') { if (!uid) return send(res, 401, { msg: 'invalid JWT' }); const u = users.get(uid); if (req.method === 'PUT' && body.password) u.pw = body.password; return send(res, 200, { id: u.id, email: u.email, user_metadata: { name: u.name } }); }
       if (p.startsWith('/rest/v1/rpc/')) {
-        if (!uid) return send(res, 401, { message: 'JWT required' });
         const fn = p.split('/').pop(); const meta = FN[fn]; if (!meta) return send(res, 404, { message: 'function not found' });
         const args = Object.entries(body).map(([k, v]) => { const t = meta.types[meta.names.indexOf(k)]; if (!t) throw new Error('arg ' + k); if (v === null || v === undefined) return k + ' => NULL::' + t; if (t === 'jsonb') return k + ' => ' + lit(JSON.stringify(v)) + '::jsonb'; if (t === 'text[]') return k + ' => ' + lit('{' + v.map((x) => '"' + String(x).replace(/"/g, '\\"') + '"').join(',') + '}') + '::text[]'; return k + ' => ' + lit(v) + '::' + t; });
-        const out = sql("begin; set local role authenticated; select set_config('request.jwt.claim.sub', '" + uid + "', true); select coalesce(to_jsonb(public." + fn + '(' + args.join(', ') + ")), 'null'::jsonb); commit;");
-        const line = out.split('\n').filter((x) => x && x !== 'BEGIN' && x !== 'COMMIT' && x !== 'SET' && x !== uid).pop();
+        const out = sql("begin; set local role " + (uid ? 'authenticated' : 'anon') + "; select set_config('request.jwt.claim.sub', '" + (uid || '') + "', true); select coalesce(to_jsonb(public." + fn + '(' + args.join(', ') + ")), 'null'::jsonb); commit;");
+        const line = out.split('\n').filter((x) => x && x !== 'BEGIN' && x !== 'COMMIT' && x !== 'SET' && x !== (uid || '')).pop();
         if (fn === 'delete_my_account') { users.delete(uid); }
         return send(res, 200, line, 'application/json');
       }

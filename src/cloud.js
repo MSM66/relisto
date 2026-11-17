@@ -7,6 +7,8 @@
 const CLOUD = { on: IS_PWA && !!SB_URL && !!SB_KEY, session: null, version: null, market: null, pushTimer: null, pushing: false, dirty: false, status: 'idle', lastPull: 0, pollTimer: null };
 const APP_URL = () => location.origin + location.pathname.replace(/[^/]*$/, '');
 const isCloudAcct = () => CLOUD.on && !!AUTH.acct && !!AUTH.acct.cloud;
+(() => { try { const q = new URLSearchParams(location.search).get('invite'); if (q) { localStorage.setItem('relisto-invite', q.trim().toUpperCase().slice(0, 40)); history.replaceState(null, '', location.pathname + location.hash); } } catch (e) { /* */ } })();
+const savedInvite = () => { try { return localStorage.getItem('relisto-invite') || ''; } catch (e) { return ''; } };
 
 /* ---------- Cliente mínimo (fetch) ---------- */
 const SB = {
@@ -35,7 +37,7 @@ const SB = {
     CLOUD.session = { access_token: s.access_token, refresh_token: s.refresh_token, expires_at: s.expires_at, user: s.user || (CLOUD.session && CLOUD.session.user) };
     await LOCAL.set('sb-session', CLOUD.session);
   },
-  signUp: (email, password, name) => SB.json('/auth/v1/signup?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email, password, data: { name } } }),
+  signUp: (email, password, name, invite) => SB.json('/auth/v1/signup?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email, password, data: { name, invite } } }),
   signIn: (email, password) => SB.json('/auth/v1/token?grant_type=password', { method: 'POST', anon: true, json: { email, password } }),
   recover: (email) => SB.json('/auth/v1/recover?redirect_to=' + encodeURIComponent(APP_URL()), { method: 'POST', anon: true, json: { email } }),
   user: () => SB.json('/auth/v1/user'),
@@ -53,6 +55,7 @@ const sbError = (e) => {
   if (/invalid login credentials/i.test(m)) return 'Correo o contraseña incorrectos.';
   if (/email not confirmed/i.test(m)) return 'Confirma tu correo: te enviamos un enlace al registrarte.';
   if (/already registered|already exists/i.test(m)) return 'Ya existe una cuenta con ese correo. Inicia sesión.';
+  if (/database error saving new user|invite_required/i.test(m)) return 'Ese código de invitación no es válido o ya se usó todas las veces.';
   if (/not authorized|email_address_not_authorized/i.test(m) || (e && e.code === 'email_address_not_authorized')) return 'Todavía no podemos enviar correos a esa dirección. Intenta más tarde.';
   if (/rate limit|too many/i.test(m) || (e && e.status === 429)) return 'Demasiados intentos. Espera unos minutos y vuelve a probar.';
   if (/password/i.test(m) && /6|weak|short/i.test(m)) return 'La contraseña es muy débil: usa al menos 8 caracteres con letras y números.';
@@ -162,11 +165,15 @@ if (CLOUD.on) {
   };
   doSignup = async function () { // eslint-disable-line no-func-assign
     const a = UI.auth; a.error = '';
-    a.error = (String(a.name || '').trim() ? '' : 'Escribe tu nombre o alias.') || (emailOk(a.email) ? '' : 'Escribe un correo válido.') || pwError(a.pw, a.pw2) || (a.terms ? '' : 'Acepta la política de privacidad para continuar.');
+    const invite = String(a.invite || savedInvite()).trim().toUpperCase();
+    a.error = (invite ? '' : 'Escribe tu código de invitación.') || (String(a.name || '').trim() ? '' : 'Escribe tu nombre o alias.') || (emailOk(a.email) ? '' : 'Escribe un correo válido.') || pwError(a.pw, a.pw2) || (a.terms ? '' : 'Acepta la política de privacidad para continuar.');
     if (a.error) return render();
     a.busy = true; render();
     try {
-      const r = await SB.signUp(String(a.email).trim().toLowerCase(), a.pw, String(a.name).trim().slice(0, 40));
+      const okInvite = await SB.json('/rest/v1/rpc/beta_check_invite', { method: 'POST', anon: true, json: { p_code: invite } }).catch((e) => { if (e instanceof TypeError) throw e; return true; });
+      if (okInvite === false) { a.busy = false; a.error = 'Ese código de invitación no es válido o ya se usó todas las veces.'; return render(); }
+      try { localStorage.setItem('relisto-invite', invite); } catch (e) { /* */ }
+      const r = await SB.signUp(String(a.email).trim().toLowerCase(), a.pw, String(a.name).trim().slice(0, 40), invite);
       if (r && r.access_token) { await openCloud(r); await LOCAL.set('welcomed', true); afterCloudLogin(true); return; }
       UI.auth = { screen: 'confirm', email: String(a.email).trim() };
     } catch (e) { a.busy = false; a.error = sbError(e); }
@@ -401,10 +408,11 @@ if (CLOUD.on) {
     if (a.screen === 'welcome') {
       body = '<h1 class="serif auth-h">Relisto. <em>Ya tienes qué ponerte.</em></h1><p class="muted" style="margin:0">Tu próximo gran outfit ya está en tu armario: solo falta combinarlo.</p>' +
         '<ul class="clean auth-feats"><li>' + IC.spark + '<span><b>Un toque, tres outfits</b> con la ropa que ya tienes.</span></li><li>' + IC.camera + '<span><b>Tu armario con fotos</b>, en tu cuenta y en todos tus teléfonos.</span></li><li>' + IC.circular + '<span><b>La Vitrina</b>: vende lo que no usas a gente cerca de ti.</span></li></ul>' +
-        '<button class="btn primary lg wide" data-act="authGo" data-screen="signup">Crear mi cuenta gratis</button><button class="btn lg wide" data-act="authGo" data-screen="login">Ya tengo cuenta</button><button class="btn ghost wide" data-act="authDemo">Explorar la demo sin cuenta</button>';
+        '<span class="beta-tag">Beta privada</span><button class="btn primary lg wide" data-act="authGo" data-screen="signup">Crear mi cuenta gratis</button><button class="btn lg wide" data-act="authGo" data-screen="login">Ya tengo cuenta</button><button class="btn ghost wide" data-act="authDemo">Explorar la demo sin cuenta</button>';
     } else if (a.screen === 'signup') {
       const sc = pwScore(a.pw); const lbl = ['', 'débil', 'aceptable', 'buena', 'fuerte'][sc];
-      body = '<h1 class="serif auth-h">Crea tu cuenta</h1><form class="stack" data-auth-form="signup" novalidate>' + authField('au-name', 'Nombre o alias', 'name', a.name, 'text', ' autocomplete="nickname" maxlength="40"') + email() +
+      const inv = a.invite !== undefined ? a.invite : savedInvite();
+      body = '<h1 class="serif auth-h">Crea tu cuenta</h1><p class="small muted" style="margin:0">RELISTO está en beta privada: necesitas el código que te compartieron.</p><form class="stack" data-auth-form="signup" novalidate>' + authField('au-invite', 'Código de invitación', 'invite', inv, 'text', ' autocapitalize="characters" autocomplete="off" maxlength="40" placeholder="Ej.: RELISTO-BETA"') + authField('au-name', 'Nombre o alias', 'name', a.name, 'text', ' autocomplete="nickname" maxlength="40"') + email() +
         pwField('au-pw', 'Crea una contraseña', 'pw', a.pw, true) + '<div class="pw-meter" aria-live="polite"><i class="s' + sc + '"></i><span class="tiny muted">' + (a.pw ? 'Seguridad: ' + lbl : 'Mínimo 8 caracteres, con letras y números.') + '</span></div>' +
         pwField('au-pw2', 'Repite la contraseña', 'pw2', a.pw2) +
         '<label class="check" for="au-terms"><input type="checkbox" id="au-terms"' + (a.terms ? ' checked' : '') + bindAttr('auth', 'terms', 'bool') + '> <span>Acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a></span></label>' +
@@ -444,7 +452,7 @@ if (CLOUD.on) {
       '<div class="row"><a class="btn sm ghost" href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a><button class="btn sm ghost" data-act="askDeleteAccount">Eliminar mi cuenta</button></div></div>';
   };
     ACT.askDeleteAccount = () => openModal({ type: 'confirm', title: 'Eliminar mi cuenta', text: 'Se borran para siempre tu cuenta, tu armario, tus fotos, tu historial y tus publicaciones de la Vitrina, en la nube y en este teléfono. No se puede deshacer.', okLabel: 'Eliminar todo', okAct: 'deleteAccountNow', danger: true });
-  ACT.authGo = (el) => { const keep = UI.auth || {}; UI.authMsg = ''; UI.auth = { screen: el.dataset.screen, email: keep.email || '', terms: keep.terms }; render(); };
+  ACT.authGo = (el) => { const keep = UI.auth || {}; UI.authMsg = ''; UI.auth = { screen: el.dataset.screen, email: keep.email || '', terms: keep.terms, invite: keep.invite }; render(); };
   Object.assign(ACT, {
     importPick: (el) => { UI.auth.pick = el.dataset.id; UI.auth.pw = ''; UI.auth.error = ''; render(); },
     importLocal: (el) => doImportLocal(el.dataset.id),
