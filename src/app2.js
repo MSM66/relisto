@@ -58,7 +58,7 @@ function renderShell() {
     '<button type="button" data-act="tourStart">' + IC.spark + '<span>Recorrido rápido</span></button>';
   const personalLabel = IS_PWA ? (AUTH.acct ? 'Mi armario' : 'Entrar a mi cuenta') : (S.personal ? 'Mi armario' : 'Empezar con mi armario');
   const side = '<aside class="side" aria-label="Navegación principal">' +
-    '<a class="logo" href="#" data-act="nav" data-view="hoy">' + LOGO + '<span><b>RELISTO</b><small>Vístete rápido. Dale más vida a tu ropa</small></span></a>' +
+    '<a class="logo" href="#" data-act="nav" data-view="hoy">' + LOGO + '<span><b>RELISTO</b><small>Ya tienes qué ponerte</small></span></a>' +
     '<div class="seg" role="group" aria-label="Espacio"><button type="button" data-act="space" data-space="demo" aria-pressed="' + isDemo() + '">Explorar demo</button><button type="button" data-act="space" data-space="personal" aria-pressed="' + !isDemo() + '">' + personalLabel + '</button></div>' +
     (isDemo() ? '<div class="stack tight"><label class="side-label" for="who-side">Perfil de ejemplo</label><select id="who-side" data-act-change="who">' + S.demo.profiles.map((x) => opt('demo:' + x.id, who, x.name)).join('') + '</select></div>' : '') +
     '<div>' + flag + '</div>' +

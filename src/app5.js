@@ -5,7 +5,7 @@
 
 /* ---------- Recorrido rápido (marcas guiadas) ---------- */
 const TOUR_STEPS = [
-  { sel: ['[data-tour="ctx"]'], title: 'Dime a dónde vas', text: 'Toca aquí y escribe o dicta tu día: “reunión en San Isidro, caminaré bastante”. RELISTO lo convierte en campos.' },
+  { sel: ['[data-tour="ctx"]'], title: 'Ya tienes qué ponerte', text: 'Empecemos por tu día. Toca aquí y escribe o dicta: “reunión en San Isidro, caminaré bastante”. RELISTO lo convierte en campos.' },
   { sel: ['[data-tour="arma"]', '[data-tour="nav-arma"]'], title: 'Un toque, tres outfits', text: '“Arma mi día” combina solo ropa disponible. Desliza para ver cada propuesta y amplía hasta seis.' },
   { sel: ['.outfit .grow-btn', '[data-tour="arma"]'], before: () => { if (!genState() && ownedItems(ws(), ws().activeProfileId).length) doGenerate(); }, title: 'Elige y confirma', text: '“Me lo pongo hoy” anota tu elección. Cuando lo uses, toca “Sí, lo usé”: así RELISTO aprende qué usas de verdad.' },
   { sel: ['[data-tour="nav-armario"]', '[data-tour="side-armario"]'], title: 'Tu armario con fotos', text: 'Toma una foto, elige qué es y su color, y listo: el nombre se completa solo. En Panorama ves qué usas y qué puedes redescubrir.' },

@@ -355,7 +355,7 @@ function renderAbout() {
   const chosen = ev.filter((e) => e.type === 'choose').length; const worn = ev.filter((e) => e.type === 'confirm_wear').length;
   const block = (t, txt) => '<div class="card stack tight"><span class="eyebrow">' + t + '</span><p class="small">' + txt + '</p></div>';
   return sectionTitle('Sobre el proyecto', '<span class="chip">Vista de Product Management</span>', 'RELISTO') +
-    '<div class="card soft stack"><b class="serif" style="font-size:26px">Descubre qué ponerte con lo que ya tienes y compra con intención.</b><span class="small">Vístete rápido. Dale más vida a tu ropa.</span></div>' +
+    '<div class="card soft stack"><b class="serif" style="font-size:26px">Descubre qué ponerte con lo que ya tienes y compra con intención.</b><span class="small">Relisto. Ya tienes qué ponerte. Y repetir también es tener estilo.</span></div>' +
     '<div class="grid cards">' +
     block('Segmento inicial', 'Personas adultas que estudian o trabajan en Lima, con armario variado, que quieren reducir el esfuerzo diario de elegir ropa. Ampliable a otras ciudades.') +
     block('Problema', 'Decidir qué vestir consume tiempo; se repiten pocas prendas, se olvidan otras y se compra sin saber cuánto aportará la compra al armario.') +

@@ -207,7 +207,7 @@ async function doDeleteAccount() {
 }
 async function shareApp() {
   const url = location.href.split('#')[0].split('?')[0];
-  const data = { title: 'RELISTO', text: 'Vístete rápido con la ropa que ya tienes. Instala RELISTO y crea tu cuenta con tu DNI:', url };
+  const data = { title: 'RELISTO', text: 'Relisto: ya tienes qué ponerte. Arma outfits con la ropa que ya tienes. Instala RELISTO y crea tu cuenta con tu DNI:', url };
   try { if (navigator.share) { await navigator.share(data); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
   try { await navigator.clipboard.writeText(url); toast('Enlace copiado: ' + url); } catch (e) { toast('Comparte este enlace: ' + url); }
 }
@@ -228,10 +228,10 @@ function docFields(a) {
 function renderAuth() {
   const a = UI.auth; const err = a.error ? '<div class="note bad" role="alert">' + esc(a.error) + '</div>' : '';
   const busy = a.busy ? ' disabled' : '';
-  const brand = '<div class="auth-brand">' + LOGO + '<b>RELISTO</b><span>Vístete rápido. Dale más vida a tu ropa.</span></div>';
+  const brand = '<div class="auth-brand">' + LOGO + '<b>RELISTO</b>' + (a.screen === 'welcome' ? '' : '<span>Ya tienes qué ponerte.</span>') + '</div>';
   let body = '';
   if (a.screen === 'welcome') {
-    body = '<h1 class="serif auth-h">Tu próximo gran outfit puede estar en tu armario.</h1>' +
+    body = '<h1 class="serif auth-h">Relisto. <em>Ya tienes qué ponerte.</em></h1><p class="muted" style="margin:0">Tu próximo gran outfit ya está en tu armario: solo falta combinarlo.</p>' +
       '<ul class="clean auth-feats"><li>' + IC.spark + '<span><b>Un toque, tres outfits</b> con la ropa que ya tienes.</span></li><li>' + IC.camera + '<span><b>Tu armario con fotos</b>, guardado en este teléfono.</span></li><li>' + IC.lock + '<span><b>Tu cuenta, cifrada</b> con tu contraseña. Nada se sube a internet.</span></li></ul>' +
       (LEGACY.personal ? '<div class="note ok">Encontramos tu armario actual (' + plural(LEGACY.personal.items.length, 'prenda', 'prendas') + (LEGACY.photoCount ? ', ' + plural(LEGACY.photoCount, 'foto', 'fotos') : '') + '). Pasará a tu cuenta al crearla.</div>' : '') +
       '<button class="btn primary lg wide" data-act="authGo" data-screen="signup">Crear mi cuenta</button>' +

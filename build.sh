@@ -14,7 +14,7 @@ VERSION="$(date -u +%Y%m%d.%H%M)"
 rm -rf docs && mkdir -p docs/icons
 {
   printf '<!doctype html>\n<html lang="es-PE">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-  printf '<meta name="theme-color" content="#173F35">\n<meta name="description" content="Vístete rápido. Dale más vida a tu ropa.">\n'
+  printf '<meta name="theme-color" content="#173F35">\n<meta name="description" content="Relisto. Ya tienes qué ponerte. Arma outfits con la ropa que ya tienes y dale más vida.">\n'
   printf '<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" href="icons/icon-192.png">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
   printf '<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n<meta name="apple-mobile-web-app-title" content="RELISTO">\n'
   printf '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,sans-serif}img{max-width:100%%}[hidden]{display:none!important}</style>\n'
