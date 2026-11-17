@@ -212,3 +212,14 @@ withUndo('mkWithdraw', 'Retirada de la vitrina.');
 withUndo('mkRespond', 'Oferta rechazada.', (el) => el.dataset.a === 'rechazar');
 withUndo('cancelChoice', 'Elección cancelada.');
 withUndo('pastNo', 'Anotado.');
+
+/* ---------- Acerca de (versión de tienda) ---------- */
+function renderAboutStore() {
+  return sectionTitle('Acerca de RELISTO', '', 'RELISTO') +
+    '<div class="card soft stack"><b class="serif" style="font-size:26px">Relisto. <em style="color:var(--accent-ink)">Ya tienes qué ponerte.</em></b><span class="small">Arma outfits con la ropa que ya tienes, planifica tu semana y dale una segunda vida a lo que no usas.</span></div>' +
+    '<div class="grid two"><div class="card stack tight"><span class="eyebrow">Tu privacidad</span><span class="small">Con tu cuenta, tu armario y tus fotos se guardan cifrados en este teléfono. No vendemos tus datos.</span><button class="btn sm" data-act="aboutPrivacy">Privacidad y datos</button></div>' +
+    '<div class="card stack tight"><span class="eyebrow">Ayuda</span><span class="small">¿Primera vez? Haz el recorrido de 30 segundos.</span><button class="btn sm" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button></div></div>' +
+    '<p class="tiny muted">Versión ' + esc(APP_VERSION) + '</p>';
+}
+
+ACT.aboutPrivacy = () => { UI.view = 'perfil'; UI.profTab = 'datos'; UI.modal = null; render(); window.scrollTo(0, 0); };

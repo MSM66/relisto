@@ -273,5 +273,12 @@ function runSelfTests(today) {
     const ms = Date.now() - t0;
     return { ok: r.complete.length >= 3 && sug.length > 0 && ms < 1500, detail: ms + ' ms · ' + r.complete.length + ' outfits' };
   });
+  check('Base de conocimiento: premia combinaciones clásicas y penaliza choques', () => {
+    const mk = (category, subtype, color) => ({ id: 'K' + color + subtype, category, subtype, color, formality: 2 });
+    const a = kbPairs([mk('superior', 'camisa', 'azul marino'), mk('inferior', 'pantalón', 'plomo'), mk('calzado', 'mocasines', 'negro')]);
+    const b = kbPairs([mk('superior', 'camisa', 'rojo'), mk('inferior', 'pantalón', 'verde'), mk('calzado', 'zapatillas', 'blanco')]);
+    const c = kbPairs([mk('superior', 'polo', 'lila'), mk('inferior', 'jean', 'mostaza')]);
+    return { ok: a.delta > 0 && a.label === 'Combinación clásica' && b.delta < 0 && !b.label && c.delta === 0, detail: 'clásica +' + a.delta + ' · choque ' + b.delta };
+  });
   return out;
 }

@@ -345,40 +345,42 @@ function scoreOutfit(ws, items, ctx, profile, today) {
   let score = 50; const reasons = [];
   const main = items.filter((i) => ['top', 'bottom', 'full', 'shoes'].includes(roleOf(i)));
   const h = harmony(main);
-  if (h.nonNeutral.length === 0) { score += 4; reasons.push({ w: 3, t: 'Paleta neutra (' + [...new Set(main.map((i) => i.color))].join(', ') + '): combina sin esfuerzo.' }); }
-  else if (h.nonNeutral.length === 1) { score += 8; reasons.push({ w: 4, t: 'Un solo punto de color (' + h.nonNeutral[0] + ') sobre base neutra.' }); }
+  if (h.nonNeutral.length === 0) { score += 4; reasons.push({ w: 3, t: 'Combina sin esfuerzo' }); }
+  else if (h.nonNeutral.length === 1) { score += 8; reasons.push({ w: 4, t: 'Un toque de color justo' }); }
+  const kp = kbPairs(main);
+  if (kp.delta) { score += kp.delta; if (kp.label) reasons.push({ w: 5, t: kp.label }); }
   else score -= 2;
   const favs = [...(profile.colors || []), ...(ctx.colorsPref || [])].map(norm);
   const favHits = main.filter((i) => favs.some((f) => f && norm(i.color).includes(f)));
-  if (favHits.length) { score += 6 * favHits.length; reasons.push({ w: 5, t: 'Usa colores que elegiste: ' + [...new Set(favHits.map((i) => i.color))].join(', ') + '.' }); }
+  if (favHits.length) { score += 6 * favHits.length; reasons.push({ w: 5, t: 'Con tus colores favoritos' }); }
   const avoid = (profile.avoidColors || []).map(norm);
   main.forEach((i) => { if (avoid.some((a) => a && norm(i.color).includes(a))) score -= 12; });
   if (typeof inPalette === 'function' && PALETTES[profile.undertone]) {
     const palHits = main.filter((i) => inPalette(profile, i.color));
-    if (palHits.length) { score += 3 * palHits.length; reasons.push({ w: 4, t: 'Tonos de tu paleta ' + PALETTES[profile.undertone].label + ': ' + [...new Set(palHits.map((i) => i.color))].join(', ') + '.' }); }
+    if (palHits.length) { score += 3 * palHits.length; reasons.push({ w: 4, t: 'Va con tu paleta' }); }
   }
   const style = styleFor(main, profile);
-  if ((profile.styles || []).includes(style)) { score += 8; reasons.push({ w: 4, t: 'Encaja con tu estilo ' + style + '.' }); }
+  if ((profile.styles || []).includes(style)) { score += 8; reasons.push({ w: 4, t: 'Va con tu estilo ' + style }); }
   const avgF = main.reduce((a, i) => a + i.formality, 0) / Math.max(1, main.length);
-  if (Math.abs(avgF - ctx.formality) <= 0.7) { score += 5; reasons.push({ w: 3, t: 'Formalidad adecuada para ' + ctx.dressCode + '.' }); }
+  if (Math.abs(avgF - ctx.formality) <= 0.7) { score += 5; reasons.push({ w: 3, t: 'A la altura de la ocasión' }); }
   main.forEach((i) => {
     const d = daysSinceUse(ws, i, today).days;
-    if (d >= 45) { score += 5; reasons.push({ w: 6, t: 'Recupera ' + i.name.toLowerCase() + ', sin uso registrado hace ' + d + ' días.' }); }
+    if (d >= 45) { score += 5; reasons.push({ w: 6, t: 'Rescata ' + i.name.toLowerCase() }); }
     if (d <= 1 && profile.repeat !== 'repetir') score -= 6;
   });
   const shoes = main.find((i) => roleOf(i) === 'shoes');
   if (shoes && ctx.walking === 'alta') {
-    if (['zapatillas', 'mocasines'].includes(shoes.subtype)) { score += 5; reasons.push({ w: 5, t: 'Calzado plano para caminar bastante.' }); }
+    if (['zapatillas', 'mocasines'].includes(shoes.subtype)) { score += 5; reasons.push({ w: 5, t: 'Cómodo para caminar' }); }
     if (/tac[oó]n/.test(norm(shoes.cut)) || shoes.subtype === 'oxford') score -= 6;
   }
   if (ctx.temperatureC >= 24) main.forEach((i) => { if (i.warmth >= 3) score -= 8; });
-  if (ctx.temperatureC <= 16) main.forEach((i) => { if (i.warmth >= 3) { score += 4; reasons.push({ w: 3, t: i.name + ' abriga para ' + ctx.temperatureC + ' °C.' }); } });
+  if (ctx.temperatureC <= 16) main.forEach((i) => { if (i.warmth >= 3) { score += 4; reasons.push({ w: 3, t: 'Abriga lo justo' }); } });
   const intents = ctx.intent || [];
   if (intents.includes('profesionalismo') && avgF >= 2.6) score += 5;
   if (intents.includes('cercanía') && avgF <= 3.2) score += 3;
   if (intents.includes('elegancia') && avgF >= 2.8) score += 5;
   if (intents.includes('comodidad') && main.some((i) => ['relajado', 'oversized'].includes(i.cut) || i.subtype === 'zapatillas')) score += 5;
-  if (intents.some((x) => ['creatividad', 'deslumbrar', 'máxima visibilidad'].includes(x)) && h.nonNeutral.length >= 1) { score += 5; reasons.push({ w: 4, t: 'Un color con protagonismo para la intención que marcaste.' }); }
+  if (intents.some((x) => ['creatividad', 'deslumbrar', 'máxima visibilidad'].includes(x)) && h.nonNeutral.length >= 1) { score += 5; reasons.push({ w: 4, t: 'Color con protagonismo' }); }
   if (intents.includes('pasar desapercibido') && h.nonNeutral.length === 0) score += 5;
   if (profile.exploration === 'experimental' && h.nonNeutral.length === 2) score += 6;
   if (profile.exploration === 'seguro' && h.nonNeutral.length === 2) score -= 6;

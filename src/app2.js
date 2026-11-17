@@ -2,7 +2,7 @@
    VISTAS: estructura, Hoy y Mi armario
    ===================================================================== */
 const NAV = [['hoy', 'Hoy'], ['armario', 'Mi armario'], ['plan', 'Mi plan'], ['circular', 'Circular'], ['perfil', 'Mi perfil']];
-const SUBNAV = [['recorrido', 'Escenas de demostración', 'guide'], ['comprobaciones', 'Comprobaciones', 'flask'], ['proyecto', 'Sobre el proyecto', 'info']];
+const SUBNAV = IS_STORE ? [['acerca', 'Acerca de RELISTO', 'info']] : [['recorrido', 'Escenas de demostración', 'guide'], ['comprobaciones', 'Comprobaciones', 'flask'], ['proyecto', 'Sobre el proyecto', 'info']];
 
 function render() {
   const fa = document.activeElement;
@@ -87,9 +87,10 @@ function renderView() {
     case 'plan': return renderPlan();
     case 'circular': return renderCircular();
     case 'perfil': return renderProfile();
-    case 'recorrido': return renderTour();
-    case 'comprobaciones': return renderTests();
-    case 'proyecto': return renderAbout();
+    case 'recorrido': return IS_STORE ? renderHoy() : renderTour();
+    case 'comprobaciones': return IS_STORE ? renderHoy() : renderTests();
+    case 'proyecto': return IS_STORE ? renderAboutStore() : renderAbout();
+    case 'acerca': return renderAboutStore();
     default: return renderHoy();
   }
 }
@@ -114,7 +115,7 @@ function renderHoy() {
       '<button class="btn ghost" data-act="tourStart">' + IC.spark + 'Ver recorrido rápido</button></section>';
   }
   const ctxs = w.contexts.filter((c) => c.ownerId === p.id);
-  const hint = UI.sceneHint && !UI.tour && !tourDone() ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
+  const hint = UI.sceneHint && !UI.tour && !tourDone() ? '<div class="card explore row between"><div class="stack tight" style="flex:1;min-width:200px"><b>¿Primera vez aquí?</b><span class="small">Un recorrido de 30 segundos por lo esencial.</span></div><div class="row"><button class="btn sm primary" data-act="tourStart">' + IC.spark + 'Recorrido rápido</button>' + (isDemo() && !IS_STORE ? '<button class="btn sm" data-act="nav" data-view="recorrido">Escenas</button>' : '') + '<button class="btn sm ghost" data-act="hideHint" aria-label="Ocultar sugerencia">' + IC.x + '</button></div></div>' : '';
   const meta = [d.district, d.time, d.temperatureC + ' °C', d.dressCode].filter(Boolean).join(' · ');
   const extra = [(d.intent || []).slice(0, 2).join(', '), d.mustUse ? 'con ' + ((w.items.find((i) => i.id === d.mustUse) || {}).name || '') : '', Object.keys(d.hard || {}).length ? 'requisitos excluyentes' : ''].filter(Boolean).join(' · ');
   const ctxCard = '<button type="button" class="ctx-card" data-act="ctxSheet" data-tour="ctx" aria-label="Editar el contexto de hoy: ' + esc(d.name || d.occasion) + '">' +
